@@ -14,7 +14,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       username: this.configService.get('DB_USERNAME', 'postgres'),
       password: this.configService.get('DB_PASSWORD', 'password'),
       database: this.configService.get('DB_NAME', 'sikka_db'),
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/../entities/*.entity{.ts,.js}'],
       migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
       synchronize: this.configService.get('NODE_ENV') === 'development',
       logging: this.configService.get('NODE_ENV') === 'development',
@@ -26,4 +26,3 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
     };
   }
 }
-
