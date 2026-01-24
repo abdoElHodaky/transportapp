@@ -55,6 +55,484 @@ export class PaymentsService {
         throw new BadRequestException('Payment already processed for this trip');
       }
 
+      const totalAmount = trip.actualFare || trip.estimatedFare;
+      const platformCommissionRate = 0.15; // 15%
+      const platformCommission = totalAmount * platformCommissionRate;
+      const driverEarnings = totalAmount - platformCommission;
+
+      // Create payment record
+      const payment = queryRunner.manager.create(Payment, {
+        tripId,
+        payerId: trip.passengerId,
+        payeeId: trip.driverId,
+        method: paymentDto.method,
+        amount: totalAmount,
+        platformCommission,
+        driverEarnings,
+        currency: 'SDG',
+        description: `Payment for trip ${tripId}`,
+        gatewayTransactionId: paymentDto.gatewayTransactionId,
+        status: PaymentStatus.PROCESSING,
+      });
+
+      const savedPayment = await queryRunner.manager.save(Payment, payment);
+
+      // Process payment based on method
+      let paymentResult;
+      switch (paymentDto.method) {
+        case PaymentMethod.WALLET:
+          paymentResult = await this.processWalletPayment(queryRunner, trip, savedPayment);
+          break;
+        case PaymentMethod.EBS:
+          paymentResult = await this.processEBSPayment(queryRunner, trip, savedPayment);
+          break;
+        case PaymentMethod.CYBERPAY:
+          paymentResult = await this.processCyberPayPayment(queryRunner, trip, savedPayment);
+          break;
+        case PaymentMethod.CASH:
+          paymentResult = await this.processCashPayment(queryRunner, trip, savedPayment);
+          break;
+        default:
+          throw new BadRequestException('Unsupported payment method');
+      }
+
+      if (paymentResult.success) {
+        // Update payment status
+        await queryRunner.manager.update(Payment, savedPayment.id, {
+          status: PaymentStatus.COMPLETED,
+          completedAt: new Date(),
+          gatewayResponse: JSON.stringify(paymentResult.gatewayResponse),
+        });
+
+        // Distribute earnings to driver
+        if (trip.driver && trip.driver.wallet) {
+          await this.creditDriverEarnings(queryRunner, trip.driver.wallet, driverEarnings, tripId);
+        }
+
+        await queryRunner.commitTransaction();
+
+        return {
+          message: 'Payment processed successfully',
+          payment: {
+            id: savedPayment.id,
+            amount: totalAmount,
+            method: paymentDto.method,
+            status: PaymentStatus.COMPLETED,
+            platformCommission,
+            driverEarnings,
+          },
+        };
+      } else {
+        // Update payment status to failed
+        await queryRunner.manager.update(Payment, savedPayment.id, {
+          status: PaymentStatus.FAILED,
+          failedAt: new Date(),
+          failureReason: paymentResult.error,
+        });
+
+        await queryRunner.commitTransaction();
+
+        throw new InternalServerErrorException(`Payment failed: ${paymentResult.error}`);
+      }
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async getWalletBalance(userId: string) {
+    const wallet = await this.walletRepository.findOne({
+      where: { userId },
+    });
+
+    if (!wallet) {
+      throw new NotFoundException('Wallet not found');
+    }
+
+    return {
+      balance: wallet.balance,
+      totalEarnings: wallet.totalEarnings,
+      totalSpent: wallet.totalSpent,
+      dailySpendLimit: wallet.dailySpendLimit,
+      monthlySpendLimit: wallet.monthlySpendLimit,
+      dailySpentAmount: wallet.dailySpentAmount,
+      monthlySpentAmount: wallet.monthlySpentAmount,
+      status: wallet.status,
+    };
+  }
+
+  async topupWallet(userId: string, topupDto: {
+    amount: number;
+    method: PaymentMethod;
+    gatewayTransactionId?: string;
+  }) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const wallet = await queryRunner.manager.findOne(Wallet, {
+        where: { userId },
+      });
+
+      if (!wallet) {
+        throw new NotFoundException('Wallet not found');
+      }
+
+      // Process topup payment
+      let topupResult;
+      switch (topupDto.method) {
+        case PaymentMethod.EBS:
+          topupResult = await this.processEBSTopup(topupDto.amount, topupDto.gatewayTransactionId);
+          break;
+        case PaymentMethod.CYBERPAY:
+          topupResult = await this.processCyberPayTopup(topupDto.amount, topupDto.gatewayTransactionId);
+          break;
+        default:
+          throw new BadRequestException('Unsupported topup method');
+      }
+
+      if (topupResult.success) {
+        // Update wallet balance
+        const newBalance = wallet.balance + topupDto.amount;
+        await queryRunner.manager.update(Wallet, wallet.id, {
+          balance: newBalance,
+          totalTopups: wallet.totalTopups + topupDto.amount,
+          lastTransactionAt: new Date(),
+        });
+
+        // Record transaction
+        await this.recordTransaction(queryRunner, {
+          walletId: wallet.id,
+          userId,
+          type: TransactionType.TOPUP,
+          amount: topupDto.amount,
+          balanceBefore: wallet.balance,
+          balanceAfter: newBalance,
+          description: `Wallet topup via ${topupDto.method}`,
+          externalReference: topupDto.gatewayTransactionId,
+          status: TransactionStatus.COMPLETED,
+        });
+
+        await queryRunner.commitTransaction();
+
+        return {
+          message: 'Wallet topped up successfully',
+          balance: newBalance,
+          amount: topupDto.amount,
+        };
+      } else {
+        await queryRunner.rollbackTransaction();
+        throw new InternalServerErrorException(`Topup failed: ${topupResult.error}`);
+      }
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async getTransactionHistory(userId: string, page = 1, limit = 20) {
+    const wallet = await this.walletRepository.findOne({
+      where: { userId },
+    });
+
+    if (!wallet) {
+      throw new NotFoundException('Wallet not found');
+    }
+
+    const [transactions, total] = await this.transactionRepository.findAndCount({
+      where: { walletId: wallet.id },
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+      relations: ['trip', 'payment'],
+    });
+
+    return {
+      transactions: transactions.map(transaction => ({
+        id: transaction.id,
+        type: transaction.type,
+        amount: transaction.amount,
+        description: transaction.description,
+        status: transaction.status,
+        balanceAfter: transaction.balanceAfter,
+        createdAt: transaction.createdAt,
+        trip: transaction.trip ? {
+          id: transaction.trip.id,
+          pickupAddress: transaction.trip.pickupAddress,
+          dropoffAddress: transaction.trip.dropoffAddress,
+        } : null,
+      })),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  async processRefund(paymentId: string, refundDto: {
+    amount?: number;
+    reason: string;
+  }) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const payment = await queryRunner.manager.findOne(Payment, {
+        where: { id: paymentId, status: PaymentStatus.COMPLETED },
+        relations: ['trip', 'payer', 'payer.wallet'],
+      });
+
+      if (!payment) {
+        throw new NotFoundException('Payment not found or not eligible for refund');
+      }
+
+      const refundAmount = refundDto.amount || payment.amount;
+
+      if (refundAmount > payment.amount) {
+        throw new BadRequestException('Refund amount cannot exceed payment amount');
+      }
+
+      // Process refund based on original payment method
+      let refundResult;
+      switch (payment.method) {
+        case PaymentMethod.WALLET:
+          refundResult = await this.processWalletRefund(queryRunner, payment, refundAmount);
+          break;
+        case PaymentMethod.EBS:
+          refundResult = await this.processEBSRefund(payment, refundAmount);
+          break;
+        case PaymentMethod.CYBERPAY:
+          refundResult = await this.processCyberPayRefund(payment, refundAmount);
+          break;
+        case PaymentMethod.CASH:
+          refundResult = { success: true, message: 'Cash refund to be processed manually' };
+          break;
+        default:
+          throw new BadRequestException('Refund not supported for this payment method');
+      }
+
+      if (refundResult.success) {
+        // Update payment record
+        await queryRunner.manager.update(Payment, paymentId, {
+          refundAmount,
+          status: PaymentStatus.REFUNDED,
+          refundedAt: new Date(),
+        });
+
+        await queryRunner.commitTransaction();
+
+        return {
+          message: 'Refund processed successfully',
+          refundAmount,
+          method: payment.method,
+        };
+      } else {
+        await queryRunner.rollbackTransaction();
+        throw new InternalServerErrorException(`Refund failed: ${refundResult.error}`);
+      }
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  private async processWalletPayment(queryRunner: any, trip: Trip, payment: Payment) {
+    const passengerWallet = trip.passenger.wallet;
+
+    if (!passengerWallet) {
+      return { success: false, error: 'Passenger wallet not found' };
+    }
+
+    if (passengerWallet.balance < payment.amount) {
+      return { success: false, error: 'Insufficient wallet balance' };
+    }
+
+    // Check spending limits
+    const limitCheck = await this.checkSpendingLimits(passengerWallet, payment.amount);
+    if (!limitCheck.allowed) {
+      return { success: false, error: limitCheck.reason };
+    }
+
+    // Deduct from passenger wallet
+    const newBalance = passengerWallet.balance - payment.amount;
+    await queryRunner.manager.update(Wallet, passengerWallet.id, {
+      balance: newBalance,
+      totalSpent: passengerWallet.totalSpent + payment.amount,
+      dailySpentAmount: passengerWallet.dailySpentAmount + payment.amount,
+      monthlySpentAmount: passengerWallet.monthlySpentAmount + payment.amount,
+      lastTransactionAt: new Date(),
+    });
+
+    // Record transaction
+    await this.recordTransaction(queryRunner, {
+      walletId: passengerWallet.id,
+      userId: trip.passengerId,
+      tripId: trip.id,
+      paymentId: payment.id,
+      type: TransactionType.DEBIT,
+      amount: payment.amount,
+      balanceBefore: passengerWallet.balance,
+      balanceAfter: newBalance,
+      description: `Payment for trip ${trip.id}`,
+      status: TransactionStatus.COMPLETED,
+    });
+
+    return { success: true, gatewayResponse: { method: 'wallet', balance: newBalance } };
+  }
+
+  private async processEBSPayment(queryRunner: any, trip: Trip, payment: Payment) {
+    try {
+      // TODO: Implement actual EBS gateway integration
+      // For now, simulate successful payment
+      const mockResponse = {
+        transactionId: payment.gatewayTransactionId || `ebs_${Date.now()}`,
+        status: 'success',
+        amount: payment.amount,
+        currency: 'SDG',
+        timestamp: new Date().toISOString(),
+      };
+
+      return { success: true, gatewayResponse: mockResponse };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  private async processCyberPayPayment(queryRunner: any, trip: Trip, payment: Payment) {
+    try {
+      // TODO: Implement actual CyberPay gateway integration
+      // For now, simulate successful payment
+      const mockResponse = {
+        transactionId: payment.gatewayTransactionId || `cyberpay_${Date.now()}`,
+        status: 'success',
+        amount: payment.amount,
+        currency: 'SDG',
+        timestamp: new Date().toISOString(),
+      };
+
+      return { success: true, gatewayResponse: mockResponse };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  private async processCashPayment(queryRunner: any, trip: Trip, payment: Payment) {
+    // Cash payments are handled offline
+    return {
+      success: true,
+      gatewayResponse: {
+        method: 'cash',
+        status: 'collected',
+        amount: payment.amount,
+        timestamp: new Date().toISOString(),
+      },
+    };
+  }
+
+  private async creditDriverEarnings(queryRunner: any, driverWallet: Wallet, amount: number, tripId: string) {
+    const newBalance = driverWallet.balance + amount;
+    
+    await queryRunner.manager.update(Wallet, driverWallet.id, {
+      balance: newBalance,
+      totalEarnings: driverWallet.totalEarnings + amount,
+      lastTransactionAt: new Date(),
+    });
+
+    await this.recordTransaction(queryRunner, {
+      walletId: driverWallet.id,
+      userId: driverWallet.userId,
+      tripId,
+      type: TransactionType.EARNING,
+      amount,
+      balanceBefore: driverWallet.balance,
+      balanceAfter: newBalance,
+      description: `Earnings from trip ${tripId}`,
+      status: TransactionStatus.COMPLETED,
+    });
+  }
+
+  private async recordTransaction(queryRunner: any, transactionData: any) {
+    const transaction = queryRunner.manager.create(Transaction, {
+      ...transactionData,
+      completedAt: new Date(),
+    });
+
+    return queryRunner.manager.save(Transaction, transaction);
+  }
+
+  private async checkSpendingLimits(wallet: Wallet, amount: number) {
+    // Check daily limit
+    if (wallet.dailySpentAmount + amount > wallet.dailySpendLimit) {
+      return { allowed: false, reason: 'Daily spending limit exceeded' };
+    }
+
+    // Check monthly limit
+    if (wallet.monthlySpentAmount + amount > wallet.monthlySpendLimit) {
+      return { allowed: false, reason: 'Monthly spending limit exceeded' };
+    }
+
+    return { allowed: true };
+  }
+
+  private async processEBSTopup(amount: number, gatewayTransactionId: string) {
+    // TODO: Implement actual EBS topup integration
+    return { success: true, transactionId: gatewayTransactionId };
+  }
+
+  private async processCyberPayTopup(amount: number, gatewayTransactionId: string) {
+    // TODO: Implement actual CyberPay topup integration
+    return { success: true, transactionId: gatewayTransactionId };
+  }
+
+  private async processWalletRefund(queryRunner: any, payment: Payment, refundAmount: number) {
+    const wallet = payment.payer.wallet;
+    const newBalance = wallet.balance + refundAmount;
+
+    await queryRunner.manager.update(Wallet, wallet.id, {
+      balance: newBalance,
+      lastTransactionAt: new Date(),
+    });
+
+    await this.recordTransaction(queryRunner, {
+      walletId: wallet.id,
+      userId: payment.payerId,
+      paymentId: payment.id,
+      type: TransactionType.REFUND,
+      amount: refundAmount,
+      balanceBefore: wallet.balance,
+      balanceAfter: newBalance,
+      description: `Refund for payment ${payment.id}`,
+      status: TransactionStatus.COMPLETED,
+    });
+
+    return { success: true };
+  }
+
+  private async processEBSRefund(payment: Payment, refundAmount: number) {
+    // TODO: Implement actual EBS refund integration
+    return { success: true, transactionId: `ebs_refund_${Date.now()}` };
+  }
+
+  private async processCyberPayRefund(payment: Payment, refundAmount: number) {
+    // TODO: Implement actual CyberPay refund integration
+    return { success: true, transactionId: `cyberpay_refund_${Date.now()}` };
+        where: { tripId },
+      });
+
+      if (existingPayment) {
+        throw new BadRequestException('Payment already processed for this trip');
+      }
+
       const amount = trip.actualFare || trip.estimatedFare;
       const commissionRate = 0.15; // 15% platform commission
       const platformCommission = Math.round(amount * commissionRate * 100) / 100;
@@ -446,4 +924,3 @@ export class PaymentsService {
     }
   }
 }
-

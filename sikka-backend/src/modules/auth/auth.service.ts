@@ -52,6 +52,258 @@ export class AuthService {
       status: UserStatus.PENDING_VERIFICATION,
       otpCode,
       otpExpiresAt,
+      otpAttempts: 0,
+    });
+
+    const savedUser = await this.userRepository.save(user);
+
+    // Create wallet for the user
+    const wallet = this.walletRepository.create({
+      userId: savedUser.id,
+      balance: 0,
+      totalEarnings: 0,
+      totalSpent: 0,
+      totalTopups: 0,
+      totalWithdrawals: 0,
+      pendingAmount: 0,
+      reservedAmount: 0,
+      dailySpendLimit: 10000, // SDG 10,000
+      monthlySpendLimit: 50000, // SDG 50,000
+      dailySpentAmount: 0,
+      monthlySpentAmount: 0,
+      pinEnabled: false,
+      failedPinAttempts: 0,
+    });
+
+    await this.walletRepository.save(wallet);
+
+    // Send OTP via SMS (implement SMS service)
+    await this.sendOTP(userData.phone, otpCode);
+
+    return {
+      message: 'Registration successful. Please verify your phone number.',
+      userId: savedUser.id,
+      phone: savedUser.phone,
+    };
+  }
+
+  async verifyOTP(phone: string, otpCode: string) {
+    const user = await this.userRepository.findOne({
+      where: { phone },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    if (user.otpAttempts >= 3) {
+      throw new BadRequestException('Too many OTP attempts. Please request a new OTP.');
+    }
+
+    if (!user.otpCode || user.otpCode !== otpCode) {
+      await this.userRepository.update(user.id, {
+        otpAttempts: user.otpAttempts + 1,
+      });
+      throw new UnauthorizedException('Invalid OTP code');
+    }
+
+    if (user.otpExpiresAt < new Date()) {
+      throw new UnauthorizedException('OTP code has expired');
+    }
+
+    // Update user status
+    await this.userRepository.update(user.id, {
+      phoneVerified: true,
+      status: UserStatus.ACTIVE,
+      otpCode: null,
+      otpExpiresAt: null,
+      otpAttempts: 0,
+    });
+
+    // Generate JWT tokens
+    const tokens = await this.generateTokens(user);
+
+    return {
+      message: 'Phone verification successful',
+      user: {
+        id: user.id,
+        phone: user.phone,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        status: UserStatus.ACTIVE,
+      },
+      ...tokens,
+    };
+  }
+
+  async login(phone: string, password?: string) {
+    const user = await this.userRepository.findOne({
+      where: { phone },
+      relations: ['wallet'],
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (user.status === UserStatus.SUSPENDED) {
+      throw new UnauthorizedException('Account is suspended');
+    }
+
+    // For password-based login
+    if (password) {
+      if (!user.password) {
+        throw new UnauthorizedException('Password not set for this account');
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      if (!user.phoneVerified) {
+        throw new UnauthorizedException('Phone number not verified');
+      }
+
+      // Update last login
+      await this.userRepository.update(user.id, {
+        lastLoginAt: new Date(),
+      });
+
+      const tokens = await this.generateTokens(user);
+
+      return {
+        message: 'Login successful',
+        user: {
+          id: user.id,
+          phone: user.phone,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          status: user.status,
+          rating: user.rating,
+          totalTrips: user.totalTrips,
+          wallet: user.wallet,
+        },
+        ...tokens,
+      };
+    }
+
+    // For OTP-based login
+    const otpCode = this.generateOTP();
+    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    await this.userRepository.update(user.id, {
+      otpCode,
+      otpExpiresAt,
+      otpAttempts: 0,
+    });
+
+    await this.sendOTP(phone, otpCode);
+
+    return {
+      message: 'OTP sent to your phone number',
+      requiresOTP: true,
+    };
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      const payload = this.jwtService.verify(refreshToken);
+      const user = await this.userRepository.findOne({
+        where: { id: payload.sub },
+      });
+
+      if (!user || user.refreshToken !== refreshToken) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
+      const tokens = await this.generateTokens(user);
+      return tokens;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  async logout(userId: string) {
+    await this.userRepository.update(userId, {
+      refreshToken: null,
+    });
+
+    return { message: 'Logout successful' };
+  }
+
+  async resendOTP(phone: string) {
+    const user = await this.userRepository.findOne({
+      where: { phone },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const otpCode = this.generateOTP();
+    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    await this.userRepository.update(user.id, {
+      otpCode,
+      otpExpiresAt,
+      otpAttempts: 0,
+    });
+
+    await this.sendOTP(phone, otpCode);
+
+    return { message: 'OTP sent successfully' };
+  }
+
+  private generateOTP(): string {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  private async generateTokens(user: User) {
+    const payload = {
+      sub: user.id,
+      phone: user.phone,
+      role: user.role,
+    };
+
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '24h',
+    });
+
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: '7d',
+    });
+
+    // Store refresh token
+    await this.userRepository.update(user.id, {
+      refreshToken,
+    });
+
+    return {
+      accessToken,
+      refreshToken,
+      expiresIn: 24 * 60 * 60, // 24 hours in seconds
+    };
+  }
+
+  private async sendOTP(phone: string, otpCode: string) {
+    // TODO: Implement SMS service integration
+    // For now, log the OTP (remove in production)
+    console.log(`OTP for ${phone}: ${otpCode}`);
+    
+    // In production, integrate with SMS service like:
+    // - Twilio
+    // - AWS SNS
+    // - Local Sudanese SMS provider
+    
+    return true;
+  }
+      role: userData.role || UserRole.PASSENGER,
+      status: UserStatus.PENDING_VERIFICATION,
+      otpCode,
+      otpExpiresAt,
     });
 
     const savedUser = await this.userRepository.save(user);
@@ -254,4 +506,3 @@ export class AuthService {
     return user;
   }
 }
-
