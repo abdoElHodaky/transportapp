@@ -1,0 +1,136 @@
+version: '3.8'
+
+services:
+  # Main API Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sikka-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=sikka_user
+      - DATABASE_PASSWORD=sikka_password
+      - DATABASE_NAME=sikka_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - JWT_EXPIRES_IN=24h
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+    networks:
+      - sikka-network
+    command: npm run start:dev
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: sikka-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=sikka_db
+      - POSTGRES_USER=sikka_user
+      - POSTGRES_PASSWORD=sikka_password
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - sikka-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sikka_user -d sikka_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Cache & Session Store
+  redis:
+    image: redis:7-alpine
+    container_name: sikka-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - sikka-network
+    command: redis-server /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy (Optional for development)
+  nginx:
+    image: nginx:alpine
+    container_name: sikka-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/ssl:/etc/nginx/ssl
+    depends_on:
+      - api
+    networks:
+      - sikka-network
+
+  # Database Admin (Optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: sikka-pgadmin
+    restart: unless-stopped
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@sikka.sd
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+      - PGADMIN_LISTEN_PORT=80
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - sikka-network
+    profiles:
+      - admin
+
+  # Redis Commander (Optional)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: sikka-redis-commander
+    restart: unless-stopped
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - sikka-network
+    profiles:
+      - admin
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  sikka-network:
+    driver: bridge
+

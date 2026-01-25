@@ -1,0 +1,84 @@
+{
+  "trip": {
+    "title": "Trip",
+    "booking": "Trip Booking",
+    "details": "Trip Details",
+    "history": "Trip History",
+    "current": "Current Trip",
+    "upcoming": "Upcoming Trips",
+    "completed": "Completed Trips",
+    "cancelled": "Cancelled Trips"
+  },
+  "status": {
+    "requested": "Requested",
+    "accepted": "Accepted",
+    "driver_assigned": "Driver Assigned",
+    "driver_arrived": "Driver Arrived",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "cancelled_by_passenger": "Cancelled by Passenger",
+    "cancelled_by_driver": "Cancelled by Driver",
+    "cancelled_by_system": "Cancelled by System"
+  },
+  "types": {
+    "standard": "Standard",
+    "premium": "Premium",
+    "shared": "Shared Ride",
+    "delivery": "Delivery"
+  },
+  "locations": {
+    "pickup": "Pickup Location",
+    "dropoff": "Drop-off Location",
+    "current": "Current Location",
+    "destination": "Destination",
+    "from": "From",
+    "to": "To"
+  },
+  "fare": {
+    "estimated": "Estimated Fare",
+    "actual": "Actual Fare",
+    "base": "Base Fare",
+    "distance": "Distance Fare",
+    "time": "Time Fare",
+    "total": "Total Fare",
+    "platform_fee": "Platform Fee",
+    "driver_earnings": "Driver Earnings"
+  },
+  "time": {
+    "estimated_duration": "Estimated Duration",
+    "actual_duration": "Actual Duration",
+    "estimated_arrival": "Estimated Arrival",
+    "pickup_time": "Pickup Time",
+    "dropoff_time": "Drop-off Time",
+    "requested_at": "Requested At",
+    "completed_at": "Completed At"
+  },
+  "distance": {
+    "estimated": "Estimated Distance",
+    "actual": "Actual Distance",
+    "total": "Total Distance"
+  },
+  "messages": {
+    "booking_success": "Trip booked successfully! Looking for a driver...",
+    "driver_found": "Driver found! {driverName} is on the way.",
+    "driver_arrived": "Your driver has arrived at the pickup location.",
+    "trip_started": "Trip started. Enjoy your ride!",
+    "trip_completed": "Trip completed successfully. Thank you for using Sikka!",
+    "trip_cancelled": "Trip has been cancelled.",
+    "no_drivers": "No drivers available at the moment. Please try again later.",
+    "payment_required": "Payment is required to complete the trip.",
+    "rating_request": "Please rate your trip experience."
+  },
+  "actions": {
+    "book_trip": "Book Trip",
+    "cancel_trip": "Cancel Trip",
+    "rate_trip": "Rate Trip",
+    "view_receipt": "View Receipt",
+    "contact_driver": "Contact Driver",
+    "share_trip": "Share Trip",
+    "report_issue": "Report Issue",
+    "emergency": "Emergency"
+  }
+}
+
