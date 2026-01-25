@@ -90,94 +90,7 @@ export class AuthService {
 
 
 
-  async login(phone: string, password?: string) {
-    const user = await this.userRepository.findOne({
-      where: { phone },
-      relations: ['wallet'],
-    });
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    if (user.status === UserStatus.SUSPENDED) {
-      throw new UnauthorizedException('Account is suspended');
-    }
-
-    // For password-based login
-    if (password) {
-      if (!user.password) {
-        throw new UnauthorizedException('Password not set for this account');
-      }
-
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-      if (!isPasswordValid) {
-        throw new UnauthorizedException('Invalid credentials');
-      }
-
-      if (!user.phoneVerified) {
-        throw new UnauthorizedException('Phone number not verified');
-      }
-
-      // Update last login
-      await this.userRepository.update(user.id, {
-        lastLoginAt: new Date(),
-      });
-
-      const tokens = await this.generateTokens(user);
-
-      return {
-        message: 'Login successful',
-        user: {
-          id: user.id,
-          phone: user.phone,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          status: user.status,
-          rating: user.rating,
-          totalTrips: user.totalTrips,
-          wallet: user.wallet,
-        },
-        ...tokens,
-      };
-    }
-
-    // For OTP-based login
-    const otpCode = this.generateOTP();
-    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
-
-    await this.userRepository.update(user.id, {
-      otpCode,
-      otpExpiresAt,
-      otpAttempts: 0,
-    });
-
-    await this.sendOTP(phone, otpCode);
-
-    return {
-      message: 'OTP sent to your phone number',
-      requiresOTP: true,
-    };
-  }
-
-  async refreshToken(refreshToken: string) {
-    try {
-      const payload = this.jwtService.verify(refreshToken);
-      const user = await this.userRepository.findOne({
-        where: { id: payload.sub },
-      });
-
-      if (!user || user.refreshToken !== refreshToken) {
-        throw new UnauthorizedException('Invalid refresh token');
-      }
-
-      const tokens = await this.generateTokens(user);
-      return tokens;
-    } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
-    }
-  }
 
   async logout(userId: string) {
     await this.userRepository.update(userId, {
@@ -187,32 +100,7 @@ export class AuthService {
     return { message: 'Logout successful' };
   }
 
-  async resendOTP(phone: string) {
-    const user = await this.userRepository.findOne({
-      where: { phone },
-    });
 
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const otpCode = this.generateOTP();
-    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
-
-    await this.userRepository.update(user.id, {
-      otpCode,
-      otpExpiresAt,
-      otpAttempts: 0,
-    });
-
-    await this.sendOTP(phone, otpCode);
-
-    return { message: 'OTP sent successfully' };
-  }
-
-  private generateOTP(): string {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  }
 
   private async generateTokens(user: User) {
     const payload = {

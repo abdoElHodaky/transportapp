@@ -158,6 +158,14 @@ export class Payment {
   @Column()
   userId: string;
 
+  // Payer relationship (can be different from user for some payment types)
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'payerId' })
+  payer: User;
+
+  @Column({ nullable: true })
+  payerId: string;
+
   // Driver for commission payments
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'driverId' })
@@ -166,4 +174,3 @@ export class Payment {
   @Column({ nullable: true })
   driverId: string;
 }
-

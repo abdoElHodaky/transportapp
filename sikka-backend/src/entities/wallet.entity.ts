@@ -25,6 +25,9 @@ export class Wallet {
   @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
   balance: number;
 
+  @Column({ type: 'varchar', length: 3, default: 'SDG' })
+  currency: string;
+
   @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
   totalEarnings: number;
 
@@ -114,4 +117,3 @@ export class Wallet {
     return this.balance - this.reservedAmount - this.pendingAmount;
   }
 }
-

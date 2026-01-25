@@ -322,7 +322,7 @@ export class PaymentsService {
       if (refundResult.success) {
         // Update payment record
         await queryRunner.manager.update(Payment, paymentId, {
-          refundAmount,
+          refundedAmount: refundAmount,
           status: PaymentStatus.REFUNDED,
           refundedAt: new Date(),
         });

@@ -133,7 +133,7 @@ export class PaymentsController {
     description: 'Invalid top-up amount or payment method',
   })
   async topUpWallet(@Request() req, @Body() topUpDto: TopUpWalletDto) {
-    return this.paymentsService.topUpWallet(req.user.sub, topUpDto);
+    return this.paymentsService.topupWallet(req.user.sub, topUpDto);
   }
 
   @Get('transactions')
@@ -271,4 +271,3 @@ export class PaymentsController {
     return this.paymentsService.refundPayment(paymentId, refundDto.refundReason);
   }
 }
-

@@ -44,6 +44,9 @@ export class User {
   @Column({ nullable: true })
   name: string;
 
+  @Column({ nullable: true })
+  firstName: string;
+
   @Column({ nullable: true, unique: true })
   email: string;
 
@@ -75,6 +78,9 @@ export class User {
 
   @Column({ default: 0 })
   totalTrips: number;
+
+  @Column({ default: 0 })
+  totalRatings: number;
 
   @Column({ default: false })
   isOnline: boolean;
@@ -139,6 +145,9 @@ export class User {
   @Column({ nullable: true })
   lastLoginAt: Date;
 
+  @Column({ nullable: true })
+  lastSeen: Date;
+
   // Relationships
   @OneToMany(() => Trip, (trip) => trip.passenger)
   passengerTrips: Trip[];
@@ -156,4 +165,3 @@ export class User {
   @OneToMany(() => Rating, (rating) => rating.ratedUser)
   ratingsReceived: Rating[];
 }
-
