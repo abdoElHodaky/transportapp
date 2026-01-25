@@ -541,138 +541,67 @@ graph LR
     "primaryColor": "#0d1117",
     "primaryTextColor": "#c9d1d9",
     "primaryBorderColor": "#1f6feb",
-    "lineColor": "#1f6feb",
-    "secondaryColor": "#388bfd",
-    "tertiaryColor": "#79c0ff",
-    "background": "#0d1117",
+    "lineColor": "#58a6ff",
+    "secondaryColor": "#30363d",
+    "tertiaryColor": "#161b22",
     "mainBkg": "#0d1117",
-    "secondBkg": "#30363d",
-    "tertiaryBkg": "#79c0ff"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "sequenceNumberColor": "#58a6ff"
   }
 }%%
 sequenceDiagram
-    participant C as "Client"
-    participant LB as "Load Balancer"
-    participant AG as "API Gateway"
-    participant RL as "Rate Limiter"
-    participant AS as "Auth Service"
-    participant BS as "Business Service"
-    participant DB as "Database"
-    participant Cache as "Redis"
-    participant EXT as "External Service"
+    autonumber
     
+    %% --- Participants ---
+    participant C as 📱 Client
+    participant LB as ⚖️ Load Balancer
+    participant AG as 🛡️ API Gateway
+    participant RL as 🚦 Rate Limiter
+    participant AS as 🔑 Auth Service
+    participant BS as ⚙️ Business Service
+    participant DB as 🗄️ Database
+    participant Cache as ⚡ Redis
+    participant EXT as 🌐 External Service
+
+    %% --- Request Flow ---
     C->>LB: HTTP Request
     LB->>AG: Route Request
+    
+    box rgba(31, 111, 235, 0.1) Security Layer
+        participant AG
+        participant RL
+        participant AS
+    end
+
     AG->>RL: Check Rate Limits
     RL->>AS: Validate JWT Token
     AS->>Cache: Check Token Cache
-    Cache->>AS: Token Valid
-    AS->>AG: Authentication Success
+    Cache-->>AS: Token Valid
+    AS-->>AG: Authentication Success
+
+    box rgba(63, 185, 80, 0.1) Logic & Data
+        participant BS
+        participant DB
+        participant Cache
+    end
+
     AG->>BS: Business Logic Request
     
     BS->>Cache: Check Cache
-    Cache->>BS: Cache Miss
+    Cache-->>BS: Cache Miss
     BS->>DB: Database Query
-    DB->>BS: Query Result
+    DB-->>BS: Query Result
     BS->>Cache: Update Cache
     
-    alt External Service Required
-        BS->>EXT: External API Call
-        EXT->>BS: External Response
+    rect rgba(188, 140, 255, 0.1)
+        alt External Service Required
+            BS->>EXT: External API Call
+            EXT-->>BS: External Response
+        end
     end
     
-    BS->>AG: Business Response
-    AG->>LB: API Response
-    LB->>C: HTTP Response
-
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
-
-    class AG main;
-    class AS decision;
-    class BS revNode;
-    class C commNode;
-    class DB refNode;
-    class EXT earnNode;
-    class LB main;
-
-
-
-
-    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+    BS-->>AG: Business Response
+    AG-->>LB: API Response
+    LB-->>C: HTTP Response
 
 
 ```
