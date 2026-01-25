@@ -40,11 +40,14 @@ Our platform is built on a **microservices architecture** with clear separation 
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#58a6ff",
-    "primaryBorderColor": "#58a6ff",
-    "lineColor": "#58a6ff",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
     "secondaryColor": "#388bfd",
-    "tertiaryColor": "#79c0ff"
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
@@ -77,13 +80,14 @@ graph TB
     WS --> RD[("⚡ Redis<br/><small>Cache & Sessions</small>")]
     AG --> RD
 
-    %% Styling
-    classDef mobile fill:#0d1117,stroke:#58a6ff,stroke-width:3px,color:#58a6ff,font-weight:bold;
+    %% --- TECH BLUE THEME STYLING ---
+    classDef mobile fill:#0d1117,stroke:#1f6feb,stroke-width:3px,color:#c9d1d9,font-weight:bold;
     classDef service fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#c9d1d9,font-weight:normal;
     classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
     classDef external fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:normal,stroke-dasharray: 3 3;
     classDef gateway fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold;
 
+    %% Node Classifications
     class MA,AD mobile;
     class AS,TS,PS,US,WS service;
     class DB,RD database;
@@ -114,9 +118,14 @@ Sikka supports multiple payment methods with automatic commission handling:
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#c9d1d9",
-    "primaryBorderColor": "#3fb950",
-    "lineColor": "#3fb950"
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
   },
   "sequence": {
     "useMaxWidth": true,
@@ -143,7 +152,15 @@ sequenceDiagram
     S->>A: Update Revenue Dashboard 📊
     S->>P: Trip Receipt & Rating 📧
 
-    classDef participant fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#c9d1d9;
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 ### 💰 Revenue Model
@@ -390,4 +407,3 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 [![GitHub forks](https://img.shields.io/github/forks/abdoElHodaky/transportapp?style=social)](https://github.com/abdoElHodaky/transportapp/network/members)
 
 </div>
-

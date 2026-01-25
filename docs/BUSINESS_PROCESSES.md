@@ -22,79 +22,48 @@ This document outlines the key business processes and user journeys in the Sikka
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "fontSize": "16px",
-    "fontFamily": "arial"
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
-    "htmlLabels": true,
-    "curve": "stepBefore"
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
 }}%%
 flowchart TD
-    %% Phase 1: Setup (Blue)
-    subgraph Setup
-    A["Passenger Opens App"]
-    B["Enter Destination"]
-    C["Select Trip Type"]
-    end
+     Payment Components
 
-    %% Phase 2: Booking (Yellow/Gold)
-    subgraph Booking
-    D["View Fare Estimate"]
-    E["Confirm Booking"]
-    F["Find Available Drivers"]
-    G{"Driver Available?"}
-    end
+    %% Financial Services
 
-    %% Phase 3: Matching (Purple)
-    subgraph Matching
-    I["Send Trip Request"]
-    J{"Driver Accepts?"}
-    K["Try Next Driver"]
-    L["Trip Assigned"]
-    end
+    %% Transaction Processing
 
-    %% Phase 4: Transit (Green)
-    subgraph Transit
-    M["Driver Navigates to Pickup"]
-    N["Driver Arrives"]
-    O["Passenger Enters Vehicle"]
-    P["Trip Starts"]
-    Q["Navigate to Destination"]
-    end
+    %% External Payment Gateways
 
-    %% Phase 5: Conclusion (Red/Pink)
-    subgraph Conclusion
-    R["Trip Completed"]
-    S["Process Payment"]
-    T["Rate & Review"]
-    U["Trip Finished"]
-    end
+    %% Success Transactions
 
-    %% Connections
-    A --> B --> C --> D --> E --> F --> G
-    G -->|Yes| I
-    G -->|No| H["Notify: No Drivers"]
-    I --> J
-    J -->|No| K --> J
-    J -->|Yes| L --> M --> N --> O --> P --> Q --> R --> S --> T --> U
+    %% Decision Points
 
-    %% Color-Coded Class Definitions
-    classDef setup fill:#1f6feb,stroke:#58a6ff,stroke-width:6px,color:#ffffff
-    classDef booking fill:#9e6a03,stroke:#d29922,stroke-width:6px,color:#ffffff
-    classDef matching fill:#8957e5,stroke:#bc8cff,stroke-width:6px,color:#ffffff
-    classDef transit fill:#238636,stroke:#3fb950,stroke-width:6px,color:#ffffff
-    classDef finish fill:#da3633,stroke:#f85149,stroke-width:6px,color:#ffffff
-    classDef decision fill:#0d1117,stroke:#ffffff,stroke-width:4px,color:#ffffff,stroke-dasharray: 5 5
+    %% Database Systems
 
-    %% Applying Classes
-    class A,B,C setup
-    class D,E,F booking
-    class I,K,L matching
-    class M,N,O,P,Q transit
-    class R,S,T,U finish
-    class G,J decision
+    %% Node Classifications
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 ### **Detailed Trip States**
@@ -105,15 +74,14 @@ flowchart TD
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
@@ -122,20 +90,8 @@ flowchart TD
   "sequence": {
     "useMaxWidth": true,
     "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
 stateDiagram-v2
     [*] --> Requested
     Requested --> Searching : Find drivers
@@ -144,74 +100,29 @@ stateDiagram-v2
     Expired --> [*]
     Accepted --> DriverEnRoute
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+      Main Dashboard (Neon Cyan/Blue)
 
-    class A main;
-    class D decision;
-    class E revNode;
-    class R commNode;
-    class S refNode;
+     Payment Components
 
+    %% Financial Services
 
+    %% Transaction Processing
 
+    %% External Payment Gateways
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
     classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 #### **2. Trip Execution Phase**
@@ -220,15 +131,14 @@ stateDiagram-v2
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
@@ -237,20 +147,8 @@ stateDiagram-v2
   "sequence": {
     "useMaxWidth": true,
     "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
 stateDiagram-v2
     DriverEnRoute --> DriverArrived : Driver at pickup
     DriverArrived --> InProgress : Passenger enters
@@ -260,73 +158,29 @@ stateDiagram-v2
     Rated --> [*]
     Cancelled --> [*]
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+      Main Dashboard (Neon Cyan/Blue)
 
-    class C main;
-    class D decision;
-    class I revNode;
-    class R commNode;
+     Payment Components
 
+    %% Financial Services
 
+    %% Transaction Processing
 
+    %% External Payment Gateways
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
     classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 ### **Trip Cancellation Scenarios**
@@ -343,12 +197,15 @@ stateDiagram-v2
     "tertiaryColor": "#3fb950",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
     "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
 }}%%
 flowchart TD
@@ -407,6 +264,35 @@ flowchart TD
     class O process
     class P process
     class Q success
+
+     Primary nodes (main components)
+
+     Primary Business Components
+
+    %% Secondary Business Components
+
+    %% Process Steps
+
+    %% Decision Points
+
+    %% Success States
+
+    %% External Systems
+
+    %% Database Systems
+
+    %% Node Classifications
+    %% --- CORPORATE GREEN THEME STYLING ---
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
+    %% Node Classifications
+    class A,C,D,E,G,H,I,K,L,M,N,O,P,Q process;
+
 ```
 
 ---
@@ -416,48 +302,50 @@ flowchart TD
 ### **Passenger Registration Flow**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#aff5b4",
+    "primaryBorderColor": "#238636",
+    "lineColor": "#238636",
+    "secondaryColor": "#2ea043",
+    "tertiaryColor": "#3fb950",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  }
+}}%%
 graph TD
-    %% Passenger Registration Flow
-    P[Passenger] -->|Submit Registration| A[Sikka API]
-    A -->|Validate Input| V[Validate Input]
-    V -->|Check Phone| D[Database]
-    D -->|Phone Available| A2[Generate OTP]
-    A2 -->|Send OTP| S[SMS Service]
-    S -->|Deliver SMS| P2[Passenger Receives OTP]
-    A2 -->|Status| P3[Registration Pending]
-    
-    P3 -->|Submit OTP| A3[Verify OTP]
-    A3 -->|Create Account| D2[Create User Account]
-    D2 -->|Create Wallet| D3[Create Wallet]
-    D3 -->|Account Created| A4[Registration Complete]
-    A4 -->|Success| P4[Passenger Registered]
+     Primary Business Components
 
-    %% Styling Definitions
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray:5 5
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:5 5
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray:10 5
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal
-    classDef decision2 fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:8 4
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray:3 3
+    %% Secondary Business Components
 
-    %% Apply Styles
-    class A,A2,A3,A4 main
-    class D,D2,D3 database
-    class P,P2,P3,P4 revNode
-    class S commNode
-    class V process
+    %% Process Steps
 
+    %% Decision Points
 
+    %% Success States
+
+    %% External Systems
+
+    %% Database Systems
+    %% --- CORPORATE GREEN THEME STYLING ---
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
 ```
 
 ### **Driver Registration & Verification**
@@ -474,15 +362,17 @@ graph TD
     "tertiaryColor": "#3fb950",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
     "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
 }}%%
-
 flowchart TD
     A["Driver Application"] --> B["Submit Personal Info"]
     B --> C["Upload Documents"]
@@ -506,6 +396,36 @@ flowchart TD
 
     class A,F,I decision
     class B,C,D,E,G,H,J,K,L,M,N,O process
+
+     Primary nodes (main components)
+
+     Primary Business Components
+
+    %% Secondary Business Components
+
+    %% Process Steps
+
+    %% Decision Points
+
+    %% Success States
+
+    %% External Systems
+
+    %% Database Systems
+
+    %% Node Classifications
+    %% --- CORPORATE GREEN THEME STYLING ---
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
+    %% Node Classifications
+    class A,O primary;
+    class B,C,D,E,G,H,J,K,L,M,N process;
+
 ```
 
 ### **Document Verification Process**
@@ -522,12 +442,15 @@ flowchart TD
     "tertiaryColor": "#3fb950",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
     "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
 }}%%
 flowchart LR
@@ -554,23 +477,35 @@ flowchart LR
     I --> M["Driver Activated"]
     L --> A
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:5 5
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray:10 5
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:8 4
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray:3 3
+     --- CORPORATE GREEN THEME STYLING ---
+    
+     Primary Business Components
 
-    class A primary
-    class B,C,E,G,J,L,M accent
-    class D,H,K decision
-    class F process
-    class I success
+    %% Secondary Business Components
+
+    %% Process Steps
+
+    %% Decision Points
+
+    %% Success States
+
+    %% External Systems
+
+    %% Database Systems
+
+    %% Node Classifications
+    %% --- CORPORATE GREEN THEME STYLING ---
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
+    %% Node Classifications
+    class A,B,C,D,E,F,G,J,L,M process;
+    class I primary;
+
 ```
 
 ---
@@ -583,20 +518,25 @@ flowchart LR
 %%{init: {
   "theme": "dark",
   "themeVariables": {
-    "darkMode": true,
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
     "background": "#0d1117",
-    "primaryColor": "#58a6ff",
-    "secondaryColor": "#30363d",
-    "tertiaryColor": "#1f6feb",
     "mainBkg": "#0d1117",
-    "nodeBorder": "#30363d",
-    "clusterBkg": "#161b22",
-    "clusterBorder": "#30363d",
-    "lineColor": "#8b949e",
-    "fontFamily": "Segoe UI, Roboto, Helvetica"
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
 }}%%
-
 flowchart TD
     subgraph Initialization ["🏁 Trip Conclusion"]
         A["Trip Completed"] --> B["Calculate Fare"]
@@ -627,44 +567,33 @@ flowchart TD
         H --> T["Driver Confirms"]
     end
 
-    %% Outcomes
-    O -->|Yes| Q["✅ Payment Success"]
-    P -->|Yes| Q
-    T --> Q
-    K --> Q
+     Payment Components
 
-    O -->|No| R["EBS Failed"]
-    P -->|No| S["CyberPay Failed"]
-    L --> U["Wallet Failed"]
+    %% Financial Services
 
-    R & S & U --> V["❌ Payment Failed"]
+    %% Transaction Processing
 
-    subgraph Settlement ["💰 Distribution & Records"]
-        Q --> W["Split Funds"]
-        W --> X["Driver (85%)"]
-        W --> Y["Platform (15%)"]
-        W --> Z["Email Receipt"]
-    end
+    %% External Payment Gateways
 
-    V --> AA["Retry Logic"]
-    AA --> AB["Alternative Method"]
-    AB -.-> C
+    %% Success Transactions
 
-    %% Styling Classes
-    classDef start fill:#238636,stroke:#2ea043,color:#fff,stroke-width:2px
-    classDef process fill:#161b22,stroke:#58a6ff,color:#58a6ff
-    classDef decision fill:#0d1117,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5
-    classDef success fill:#238636,stroke:#3fb950,color:#fff,font-weight:bold
-    classDef failure fill:#da3633,stroke:#f85149,color:#fff
-    classDef distribution fill:#8957e5,stroke:#a371f7,color:#fff
+    %% Decision Points
 
-    class A start
-    class B,C,E,F,G,I,K,M,N,T,W process
-    class D,J,O,P,AA decision
-    class Q,X,Y,Z success
-    class L,R,S,U,V failure
-    class Settlement distribution
+    %% Database Systems
 
+    %% Node Classifications
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    %% Node Classifications
+    class A,B,I,L,K,T process;
+    class C,E,H payment;
+    class F,G,M,N gateway;
 
 ```
 
@@ -675,15 +604,14 @@ flowchart TD
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
@@ -692,20 +620,8 @@ flowchart TD
   "sequence": {
     "useMaxWidth": true,
     "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
 stateDiagram-v2
     [*] --> Active
     Active --> Suspended : Admin action
@@ -721,75 +637,29 @@ stateDiagram-v2
     Payment --> InsufficientFunds : Low balance
     InsufficientFunds --> Active : Funds added
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+      Main Dashboard (Neon Cyan/Blue)
 
-    class A main;
-    class F decision;
-    class I revNode;
-    class P commNode;
-    class S refNode;
-    class T earnNode;
+     Payment Components
 
+    %% Financial Services
 
+    %% Transaction Processing
 
+    %% External Payment Gateways
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
     classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 ### **Refund Processing**
@@ -798,77 +668,51 @@ stateDiagram-v2
 %%{init: {
   "theme": "dark",
   "themeVariables": {
-    "darkMode": true,
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
     "background": "#0d1117",
-    "primaryColor": "#238636",
-    "secondaryColor": "#1f6feb",
-    "tertiaryColor": "#d29922",
     "mainBkg": "#0d1117",
-    "nodeBorder": "#30363d",
-    "clusterBkg": "#0d1117",
-    "clusterBorder": "#238636",
-    "lineColor": "#8b949e",
-    "fontFamily": "Fira Code, monospace"
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
 }}%%
-
 flowchart TD
-    %% Entry Point
-    A[("📥 Refund Request")] --> B{"Refund Type"}
+     Primary nodes (main components)
 
-    subgraph Logic_Zone ["⚖️ Validation & Review"]
-        B -->|Trip Cancellation| C["Cancellation Refund"]
-        B -->|Service Issue| D["Service Refund"]
-        B -->|Overcharge| E["Adjustment Refund"]
+     Payment Components
 
-        C --> F{"Cancellation Time"}
-        F -->|Before Pickup| G["Full Refund"]
-        F -->|After Pickup| H["Partial Refund"]
+    %% Financial Services
 
-        D --> I["Admin Review"]
-        I --> J{"Approved?"}
-        J -->|No| L["Refund Denied"]
-        J -->|Yes| K["Full Refund"]
+    %% Transaction Processing
 
-        E --> M["Calculate Difference"]
-        M --> N["Process Adjustment"]
-    end
+    %% External Payment Gateways
 
-    %% Routing to Payment
-    G & H & K & N --> O["Process Refund"]
+    %% Success Transactions
 
-    subgraph Execution_Zone ["💳 Payout Execution"]
-        O --> P{"Payment Method"}
-        P -->|Wallet| Q["Credit Wallet"]
-        P -->|Gateway| R["Gateway Refund"]
+    %% Decision Points
 
-        R --> T{"Success?"}
-        T -->|No| U["Manual Processing"]
-        T -->|Yes| S["Refund Complete"]
-        Q --> S
-    end
+    %% Database Systems
 
-    %% Exit Points
-    L --> V["Notify User"]
-    S --> V
-    U --> V
-
-    %% --- ENHANCED STYLING ---
-    classDef start fill:#1f6feb,stroke:#58a6ff,color:#fff,stroke-width:2px
-    classDef type fill:#0d1117,stroke:#ab7df8,color:#ab7df8,stroke-width:2px
-    classDef decision stroke:#d29922,fill:#0d1117,color:#d29922,stroke-dasharray: 5 5
-    classDef action fill:#161b22,stroke:#30363d,color:#8b949e
-    classDef success fill:#238636,stroke:#3fb950,color:#fff,font-weight:bold,stroke-width:3px
-    classDef error fill:#440505,stroke:#da3633,color:#ff7b72,font-weight:bold
-    classDef warning fill:#d29922,stroke:#d29922,color:#0d1117,font-weight:bold
-
-    class A start
-    class C,D,E type
-    class B,F,J,P,T decision
-    class G,H,I,K,M,N,O,R,V action
-    class S,Q success
-    class L error
-    class U warning
+    %% Node Classifications
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 ---
@@ -882,15 +726,14 @@ flowchart TD
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
@@ -899,20 +742,8 @@ flowchart TD
   "sequence": {
     "useMaxWidth": true,
     "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
 sequenceDiagram
     participant P as "Passenger"
     participant D as "Driver"
@@ -937,73 +768,29 @@ sequenceDiagram
     A->>A: Check for Issues
     A->>A: Update User Profiles
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+      Main Dashboard (Neon Cyan/Blue)
 
-    class A main;
-    class D decision;
-    class N revNode;
-    class P commNode;
+     Payment Components
 
+    %% Financial Services
 
+    %% Transaction Processing
 
+    %% External Payment Gateways
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
     classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 ### **Rating Impact System**
@@ -1013,15 +800,14 @@ sequenceDiagram
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
@@ -1030,20 +816,8 @@ sequenceDiagram
   "sequence": {
     "useMaxWidth": true,
     "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
 flowchart TD
     A["Rating Submitted"] --> B["Update User Average"]
     B --> C {"Rating Below 3.0?"}
@@ -1068,101 +842,35 @@ flowchart TD
     P --> |Yes| Q["Account Reactivated"]
     P --> |No| R["Permanent Suspension"]
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+      Main Dashboard (Neon Cyan/Blue)
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class O revNode;
-    class P commNode;
-    class Q refNode;
-    class R earnNode;
-    class Y main;
+     Payment Components
 
+    %% Financial Services
 
+    %% Transaction Processing
 
+    %% External Payment Gateways
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+
+    %% Node Classifications
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
     classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    %% Node Classifications
+    class A,D,E,G,H,I,J,K,M,N,O,Q,R process;
+    class B secondary;
 
-    class A accent;
-    class B accent;
-    class D accent;
-    class E process;
-    class G accent;
-    class H warning;
-    class I accent;
-    class J accent;
-    class K accent;
-    class M accent;
-    class N accent;
-    class O accent;
-    class Q accent;
-    class R accent;
 ```
 
 ---
@@ -1170,167 +878,6 @@ flowchart TD
 ## 🛡️ Admin Management Processes
 
 ### **User Management Workflow**
-
-```mermaid
-%%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "darkMode": true,
-    "background": "#0d1117",
-    "primaryColor": "#58a6ff",
-    "mainBkg": "#0d1117",
-    "fontFamily": "Inter, Segoe UI, sans-serif"
-  }
-}}%%
-flowchart TD
-    %% Root
-    A[("🛡️ Admin Dashboard")] --> B("User Management Center")
-    B --> C{"Select Action"}
-
-    %% Lane 1: Operations
-    subgraph ViewLane ["🔍 BROWSE & DISCOVERY"]
-        C -->|View| D["Global User List"]
-        D --> H["Filter & Search"]
-        H --> I["User Profile View"]
-        I --> J["Interaction Menu"]
-    end
-
-    %% Lane 2: Moderation
-    subgraph ModLane ["⚖️ MODERATION"]
-        C -->|Suspend| E["Suspension Protocol"]
-        E --> K["Select Policy Violation"]
-        K --> L["Define Ban Duration"]
-        L --> M["Dispatch Notice"]
-        M --> N["Update Account State"]
-    end
-
-    %% Lane 3: Compliance
-    subgraph TrustLane ["✅ TRUST & SAFETY"]
-        C -->|Verify| F["Driver KYB/KYC"]
-        F --> O["Document Audit"]
-        O --> P{"Validated?"}
-        P -->|Yes| Q["Grant Active Status"]
-        P -->|No| R["Request Re-upload"]
-    end
-
-    %% Lane 4: Support
-    subgraph DisputeLane ["🤝 RESOLUTION"]
-        C -->|Dispute| G["Conflict Queue"]
-        G --> S["Review Complaint"]
-        S --> T["Evidence Gathering"]
-        T --> U{"Verdict?"}
-        U --> V["Apply Fix/Refund"]
-        V --> W["Notify All Parties"]
-    end
-
-    %% --- CUSTOM STYLING ---
-    classDef root fill:#161b22,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-size:20px
-    classDef hub fill:#0d1117,stroke:#c9d1d9,color:#c9d1d9,stroke-width:2px
-    classDef decision stroke:#d29922,fill:#0d1117,color:#d29922,stroke-dasharray: 5 5
-    
-    classDef view fill:#051221,stroke:#388bfd,color:#a5d6ff
-    classDef mod fill:#1a0b0b,stroke:#f85149,color:#ff7b72
-    classDef trust fill:#04190b,stroke:#3fb950,color:#aff5b4
-    classDef dispute fill:#12101e,stroke:#a371f7,color:#d2a8ff
-
-    %% Apply Classes
-    class A root
-    class B,D,H,I,J hub
-    class C,P,U decision
-    
-    class D,H,I,J view
-    class E,K,L,M,N mod
-    class F,O,Q,R trust
-    class G,S,T,V,W dispute
-
-    %% Subgraph Styling
-    style ViewLane fill:#0d1117,stroke:#388bfd,stroke-dasharray: 3
-    style ModLane fill:#0d1117,stroke:#f85149,stroke-dasharray: 3
-    style TrustLane fill:#0d1117,stroke:#3fb950,stroke-dasharray: 3
-    style DisputeLane fill:#0d1117,stroke:#a371f7,stroke-dasharray: 3
-```
-
-### **Financial Management**
-
-```mermaid
-%%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "darkMode": true,
-    "background": "#0d1117",
-    "primaryColor": "#58a6ff",
-    "mainBkg": "#0d1117",
-    "fontFamily": "Inter, system-ui, sans-serif"
-  }
-}}%%
-flowchart TD
-    %% Main Entry
-    A[("📊 Financial Dashboard")] --> B{"System Report"}
-    
-    %% Categories
-    B --> |Revenue| C["Revenue Analysis"]
-    B --> |Commissions| D["Commission Tracking"]
-    B --> |Refunds| E["Refund Management"]
-    B --> |Earnings| F["Earnings Reports"]
-    
-    %% Subgraphs with Vivid Color Borders
-    subgraph RevenueFlow ["💹 REVENUE METRICS"]
-        direction TB
-        C --> G["Time Interval"]
-        G --> H["Data Visualization"]
-        H --> I["Download CSV/PDF"]
-    end
-    
-    subgraph CommissionFlow ["📈 SETTLEMENT LOGIC"]
-        direction TB
-        D --> J["Platform Take (15%)"]
-        J --> K["Provider Share (85%)"]
-        K --> L["Tax & Fee Validation"]
-    end
-    
-    subgraph RefundFlow ["🛑 RISK & REFUNDS"]
-        direction TB
-        E --> M["Incident Review"]
-        M --> N["Authorize Payout"]
-        N --> O["Update Ledger"]
-    end
-    
-    subgraph EarningsFlow ["👤 PERFORMANCE"]
-        direction TB
-        F --> P["High-Velocity Drivers"]
-        P --> Q["KPI Metrics"]
-        Q --> R["Bonus Incentives"]
-    end
-    
-    %% Advanced Styling Classes
-    classDef header fill:#161b22,stroke:#58a6ff,stroke-width:3px,color:#58a6ff,font-size:18px
-    classDef choice fill:#0d1117,stroke:#d29922,color:#d29922,stroke-dasharray: 8 4
-    
-    classDef rev fill:#04190b,stroke:#2ea043,color:#7ee787,stroke-width:2px
-    classDef comm fill:#12101e,stroke:#a371f7,color:#d2a8ff,stroke-width:2px
-    classDef ref fill:#1a0b0b,stroke:#f85149,color:#ff7b72,stroke-width:2px
-    classDef earn fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px
-
-    %% Applying Classes
-    class A header
-    class B choice
-    class C,G,H,I rev
-    class D,J,K,L comm
-    class E,M,N,O ref
-    class F,P,Q,R earn
-
-    %% Subgraph Box Styling
-    style RevenueFlow fill:#0d1117,stroke:#2ea043,stroke-width:2px,stroke-dasharray: 5
-    style CommissionFlow fill:#0d1117,stroke:#a371f7,stroke-width:2px,stroke-dasharray: 5
-    style RefundFlow fill:#0d1117,stroke:#f85149,stroke-width:2px,stroke-dasharray: 5
-    style EarningsFlow fill:#0d1117,stroke:#388bfd,stroke-width:2px,stroke-dasharray: 5
-
-    
-
-
-```
-
-### **System Monitoring**
 
 ```mermaid
 %%{init: {
@@ -1344,8 +891,7 @@ flowchart TD
     "tertiaryColor": "#3fb950",
     "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "secondBkg": "#21262d"
   },
   "flowchart": {
     "useMaxWidth": true,
@@ -1354,20 +900,110 @@ flowchart TD
   "sequence": {
     "useMaxWidth": true,
     "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
+flowchart TD
+     Primary Business Components
+
+    %% Secondary Business Components
+
+    %% Process Steps
+
+    %% Decision Points
+
+    %% Success States
+
+    %% External Systems
+
+    %% Database Systems
+
+    %% Node Classifications
+    %% --- CORPORATE GREEN THEME STYLING ---
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
+```
+
+### **Financial Management**
+
+```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  }
+}}%%
+flowchart TD
+     Payment Components
+
+    %% Financial Services
+
+    %% Transaction Processing
+
+    %% External Payment Gateways
+
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+
+    %% Node Classifications
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+```
+
+### **System Monitoring**
+
+```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  }
+}}%%
 flowchart LR
     A["System Health"] --> B["API Performance"]
     A --> C["Database Status"]
@@ -1408,112 +1044,38 @@ flowchart LR
     S --> U["Auto-scaling"]
     S --> V["Incident Response"]
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+      Main Dashboard (Neon Cyan/Blue)
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class O revNode;
-    class P commNode;
-    class Q refNode;
-    class R earnNode;
-    class S main;
-    class T decision;
-    class U revNode;
-    class V commNode;
+     Payment Components
 
+    %% Financial Services
 
+    %% Transaction Processing
 
+    %% External Payment Gateways
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+
+    %% Node Classifications
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
     classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-    class A accent;
-    class B primary;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    %% Node Classifications
+    class A,B,F,G,H,I,J,K,N,P,Q,R,S,T,U,V process;
     class C database;
-    class D primary;
-    class E primary;
-    class F accent;
-    class G error;
-    class H accent;
-    class I accent;
-    class J accent;
-    class K database;
-    class L accent;
-    class M accent;
-    class N accent;
-    class O secondary;
-    class P accent;
-    class Q accent;
-    class R warning;
-    class S decision;
-    class T warning;
-    class U accent;
-    class V accent;
+    class D payment;
+    class E secondary;
+    class L,M,O gateway;
+
 ```
 
 ---
@@ -1526,13 +1088,25 @@ flowchart LR
 %%{init: {
   "theme": "dark",
   "themeVariables": {
-    "darkMode": true,
-    "primaryColor": "#1f6feb",
-    "primaryTextColor": "#f0f6fc",
-    "lineColor": "#8b949e",
-    "mainBkg": "#0d1117"
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#aff5b4",
+    "primaryBorderColor": "#238636",
+    "lineColor": "#238636",
+    "secondaryColor": "#2ea043",
+    "tertiaryColor": "#3fb950",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
-}%%
+}}%%
 flowchart TD
     A([🚨 Emergency Triggered]) --> B{Categorize Type}
     
@@ -1571,6 +1145,30 @@ flowchart TD
     class B warning
     class C,D,G,H,J critical
     class S,T,U,V action
+
+     Primary nodes (main components)
+
+     Primary Business Components
+
+    %% Secondary Business Components
+
+    %% Process Steps
+
+    %% Decision Points
+
+    %% Success States
+
+    %% External Systems
+
+    %% Database Systems
+    %% --- CORPORATE GREEN THEME STYLING ---
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
 ```
 
 ### **Safety Verification Process**
@@ -1582,12 +1180,22 @@ flowchart TD
     "primaryColor": "#0d1117",
     "primaryTextColor": "#aff5b4",
     "primaryBorderColor": "#238636",
-    "lineColor": "#8b949e",
+    "lineColor": "#238636",
     "secondaryColor": "#2ea043",
-    "tertiaryColor": "#da3633",
-    "mainBkg": "#0d1117"
+    "tertiaryColor": "#3fb950",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
-}%%
+}}%%
 sequenceDiagram
     autonumber
     participant S as 🤖 SYSTEM
@@ -1625,7 +1233,29 @@ sequenceDiagram
     S->>S: 💾 Immutable Incident Log
     S->>S: 🔄 Update Safety Neural Weights
 
+     Primary nodes (main components)
 
+     Primary Business Components
+
+    %% Secondary Business Components
+
+    %% Process Steps
+
+    %% Decision Points
+
+    %% Success States
+
+    %% External Systems
+
+    %% Database Systems
+    %% --- CORPORATE GREEN THEME STYLING ---
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
 ```
 
 ---

@@ -53,20 +53,26 @@ export const databaseConfig: TypeOrmModuleOptions = {
 ### **Complete Database Schema**
 
 ```mermaid
-
 %%{init: {
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#e9d5ff",
-    "primaryBorderColor": "#8b5cf6",
-    "lineColor": "#8b5cf6",
-    "secondaryColor": "#1e1b4b",
-    "tertiaryColor": "#c4b5fd",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "nodeBorder": "#8b5cf6",
-    "clusterBkg": "#1e1b4b",
-    "titleColor": "#a78bfa"
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
   }
 }}%%
 erDiagram
@@ -300,8 +306,27 @@ erDiagram
 
     LOCATION }o--|| USER : "location_user"
     LOCATION }o--|| TRIP : "location_trip"
+     Payment Components
 
+    %% Financial Services
 
+    %% Transaction Processing
+
+    %% External Payment Gateways
+
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 ---

@@ -3,6 +3,28 @@
 ## System Architecture (Fixed)
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  }
+}}%%
 graph TB
     A["Mobile Apps"] --> B["API Gateway"]
     B --> C["Authentication Service"]
@@ -26,45 +48,65 @@ graph TB
     M["Driver App"] --> G
     N["Passenger App"] --> G
 
-    %% --- DARK GRADIENT & GLOW STYLING ---
-    
-    %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
-    
-    %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
-    
-    %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
-    
-    %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
-    
-    %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
-    
-    %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+     Main Dashboard (Neon Cyan/Blue)
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
+     Payment Components
+
+    %% Financial Services
+
+    %% Transaction Processing
+
+    %% External Payment Gateways
+
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+
+    %% Node Classifications
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    %% Node Classifications
+    class A,L,M,N primary;
+    class B,G,I,J gateway;
+    class C,D,F secondary;
+    class E payment;
+    class H,K database;
+
 ```
 
 ## Payment Flow (Fixed)
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#f7d794",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#21262d"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  }
+}}%%
 sequenceDiagram
     participant P as "Passenger"
     participant S as "Sikka API"
@@ -80,30 +122,29 @@ sequenceDiagram
     S->>S: Collect Platform Commission (15%)
     S->>P: Payment Receipt
 
-    %% --- DARK GRADIENT & GLOW STYLING ---
-    
-    %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
-    
-    %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
-    
-    %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
-    
-    %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
-    
-    %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
-    
-    %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+     Main Dashboard (Neon Cyan/Blue)
 
-    class P main;
-    class S decision;
-    class G revNode;
-    class D commNode;
+     Payment Components
+
+    %% Financial Services
+
+    %% Transaction Processing
+
+    %% External Payment Gateways
+
+    %% Success Transactions
+
+    %% Decision Points
+
+    %% Database Systems
+    %% --- FINANCIAL GOLD THEME STYLING ---
+    classDef payment fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#f7d794,font-weight:bold;
+    classDef financial fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#f7d794,font-weight:normal;
+    classDef transaction fill:#21262d,stroke:#d97706,stroke-width:2px,color:#f7d794,font-weight:normal;
+    classDef gateway fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:normal,stroke-dasharray: 3 3;
+    classDef success fill:#0d1117,stroke:#3fb950,stroke-width:3px,color:#3fb950,font-weight:bold;
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
 ```
 
 ## Instructions
