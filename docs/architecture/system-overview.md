@@ -69,17 +69,17 @@ graph TB
     AG --> LOG["📝 Logging<br/>Winston + ELK Stack"]
     
     %% Styling
-    classDef client fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef service fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
-    classDef database fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px;
-    classDef external fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-    classDef monitoring fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
+    classDef client fill:#e1f5fe,stroke:#01579b,stroke-width:2px;;
+    classDef service fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;;
+    classDef database fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px;;
+    classDef external fill:#fff3e0,stroke:#e65100,stroke-width:2px;;
+    classDef monitoring fill:#fce4ec,stroke:#880e4f,stroke-width:2px;;
     
-    class PA,DA,AD client;
-    class AS,TS,PS,US,LS,RS,WS service;
-    class DB,REDIS database;
-    class EBS,CP,SMS,MAPS external;
-    class MON,LOG monitoring;
+    class PA,DA,AD client;;
+    class AS,TS,PS,US,LS,RS,WS service;;
+    class DB,REDIS database;;
+    class EBS,CP,SMS,MAPS external;;
+    class MON,LOG monitoring;;
 ```
 
 ## 🔧 Core Components
@@ -181,30 +181,30 @@ sequenceDiagram
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
 
-    class AG main;
-    class D decision;
-    class LS revNode;
-    class P commNode;
-    class PS refNode;
-    class TS earnNode;
-    class WS main;
+    class AG main;;
+    class D decision;;
+    class LS revNode;;
+    class P commNode;;
+    class PS refNode;;
+    class TS earnNode;;
+    class WS main;;
 ```
 
 ### **💳 Payment Processing Flow**
@@ -240,28 +240,28 @@ sequenceDiagram
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
 
-    class DB main;
-    class EBS decision;
-    class PS revNode;
-    class U commNode;
-    class W refNode;
+    class DB main;;
+    class EBS decision;;
+    class PS revNode;;
+    class U commNode;;
+    class W refNode;;
 ```
 
 ## 🌐 Network Architecture
@@ -304,15 +304,15 @@ graph TB
     APP2 --> MON
     APP3 --> MON
     
-    classDef app fill:#e3f2fd,stroke:#0277bd,stroke-width:2px;
-    classDef db fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px;
-    classDef cache fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
-    classDef infra fill:#fce4ec,stroke:#c2185b,stroke-width:2px;
+    classDef app fill:#e3f2fd,stroke:#0277bd,stroke-width:2px;;
+    classDef db fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px;;
+    classDef cache fill:#fff3e0,stroke:#f57c00,stroke-width:2px;;
+    classDef infra fill:#fce4ec,stroke:#c2185b,stroke-width:2px;;
     
-    class APP1,APP2,APP3 app;
-    class DBM,DBS1,DBS2 db;
-    class RC,R1,R2,R3 cache;
-    class CF,LB,MON infra;
+    class APP1,APP2,APP3 app;;
+    class DBM,DBS1,DBS2 db;;
+    class RC,R1,R2,R3 cache;;
+    class CF,LB,MON infra;;
 ```
 
 ## 🔒 Security Architecture
@@ -342,11 +342,11 @@ graph TB
     AUDIT --> DBSEC["🗄️ Database Security<br/>Parameterized Queries"]
     DBSEC --> BACKUP["💾 Encrypted Backups<br/>Point-in-Time Recovery"]
     
-    classDef security fill:#ffebee,stroke:#c62828,stroke-width:2px;
-    classDef data fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px;
+    classDef security fill:#ffebee,stroke:#c62828,stroke-width:2px;;
+    classDef data fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px;;
     
-    class WAF,SSL,CORS,AUTH,RBAC,VAL,ENC,AUDIT security;
-    class DBSEC,BACKUP data;
+    class WAF,SSL,CORS,AUTH,RBAC,VAL,ENC,AUDIT security;;
+    class DBSEC,BACKUP data;;
 ```
 
 ### **🔐 Authentication Flow**
@@ -388,29 +388,29 @@ sequenceDiagram
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
 
-    class AG main;
-    class APP decision;
-    class AS revNode;
-    class DB commNode;
-    class SMS refNode;
-    class U earnNode;
+    class AG main;;
+    class APP decision;;
+    class AS revNode;;
+    class DB commNode;;
+    class SMS refNode;;
+    class U earnNode;;
 ```
 
 ## 📈 Scalability Design
@@ -442,13 +442,13 @@ graph LR
     OPT --> STORE
     STORE --> RESP["📤 Response"]
     
-    classDef fast fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px;
-    classDef slow fill:#ffcdd2,stroke:#c62828,stroke-width:2px;
-    classDef cache fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    classDef fast fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px;;
+    classDef slow fill:#ffcdd2,stroke:#c62828,stroke-width:2px;;
+    classDef cache fill:#fff3e0,stroke:#f57c00,stroke-width:2px;;
     
-    class FAST,QUICK fast;
-    class SLOW slow;
-    class CACHE,STORE cache;
+    class FAST,QUICK fast;;
+    class SLOW slow;;
+    class CACHE,STORE cache;;
 ```
 
 ### **🔄 Auto-Scaling Configuration**
