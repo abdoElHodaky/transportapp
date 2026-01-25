@@ -13,7 +13,6 @@ export class RedisConfig {
       database: this.configService.get('REDIS_DB', 0),
       socket: {
         connectTimeout: 60000,
-        lazyConnect: true,
       },
     });
   }
@@ -30,4 +29,3 @@ export class RedisConfig {
     };
   }
 }
-

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, Index, TableIndex } from 'typeorm';
 
 export class CreateUsersTable1640000000001 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -189,27 +189,42 @@ export class CreateUsersTable1640000000001 implements MigrationInterface {
     // Create indexes
     await queryRunner.createIndex(
       'users',
-      new Index('idx_users_phone', ['phone']),
+      new TableIndex({
+        name: 'idx_users_phone',
+        columnNames: ['phone'],
+      }),
     );
 
     await queryRunner.createIndex(
       'users',
-      new Index('idx_users_email', ['email']),
+      new TableIndex({
+        name: 'idx_users_email',
+        columnNames: ['email'],
+      }),
     );
 
     await queryRunner.createIndex(
       'users',
-      new Index('idx_users_role_status', ['role', 'status']),
+      new TableIndex({
+        name: 'idx_users_role_status',
+        columnNames: ['role', 'status'],
+      }),
     );
 
     await queryRunner.createIndex(
       'users',
-      new Index('idx_users_location', ['currentLatitude', 'currentLongitude']),
+      new TableIndex({
+        name: 'idx_users_location',
+        columnNames: ['currentLatitude', 'currentLongitude'],
+      }),
     );
 
     await queryRunner.createIndex(
       'users',
-      new Index('idx_users_online_available', ['isOnline', 'isAvailable']),
+      new TableIndex({
+        name: 'idx_users_online_available',
+        columnNames: ['isOnline', 'isAvailable'],
+      }),
     );
   }
 
@@ -217,4 +232,3 @@ export class CreateUsersTable1640000000001 implements MigrationInterface {
     await queryRunner.dropTable('users');
   }
 }
-

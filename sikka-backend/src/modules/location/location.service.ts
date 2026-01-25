@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository, InjectDataSource } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { Location } from '../../entities/location.entity';
+import { Location, LocationType } from '../../entities/location.entity';
 import { User } from '../../entities/user.entity';
-import { Trip } from '../../entities/trip.entity';
+import { Trip, TripStatus } from '../../entities/trip.entity';
 import Redis from 'ioredis';
 
 export interface LocationUpdateDto {
@@ -60,7 +60,6 @@ export class LocationService {
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT) || 6379,
       password: process.env.REDIS_PASSWORD,
-      retryDelayOnFailover: 100,
       maxRetriesPerRequest: 3,
     });
   }
@@ -77,7 +76,7 @@ export class LocationService {
     // Create location record
     const location = this.locationRepository.create({
       userId,
-      type: user.role === 'driver' ? 'driver_location' : 'user_location',
+      type: user.role === 'driver' ? LocationType.DRIVER_LOCATION : LocationType.USER_LOCATION,
       latitude: locationData.latitude,
       longitude: locationData.longitude,
       altitude: locationData.altitude,
@@ -96,7 +95,6 @@ export class LocationService {
     await this.userRepository.update(userId, {
       currentLatitude: locationData.latitude,
       currentLongitude: locationData.longitude,
-      lastLocationUpdate: new Date(),
     });
 
     // Cache driver location in Redis for quick access
@@ -184,8 +182,8 @@ export class LocationService {
 
     const formattedDrivers = drivers.entities.map((driver, index) => ({
       id: driver.id,
-      name: `${driver.firstName} ${driver.lastName}`,
-      phoneNumber: driver.phoneNumber,
+      name: driver.name,
+      phoneNumber: driver.phone,
       rating: driver.rating,
       totalTrips: driver.totalTrips,
       vehicle: {
@@ -276,7 +274,7 @@ export class LocationService {
 
   async trackTripRoute(tripId: string, locationData: LocationUpdateDto) {
     const trip = await this.tripRepository.findOne({
-      where: { id: tripId, status: 'in_progress' },
+      where: { id: tripId, status: TripStatus.IN_PROGRESS },
       relations: ['driver'],
     });
 
@@ -288,7 +286,7 @@ export class LocationService {
     const routePoint = this.locationRepository.create({
       userId: trip.driverId,
       tripId,
-      type: 'trip_route',
+      type: LocationType.TRIP_ROUTE,
       latitude: locationData.latitude,
       longitude: locationData.longitude,
       altitude: locationData.altitude,
@@ -301,14 +299,14 @@ export class LocationService {
 
     // Calculate route index (sequence number)
     const routeCount = await this.locationRepository.count({
-      where: { tripId, type: 'trip_route' },
+      where: { tripId, type: LocationType.TRIP_ROUTE },
     });
     routePoint.routeIndex = routeCount + 1;
 
     // Calculate distance from previous point
     if (routeCount > 0) {
       const previousPoint = await this.locationRepository.findOne({
-        where: { tripId, type: 'trip_route' },
+        where: { tripId, type: LocationType.TRIP_ROUTE },
         order: { routeIndex: 'DESC' },
       });
 
@@ -417,7 +415,7 @@ export class LocationService {
           const driver = await this.userRepository.findOne({
             where: { id: driverId, isOnline: true, isAvailable: true },
             select: [
-              'id', 'firstName', 'lastName', 'phoneNumber', 'rating',
+              'id', 'name', 'phone', 'rating',
               'totalTrips', 'vehicleType', 'vehicleModel', 'vehiclePlateNumber'
             ],
           });
@@ -425,8 +423,8 @@ export class LocationService {
           if (driver) {
             drivers.push({
               id: driver.id,
-              name: `${driver.firstName} ${driver.lastName}`,
-              phoneNumber: driver.phoneNumber,
+              name: driver.name,
+              phoneNumber: driver.phone,
               rating: driver.rating,
               totalTrips: driver.totalTrips,
               vehicle: {
@@ -496,7 +494,7 @@ export class LocationService {
 
   private async calculateTripDistance(tripId: string): Promise<number> {
     const routePoints = await this.locationRepository.find({
-      where: { tripId, type: 'trip_route' },
+      where: { tripId, type: LocationType.TRIP_ROUTE },
       order: { routeIndex: 'ASC' },
     });
 
