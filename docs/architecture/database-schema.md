@@ -33,7 +33,7 @@ The Sikka Transportation Platform uses **PostgreSQL** as the primary database wi
 
 ```mermaid
 erDiagram
-    %% Core Entities
+    %%  Core Entities
     USER {
         uuid id PK
         string firstName
@@ -192,42 +192,49 @@ erDiagram
         timestamp updatedAt
     }
     
-    %% Relationships
+    %%  Relationships
     USER ||--|| WALLET : "has one"
-    USER ||--o{ TRIP : "passenger trips"
-    USER ||--o{ TRIP : "driver trips"
+    USER ||--o { TRIP : "passenger trips"
+    USER ||--o { TRIP : "driver trips"
     USER ||--|| DRIVER_PROFILE : "driver profile"
-    USER ||--o{ RATING : "ratings given"
-    USER ||--o{ RATING : "ratings received"
-    USER ||--o{ TRANSACTION : "transactions"
+    USER ||--o { RATING : "ratings given"
+    USER ||--o { RATING : "ratings received"
+    USER ||--o { TRANSACTION : "transactions"
     
-    WALLET ||--o{ TRANSACTION : "wallet transactions"
+    WALLET ||--o { TRANSACTION : "wallet transactions"
     
-    TRIP ||--o{ RATING : "trip ratings"
-    TRIP ||--o{ TRANSACTION : "trip payments"
+    TRIP ||--o { RATING : "trip ratings"
+    TRIP ||--o { TRANSACTION : "trip payments"
     
     TRANSACTION }o--|| USER : "from user"
     TRANSACTION }o--|| USER : "to user"
 
-    %% --- DARK GRADIENT & GLOW STYLING ---
+    %%  --- DARK GRADIENT & GLOW STYLING ---
     
-    %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
     
-    %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
-    %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
     
-    %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
-    %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
     
-    %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
 ```
 
 ## 🏗️ Entity Specifications
@@ -451,18 +458,20 @@ export class Transaction {
 
 ### **🔄 One-to-One Relationships**
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
 graph LR
     USER["👤 User"] ---|1:1| WALLET["💰 Wallet"]
     USER ---|1:1| DRIVER["🚗 Driver Profile"]
     
-    classDef entity fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef entity fill : #e3f2fd, stroke:#1976d2, stroke-width: 2px;
+    
     class USER,WALLET,DRIVER entity;
+
 ```
 
 ### **🔄 One-to-Many Relationships**
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
 graph TB
     USER["👤 User"] ---|1:N| TRIP_P["🚗 Trips as Passenger"]
     USER ---|1:N| TRIP_D["🚗 Trips as Driver"]
@@ -474,18 +483,22 @@ graph TB
     TRIP["🚗 Trip"] ---|1:N| RATING["⭐ Ratings"]
     TRIP ---|1:N| TRANS
     
-    classDef entity fill:#e8f5e8,stroke:#388e3c,stroke-width:2px;
+    classDef entity fill : #e8f5e8, stroke:#388e3c, stroke-width: 2px;
+    
     class USER,WALLET,TRIP entity;
+
 ```
 
 ### **🔄 Many-to-Many Relationships**
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
 graph LR
     USER1["👤 User From"] ---|M:N| TRANS["💳 Transfer Transaction"] ---|M:N| USER2["👤 User To"]
     
-    classDef entity fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    classDef entity fill : #fff3e0, stroke:#f57c00, stroke-width: 2px;
+    
     class USER1,USER2,TRANS entity;
+
 ```
 
 ## 📈 Indexing Strategy

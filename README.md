@@ -69,6 +69,19 @@ Sikka is a comprehensive ride-hailing solution built with **Node.js**, **TypeScr
 ### **System Components**
 
 ```mermaid
+%%{init: {
+    "theme": "dark",
+    "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#58a6ff",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#58a6ff"
+    },
+    "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+    }
+    }}%%
 graph TB
     A["Mobile Apps"] --> B["API Gateway"]
     B --> C["Authentication Service"]
@@ -92,25 +105,31 @@ graph TB
     M["Driver App"] --> G
     N["Passenger App"] --> G
 
-    %% --- DARK GRADIENT & GLOW STYLING ---
+    %%  --- DARK GRADIENT & GLOW STYLING ---
     
-    %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
     
-    %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
-    %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
     
-    %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
-    %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
     
-    %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
 
     class A main;
     class B decision;
@@ -126,6 +145,7 @@ graph TB
     class L earnNode;
     class M main;
     class N decision;
+
 ```
 
 ### **Key Architectural Principles**
@@ -242,13 +262,13 @@ MAX_FILE_SIZE=10MB
 sequenceDiagram
     autonumber
 
-    %% Box allows background styling for groups of participants
-    box rgb(13, 17, 23) "Trip Participants"
+    %%  Box allows background styling for groups of participants
+    box rgb("13, 17, 23") "Trip Participants"
         participant P as Passenger
         participant D as Driver
     end
     
-    box rgb(22, 27, 34) "Platform Infrastructure"
+    box rgb("22, 27, 34") "Platform Infrastructure"
         participant S as Sikka API
         participant G as Payment Gateway
     end
@@ -258,8 +278,8 @@ sequenceDiagram
     S->>G: Process Payment
     G-->>S: Payment Confirmation
 
-    %% Highlighting the logic section with a styled rectangle
-    rect rgb(30, 30, 60)
+    %%  Highlighting the logic section with a styled rectangle
+    rect rgb("30, 30, 60")
         Note over S, D: Settlement Logic
         S->>S: Update Wallet Balances
         S->>D: Transfer Earnings (85%)
@@ -267,6 +287,7 @@ sequenceDiagram
     end
 
     S->>P: Payment Receipt
+
 ```
 
 ---

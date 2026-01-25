@@ -26,60 +26,66 @@ The Sikka Transportation Platform follows a **microservices-inspired modular arc
 ## 🏗️ High-Level System Design
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
 graph TB
-    %% External Clients
-    PA["📱 Passenger App<br/>React Native/Flutter"] --> LB["🔄 Load Balancer<br/>Nginx"]
-    DA["🚗 Driver App<br/>React Native/Flutter"] --> LB
-    AD["💻 Admin Dashboard<br/>React/Vue.js"] --> LB
+    %%  External Clients
+    PA["📱 Passenger App&lt;br/&gt;React Native/Flutter"] --> LB["🔄 Load Balancer&lt;br/&gt;Nginx"]
+    DA["🚗 Driver App&lt;br/&gt;React Native/Flutter"] --> LB
+    AD["💻 Admin Dashboard&lt;br/&gt;React/Vue.js"] --> LB
     
-    %% Load Balancer to API Gateway
-    LB --> AG["🚪 API Gateway<br/>NestJS Main App"]
+    %%  Load Balancer to API Gateway
+    LB --> AG["🚪 API Gateway&lt;br/&gt;NestJS Main App"]
     
-    %% Core Services
-    AG --> AS["🔐 Authentication Service<br/>JWT + OTP Verification"]
-    AG --> TS["🚗 Trip Management Service<br/>Booking + Matching"]
-    AG --> PS["💳 Payment Service<br/>Multi-Gateway Processing"]
-    AG --> US["👥 User Service<br/>Profile Management"]
-    AG --> LS["📍 Location Service<br/>GPS + Geospatial"]
-    AG --> RS["⭐ Rating Service<br/>Feedback System"]
-    AG --> WS["🌐 WebSocket Gateway<br/>Real-time Communication"]
+    %%  Core Services
+    AG --> AS["🔐 Authentication Service&lt;br/&gt;JWT + OTP Verification"]
+    AG --> TS["🚗 Trip Management Service&lt;br/&gt;Booking + Matching"]
+    AG --> PS["💳 Payment Service&lt;br/&gt;Multi-Gateway Processing"]
+    AG --> US["👥 User Service&lt;br/&gt;Profile Management"]
+    AG --> LS["📍 Location Service&lt;br/&gt;GPS + Geospatial"]
+    AG --> RS["⭐ Rating Service&lt;br/&gt;Feedback System"]
+    AG --> WS["🌐 WebSocket Gateway&lt;br/&gt;Real-time Communication"]
     
-    %% Database Layer
-    AS --> DB["(🗄️ PostgreSQL<br/>Primary Database)"]
+    %%  Database Layer
+    AS --> DB["(🗄️ PostgreSQL&lt;br/&gt;Primary Database)"]
     TS --> DB
     PS --> DB
     US --> DB
     LS --> DB
     RS --> DB
     
-    %% Caching Layer
-    AS --> REDIS["(⚡ Redis<br/>Session + Cache)"]
+    %%  Caching Layer
+    AS --> REDIS["(⚡ Redis&lt;br/&gt;Session + Cache)"]
     LS --> REDIS
     WS --> REDIS
     
-    %% External Services
-    PS --> EBS["🏦 EBS Gateway<br/>Bank Payments"]
-    PS --> CP["💰 CyberPay Gateway<br/>Digital Payments"]
-    AS --> SMS["📱 SMS Service<br/>OTP Delivery"]
-    LS --> MAPS["🗺️ Maps API<br/>Geocoding + Routing"]
+    %%  External Services
+    PS --> EBS["🏦 EBS Gateway&lt;br/&gt;Bank Payments"]
+    PS --> CP["💰 CyberPay Gateway&lt;br/&gt;Digital Payments"]
+    AS --> SMS["📱 SMS Service&lt;br/&gt;OTP Delivery"]
+    LS --> MAPS["🗺️ Maps API&lt;br/&gt;Geocoding + Routing"]
     
-    %% Monitoring & Logging
-    AG --> MON["📊 Monitoring<br/>Prometheus + Grafana"]
-    AG --> LOG["📝 Logging<br/>Winston + ELK Stack"]
+    %%  Monitoring & Logging
+    AG --> MON["📊 Monitoring&lt;br/&gt;Prometheus + Grafana"]
+    AG --> LOG["📝 Logging&lt;br/&gt;Winston + ELK Stack"]
     
-    %% Styling
-    classDef client fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef service fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
-    classDef database fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px;
-    classDef external fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-    classDef monitoring fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
+    %%  Styling
+    classDef client fill : #e1f5fe, stroke:#01579b, stroke-width: 2px;
+    
+    classDef service fill : #f3e5f5, stroke:#4a148c, stroke-width: 2px;
+    
+    classDef database fill : #e8f5e8, stroke:#1b5e20, stroke-width: 2px;
+    
+    classDef external fill : #fff3e0, stroke:#e65100, stroke-width: 2px;
+    
+    classDef monitoring fill : #fce4ec, stroke:#880e4f, stroke-width: 2px;
+    
     
     class PA,DA,AD client;
     class AS,TS,PS,US,LS,RS,WS service;
     class DB,REDIS database;
     class EBS,CP,SMS,MAPS external;
     class MON,LOG monitoring;
+
 ```
 
 ## 🔧 Core Components
@@ -178,25 +184,31 @@ sequenceDiagram
     WS->>P: Trip Finished
     WS->>D: Payment Processed
 
-    %% --- DARK GRADIENT & GLOW STYLING ---
+    %%  --- DARK GRADIENT & GLOW STYLING ---
     
-    %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
     
-    %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
-    %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
     
-    %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
-    %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
     
-    %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
 
     class AG main;
     class D decision;
@@ -205,6 +217,7 @@ sequenceDiagram
     class PS refNode;
     class TS earnNode;
     class WS main;
+
 ```
 
 ### **💳 Payment Processing Flow**
@@ -237,31 +250,38 @@ sequenceDiagram
     PS->>W: Collect Platform Fee (15%)
     PS->>U: Payment Confirmation
 
-    %% --- DARK GRADIENT & GLOW STYLING ---
+    %%  --- DARK GRADIENT & GLOW STYLING ---
     
-    %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
     
-    %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
-    %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
     
-    %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
-    %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
     
-    %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
 
     class DB main;
     class EBS decision;
     class PS revNode;
     class U commNode;
     class W refNode;
+
 ```
 
 ## 🌐 Network Architecture
@@ -269,28 +289,28 @@ sequenceDiagram
 ### **🔄 Load Balancing & Scaling**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
 graph TB
-    %% Internet
-    INT["🌐 Internet"] --> CF["☁️ CloudFlare<br/>CDN + DDoS Protection"]
+    %%  Internet
+    INT["🌐 Internet"] --> CF["☁️ CloudFlare&lt;br/&gt;CDN + DDoS Protection"]
     
-    %% Load Balancer
-    CF --> LB["🔄 Nginx Load Balancer<br/>SSL Termination"]
+    %%  Load Balancer
+    CF --> LB["🔄 Nginx Load Balancer&lt;br/&gt;SSL Termination"]
     
-    %% Application Instances
-    LB --> APP1["🚪 API Instance 1<br/>NestJS App"]
-    LB --> APP2["🚪 API Instance 2<br/>NestJS App"]
-    LB --> APP3["🚪 API Instance 3<br/>NestJS App"]
+    %%  Application Instances
+    LB --> APP1["🚪 API Instance 1&lt;br/&gt;NestJS App"]
+    LB --> APP2["🚪 API Instance 2&lt;br/&gt;NestJS App"]
+    LB --> APP3["🚪 API Instance 3&lt;br/&gt;NestJS App"]
     
-    %% Database Cluster
-    APP1 --> DBM["(🗄️ PostgreSQL Master<br/>Read/Write)"]
+    %%  Database Cluster
+    APP1 --> DBM["(🗄️ PostgreSQL Master&lt;br/&gt;Read/Write)"]
     APP2 --> DBM
     APP3 --> DBM
     
-    DBM --> DBS1["(📖 PostgreSQL Slave 1<br/>Read Only)"]
-    DBM --> DBS2["(📖 PostgreSQL Slave 2<br/>Read Only)"]
+    DBM --> DBS1["(📖 PostgreSQL Slave 1&lt;br/&gt;Read Only)"]
+    DBM --> DBS2["(📖 PostgreSQL Slave 2&lt;br/&gt;Read Only)"]
     
-    %% Redis Cluster
+    %%  Redis Cluster
     APP1 --> RC["⚡ Redis Cluster"]
     APP2 --> RC
     APP3 --> RC
@@ -299,20 +319,25 @@ graph TB
     RC --> R2["(Redis Node 2)"]
     RC --> R3["(Redis Node 3)"]
     
-    %% Monitoring
+    %%  Monitoring
     APP1 --> MON["📊 Monitoring Stack"]
     APP2 --> MON
     APP3 --> MON
     
-    classDef app fill:#e3f2fd,stroke:#0277bd,stroke-width:2px;
-    classDef db fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px;
-    classDef cache fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
-    classDef infra fill:#fce4ec,stroke:#c2185b,stroke-width:2px;
+    classDef app fill : #e3f2fd, stroke:#0277bd, stroke-width: 2px;
+    
+    classDef db fill : #e8f5e8, stroke:#2e7d32, stroke-width: 2px;
+    
+    classDef cache fill : #fff3e0, stroke:#f57c00, stroke-width: 2px;
+    
+    classDef infra fill : #fce4ec, stroke:#c2185b, stroke-width: 2px;
+    
     
     class APP1,APP2,APP3 app;
     class DBM,DBS1,DBS2 db;
     class RC,R1,R2,R3 cache;
     class CF,LB,MON infra;
+
 ```
 
 ## 🔒 Security Architecture
@@ -320,33 +345,36 @@ graph TB
 ### **🛡️ Multi-Layer Security**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
 graph TB
-    %% External Layer
-    EXT["🌐 External Requests"] --> WAF["🛡️ Web Application Firewall<br/>Rate Limiting + DDoS Protection"]
+    %%  External Layer
+    EXT["🌐 External Requests"] --> WAF["🛡️ Web Application Firewall&lt;br/&gt;Rate Limiting + DDoS Protection"]
     
-    %% Network Security
-    WAF --> SSL["🔒 SSL/TLS Termination<br/>Certificate Management"]
-    SSL --> CORS["🔐 CORS Policy<br/>Origin Validation"]
+    %%  Network Security
+    WAF --> SSL["🔒 SSL/TLS Termination&lt;br/&gt;Certificate Management"]
+    SSL --> CORS["🔐 CORS Policy&lt;br/&gt;Origin Validation"]
     
-    %% Application Security
-    CORS --> AUTH["🔑 JWT Authentication<br/>Token Validation"]
-    AUTH --> RBAC["👥 Role-Based Access Control<br/>Permission Validation"]
-    RBAC --> VAL["✅ Input Validation<br/>Schema Validation"]
+    %%  Application Security
+    CORS --> AUTH["🔑 JWT Authentication&lt;br/&gt;Token Validation"]
+    AUTH --> RBAC["👥 Role-Based Access Control&lt;br/&gt;Permission Validation"]
+    RBAC --> VAL["✅ Input Validation&lt;br/&gt;Schema Validation"]
     
-    %% Data Security
-    VAL --> ENC["🔐 Data Encryption<br/>At Rest + In Transit"]
-    ENC --> AUDIT["📝 Audit Logging<br/>Security Events"]
+    %%  Data Security
+    VAL --> ENC["🔐 Data Encryption&lt;br/&gt;At Rest + In Transit"]
+    ENC --> AUDIT["📝 Audit Logging&lt;br/&gt;Security Events"]
     
-    %% Database Security
-    AUDIT --> DBSEC["🗄️ Database Security<br/>Parameterized Queries"]
-    DBSEC --> BACKUP["💾 Encrypted Backups<br/>Point-in-Time Recovery"]
+    %%  Database Security
+    AUDIT --> DBSEC["🗄️ Database Security&lt;br/&gt;Parameterized Queries"]
+    DBSEC --> BACKUP["💾 Encrypted Backups&lt;br/&gt;Point-in-Time Recovery"]
     
-    classDef security fill:#ffebee,stroke:#c62828,stroke-width:2px;
-    classDef data fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px;
+    classDef security fill : #ffebee, stroke:#c62828, stroke-width: 2px;
+    
+    classDef data fill : #e8f5e8, stroke:#2e7d32, stroke-width: 2px;
+    
     
     class WAF,SSL,CORS,AUTH,RBAC,VAL,ENC,AUDIT security;
     class DBSEC,BACKUP data;
+
 ```
 
 ### **🔐 Authentication Flow**
@@ -385,25 +413,31 @@ sequenceDiagram
     AS->>AG: Token Valid
     AG->>APP: API Response
 
-    %% --- DARK GRADIENT & GLOW STYLING ---
+    %%  --- DARK GRADIENT & GLOW STYLING ---
     
-    %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
     
-    %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
-    %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
     
-    %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
-    %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
     
-    %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
 
     class AG main;
     class APP decision;
@@ -411,6 +445,7 @@ sequenceDiagram
     class DB commNode;
     class SMS refNode;
     class U earnNode;
+
 ```
 
 ## 📈 Scalability Design
@@ -428,13 +463,13 @@ sequenceDiagram
 ### **📊 Performance Optimization**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
 graph LR
-    %% Request Flow
-    REQ["📱 Client Request"] --> CACHE{"⚡ Redis Cache?"}
+    %%  Request Flow
+    REQ["📱 Client Request"] --> CACHE {"⚡ Redis Cache?"}
     CACHE --> |Hit| FAST["🚀 Fast Response"]
     CACHE --> |Miss| DB["🗄️ Database Query"]
-    DB --> INDEX{"📊 Indexed Query?"}
+    DB --> INDEX {"📊 Indexed Query?"}
     INDEX --> |Yes| QUICK["⚡ Quick Query"]
     INDEX --> |No| SLOW["🐌 Full Scan"]
     QUICK --> STORE["💾 Cache Result"]
@@ -442,13 +477,17 @@ graph LR
     OPT --> STORE
     STORE --> RESP["📤 Response"]
     
-    classDef fast fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px;
-    classDef slow fill:#ffcdd2,stroke:#c62828,stroke-width:2px;
-    classDef cache fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    classDef fast fill : #c8e6c9, stroke:#2e7d32, stroke-width: 2px;
+    
+    classDef slow fill : #ffcdd2, stroke:#c62828, stroke-width: 2px;
+    
+    classDef cache fill : #fff3e0, stroke:#f57c00, stroke-width: 2px;
+    
     
     class FAST,QUICK fast;
     class SLOW slow;
     class CACHE,STORE cache;
+
 ```
 
 ### **🔄 Auto-Scaling Configuration**
