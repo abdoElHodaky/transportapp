@@ -443,43 +443,27 @@ stateDiagram-v2
   "flowchart": {
     "useMaxWidth": true,
     "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
 flowchart TD
-    A["Trip Active"] --> B {"Who Cancels?"}
-    
-    B --> |Passenger| C["Passenger Cancellation"]
-    B --> |Driver| D["Driver Cancellation"]
-    B --> |System| E["System Cancellation"]
-    
-    C --> F {"Trip Status?"}
-    F --> |Requested| G["Free Cancellation"]
-    F --> |Accepted| H["Cancellation Fee"]
-    F --> |In Progress| I["Full Fare Charge"]
-    
-    D --> J {"Valid Reason?"}
-    J --> |Yes| K["No Penalty"]
-    J --> |No| L["Driver Penalty"]
-    
+    A["Trip Active"] --> B{"Who Cancels?"}
+
+    B -->|Passenger| C["Passenger Cancellation"]
+    B -->|Driver| D["Driver Cancellation"]
+    B -->|System| E["System Cancellation"]
+
+    C --> F{"Trip Status?"}
+    F -->|Requested| G["Free Cancellation"]
+    F -->|Accepted| H["Cancellation Fee"]
+    F -->|In Progress| I["Full Fare Charge"]
+
+    D --> J{"Valid Reason?"}
+    J -->|Yes| K["No Penalty"]
+    J -->|No| L["Driver Penalty"]
+
     E --> M["System Issues"]
     M --> N["Full Refund"]
-    
+
     G --> O["Update Status"]
     H --> O
     I --> O
@@ -489,102 +473,34 @@ flowchart TD
     O --> P["Notify All Parties"]
     P --> Q["End Process"]
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal
+    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:5 5
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray:10 5
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:8 4
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray:3 3
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class O revNode;
-    class P commNode;
-    class Q refNode;
-    class R earnNode;
-    class S main;
-    class Y decision;
-
-
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-    class A accent;
-    class C accent;
-    class D accent;
-    class E accent;
-    class G accent;
-    class H accent;
-    class I accent;
-    class K accent;
-    class L accent;
-    class M error;
-    class N accent;
-    class O accent;
-    class P decision;
-    class Q process;
+    class A accent
+    class B decision
+    class C accent
+    class D accent
+    class E accent
+    class F decision
+    class G accent
+    class H accent
+    class I accent
+    class J decision
+    class K accent
+    class L accent
+    class M error
+    class N accent
+    class O process
+    class P process
+    class Q success
 ```
 
 ---
@@ -594,128 +510,46 @@ flowchart TD
 ### **Passenger Registration Flow**
 
 ```mermaid
-%%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
-  }
-}%%
-sequenceDiagram
-    participant P as "Passenger"
-    participant A as "Sikka API"
-    participant S as "SMS Service"
-    participant D as "Database"
+graph TD
+    %% Passenger Registration Flow
+    P[Passenger] -->|Submit Registration| A[Sikka API]
+    A -->|Validate Input| V[Validate Input]
+    V -->|Check Phone| D[Database]
+    D -->|Phone Available| A2[Generate OTP]
+    A2 -->|Send OTP| S[SMS Service]
+    S -->|Deliver SMS| P2[Passenger Receives OTP]
+    A2 -->|Status| P3[Registration Pending]
     
-    P->>A : Submit Registration (phone, name, email)
-    A->>A: Validate Input
-    A->>D: Check Phone Exists
-    D->>A: Phone Available
-    A->>A: Generate OTP
-    A->>S: Send OTP SMS
-    S->>P: OTP Message
-    A->>P: Registration Pending
-    
-    P->>A: Submit OTP
-    A->>A: Verify OTP
-    A->>D: Create User Account
-    A->>D: Create Wallet
-    D->>A: Account Created
-    A->>P: Registration Complete
+    P3 -->|Submit OTP| A3[Verify OTP]
+    A3 -->|Create Account| D2[Create User Account]
+    D2 -->|Create Wallet| D3[Create Wallet]
+    D3 -->|Account Created| A4[Registration Complete]
+    A4 -->|Success| P4[Passenger Registered]
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    %% Styling Definitions
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray:5 5
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal
+    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:5 5
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray:10 5
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal
+    classDef decision2 fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:8 4
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray:3 3
 
-    class A main;
-    class D decision;
-    class P revNode;
-    class S commNode;
-
-
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    %% Apply Styles
+    class A,A2,A3,A4 main
+    class D,D2,D3 database
+    class P,P2,P3,P4 revNode
+    class S commNode
+    class V process
 
 
 ```
@@ -740,137 +574,32 @@ sequenceDiagram
   "flowchart": {
     "useMaxWidth": true,
     "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
+
 flowchart TD
-    A["Driver Applies"] --> B["Submit Personal Info"]
+    A["Driver Application"] --> B["Submit Personal Info"]
     B --> C["Upload Documents"]
     C --> D["Vehicle Information"]
     D --> E["Background Check"]
-    
-    E --> F {"Documents Valid?"}
-    F --> |No| G["Request Corrections"]
+    E --> F{"Documents Valid?"}
+    F -->|No| G["Request Corrections"]
     G --> C
-    F --> |Yes| H["Admin Review"]
-    
-    H --> I {"Admin Approval?"}
-    I --> |No| J["Rejection Notice"]
-    I --> |Yes| K["Account Activated"]
-    
+    F -->|Yes| H["Admin Review"]
+    H --> I{"Admin Approval?"}
+    I -->|No| J["Rejection Notice"]
+    J --> O["Appeal Process"]
+    O --> H
+    I -->|Yes| K["Account Activated"]
     K --> L["Driver Training"]
     L --> M["Platform Onboarding"]
     M --> N["Ready to Drive"]
-    
-    J --> O["Appeal Process"]
-    O --> H
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:8 4
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class O revNode;
-    class Y commNode;
-
-
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-    class A secondary;
-    class B accent;
-    class C accent;
-    class D accent;
-    class E accent;
-    class G accent;
-    class H accent;
-    class J accent;
-    class K accent;
-    class L accent;
-    class M accent;
-    class N accent;
-    class O secondary;
+    class A,F,I decision
+    class B,C,D,E,G,H,J,K,L,M,N,O process
 ```
 
 ### **Document Verification Process**
@@ -893,24 +622,8 @@ flowchart TD
   "flowchart": {
     "useMaxWidth": true,
     "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
 flowchart LR
     A["Driver Uploads"] --> B["Driving License"]
     A --> C["Vehicle Registration"]
@@ -923,107 +636,35 @@ flowchart LR
     E --> F
     
     F --> G["Data Validation"]
-    G --> H {"Auto-Verify?"}
+    G --> H{"Auto-Verify?"}
     
-    H --> |Yes| I["Approved"]
-    H --> |No| J["Manual Review"]
+    H -->|Yes| I["Approved"]
+    H -->|No| J["Manual Review"]
     
-    J --> K {"Admin Decision"}
-    K --> |Approve| I
-    K --> |Reject| L["Request Resubmission"]
+    J --> K{"Admin Decision"}
+    K -->|Approve| I
+    K -->|Reject| L["Request Resubmission"]
     
     I --> M["Driver Activated"]
     L --> A
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
-
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class R revNode;
-    class Y commNode;
-
-
-
-
     %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold
+    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal
+    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:5 5
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray:10 5
+    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold
+    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:8 4
+    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray:3 3
 
-    class A accent;
-    class B accent;
-    class C accent;
-    class D decision;
-    class E accent;
-    class F process;
-    class G accent;
-    class I secondary;
-    class J accent;
-    class L accent;
-    class M accent;
+    class A primary
+    class B,C,E,G,J,L,M accent
+    class D,H,K decision
+    class F process
+    class I success
 ```
 
 ---
