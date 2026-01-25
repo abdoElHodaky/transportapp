@@ -1526,187 +1526,51 @@ flowchart LR
 %%{init: {
   "theme": "dark",
   "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "darkMode": true,
+    "primaryColor": "#1f6feb",
+    "primaryTextColor": "#f0f6fc",
+    "lineColor": "#8b949e",
+    "mainBkg": "#0d1117"
   }
 }%%
 flowchart TD
-    A["Emergency Triggered"] --> B {"Emergency Type"}
+    A([🚨 Emergency Triggered]) --> B{Categorize Type}
     
-    B --> |Panic Button| C["Immediate Alert"]
-    B --> |Accident| D["Accident Protocol"]
-    B --> |Route Deviation| E["Safety Check"]
-    B --> |No Response| F["Welfare Check"]
+    B -- Panic Button --> C[[⚡ Immediate Alert]]
+    B -- Crash Detected --> D[[🚑 Accident Protocol]]
+    B -- Off-Route --> E[[📍 Safety Check]]
+    B -- Silent --> F[[🔍 Welfare Check]]
     
-    C --> G["Alert Emergency Contacts"]
-    C --> H["Notify Authorities"]
-    C --> I["Track Location"]
+    C --> G[Notify Emergency Contacts]
+    C --> H[Dispatch Authorities]
+    C --> I[Real-time GPS Tracking]
     
-    D --> J["Emergency Services"]
-    D --> K["Insurance Notification"]
-    D --> L["Trip Suspension"]
+    D --> J[First Responders]
+    D --> K[Insurance Notification]
+    D --> L[Trip Suspension]
     
-    E --> M["Contact Driver"]
-    E --> N["Contact Passenger"]
-    E --> O["Verify Safety"]
+    E --> M[Driver Verification]
+    E --> N[Passenger Verification]
     
-    F --> P["Multiple Contact Attempts"]
-    F --> Q["Location Tracking"]
-    F --> R["Emergency Escalation"]
+    F --> P[Contact Attempts]
+    F --> R[Emergency Escalation]
     
-    G --> S["Emergency Response Team"]
-    H --> S
-    I --> S
-    J --> S
-    K --> S
-    L --> S
-    M --> S
-    N --> S
-    O --> S
-    P --> S
-    Q --> S
-    R --> S
+    G & H & I & J & K & L & M & N & P & R --> S[🛡️ Emergency Response Team]
     
-    S --> T["Coordinate Response"]
-    T --> U["Follow-up Actions"]
-    U --> V["Incident Report"]
-    V --> W["System Updates"]
+    S --> T[Coordinate Response]
+    T --> U[Incident Forensics]
+    U --> V[Final Incident Report]
+    V --> W[(System Optimization)]
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    classDef critical fill:#da3633,stroke:#f85149,stroke-width:2px,color:#ffffff
+    classDef warning fill:#d29922,stroke:#e3b341,stroke-width:2px,color:#0d1117
+    classDef action fill:#238636,stroke:#3fb950,stroke-width:2px,color:#ffffff
+    classDef trigger fill:#1f6feb,stroke:#58a6ff,stroke-width:4px,color:#ffffff
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class O revNode;
-    class P commNode;
-    class Q refNode;
-    class R earnNode;
-    class S main;
-    class T decision;
-    class U revNode;
-    class V commNode;
-    class W refNode;
-
-
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-    class A accent;
-    class C warning;
-    class D accent;
-    class E accent;
-    class F accent;
-    class G warning;
-    class H decision;
-    class I accent;
-    class J primary;
-    class K decision;
-    class L accent;
-    class M accent;
-    class N accent;
-    class O decision;
-    class P accent;
-    class Q accent;
-    class R accent;
-    class S accent;
-    class T accent;
-    class U process;
-    class V accent;
-    class W accent;
+    class A trigger
+    class B warning
+    class C,D,G,H,J critical
+    class S,T,U,V action
 ```
 
 ### **Safety Verification Process**
@@ -1718,130 +1582,48 @@ flowchart TD
     "primaryColor": "#0d1117",
     "primaryTextColor": "#aff5b4",
     "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
+    "lineColor": "#8b949e",
     "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "tertiaryColor": "#da3633",
+    "mainBkg": "#0d1117"
   }
 }%%
 sequenceDiagram
-    participant S as "System"
-    participant D as "Driver"
-    participant P as "Passenger"
-    participant E as "Emergency Team"
-    
-    S->>S: Monitor Trip Progress
-    S->>S: Detect Anomaly
-    
-    alt Route Deviation
-        S->>D: Route Verification Request
-        D->>S: Explanation/Confirmation
-        S->>P: Safety Check Notification
-        P->>S: Confirm Safety
-    else No Response
-        S->>D: Welfare Check
-        S->>P: Welfare Check
-        Note over S: Wait 2 minutes
-        S->>E: Escalate to Emergency Team
-        E->>S: Take Control
-    else Panic Button
-        S->>E: Immediate Alert
-        E->>S: Emergency Response
-        S->>D: Emergency Notification
-        S->>P: Emergency Notification
+    autonumber
+    participant S as 🤖 SYSTEM
+    participant D as 🚗 DRIVER
+    participant P as 📱 PASSENGER
+    participant E as 🛡️ EMERGENCY TEAM
+
+    Note over S: 🛰️ Continuous Trip Telemetry
+    S->>S: Anomaly Detected
+
+    alt 📍 Route Deviation (Minor)
+        S->>D: Verification Request
+        D-->>S: Confirmation/Explanation
+        S->>P: "Are you safe?" Notification
+        P-->>S: Safe Confirmation
+    else ⏳ No Response (High Priority)
+        rect rgb(40, 35, 10)
+            Note right of S: Escalation Protocol Alpha
+            S->>D: Welfare Check Call
+            S->>P: Welfare Check Call
+            Note over S: ⏱️ 120s Grace Period
+            S->>E: ⚠️ SIGNAL LOSS: Escalate
+            E->>S: Deploy Remote Monitoring
+        end
+    else 🚨 Panic Button (Immediate Action)
+        rect rgb(60, 10, 10)
+            Note right of S: Critical Protocol Omega
+            S->>E: 🔥 EMERGENCY ALERT
+            E->>S: Handover: Remote Control
+            S->>D: Law Enforcement Notified
+            S->>P: Help is En-Route
+        end
     end
-    
-    S->>S: Log Incident
-    S->>S: Update Safety Protocols
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
-
-    class D main;
-    class E decision;
-    class P revNode;
-    class S commNode;
-
-
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    S->>S: 💾 Immutable Incident Log
+    S->>S: 🔄 Update Safety Neural Weights
 
 
 ```
