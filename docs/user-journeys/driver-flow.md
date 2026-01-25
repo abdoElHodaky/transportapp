@@ -37,6 +37,41 @@ The driver journey in the Sikka Transportation Platform is designed for **maximu
 ### **🎯 Driver Onboarding Flow**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 flowchart TD
     A["📱 Download Sikka Driver"] --> B["📞 Phone Verification"]
     B --> C["👤 Personal Information"]
@@ -103,6 +138,55 @@ flowchart TD
     class P commNode;
     class R refNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B decision;
+    class C accent;
+    class D decision;
+    class E accent;
+    class F accent;
+    class G accent;
+    class H accent;
+    class I accent;
+    class K accent;
+    class L accent;
+    class M secondary;
+    class N accent;
+    class O secondary;
 ```
 
 ### **📋 Required Documentation**
@@ -121,6 +205,41 @@ flowchart TD
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["📄 Driver Documents"] --> B["🆔 National ID"]
     A --> C["🚗 Driving License"]
@@ -184,11 +303,94 @@ graph TB
     class G earnNode;
     class G1 main;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E decision;
+    class F decision;
+    class G accent;
+    class B1 accent;
+    class C1 accent;
+    class D1 accent;
+    class E1 accent;
+    class F1 error;
+    class G1 accent;
 ```
 
 ### **🎓 Driver Training Program**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 sequenceDiagram
     participant D as "🚗 Driver"
     participant APP as "📱 Training App"
@@ -241,6 +443,42 @@ sequenceDiagram
     class APP main;
     class D decision;
     class SYS revNode;
+
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
 
 ```
 
@@ -295,6 +533,41 @@ interface VehicleRequirements {
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["🚗 Vehicle Categories"] --> B["🚙 Standard&lt;br/&gt;Sedan, Hatchback"]
     A --> C["🚗 Premium&lt;br/&gt;Luxury Sedan, SUV"]
@@ -348,6 +621,50 @@ graph TB
     class E decision;
     class E1 revNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class B1 accent;
+    class C1 accent;
+    class D1 accent;
+    class E1 accent;
 ```
 
 ## 📱 Going Online & Availability
@@ -355,6 +672,41 @@ graph TB
 ### **🔄 Daily Operations Flow**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 flowchart TD
     A["📱 Open Driver App"] --> B["🔐 Biometric Login"]
     B --> C["📍 Location Permission"]
@@ -425,6 +777,54 @@ flowchart TD
     class T commNode;
     class Y refNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A secondary;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class F accent;
+    class G accent;
+    class I accent;
+    class J accent;
+    class L accent;
+    class M accent;
+    class N accent;
+    class O secondary;
 ```
 
 ### **📍 Location & Availability Management**
@@ -443,6 +843,41 @@ flowchart TD
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["📍 Driver Location"] --> B["🗺️ GPS Tracking"]
     A --> C["🏠 Preferred Areas"]
@@ -509,6 +944,56 @@ graph TB
     class D3 decision;
     class D4 revNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class B1 accent;
+    class B2 accent;
+    class B3 accent;
+    class C1 accent;
+    class C2 accent;
+    class C3 accent;
+    class C4 accent;
+    class D1 accent;
+    class D2 accent;
+    class D3 accent;
+    class D4 accent;
 ```
 
 ### **⚙️ Driver Preferences**
@@ -554,6 +1039,41 @@ interface DriverPreferences {
 ### **📱 Trip Request Interface**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 sequenceDiagram
     participant P as "📱 Passenger"
     participant SYS as "🔌 System"
@@ -613,6 +1133,42 @@ sequenceDiagram
     class D3 revNode;
     class P commNode;
     class SYS refNode;
+
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
 
 ```
 
@@ -674,6 +1230,41 @@ interface TripRequest {
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["🔔 Trip Request"] --> B["📊 Trip Details Card"]
     B --> C["💰 Earnings: SDG 21.25"]
@@ -729,6 +1320,51 @@ graph TB
     class I revNode;
     class J commNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class F accent;
+    class G accent;
+    class H accent;
+    class I accent;
+    class J accent;
 ```
 
 ### **🎯 Acceptance Strategy**
@@ -747,6 +1383,41 @@ graph TB
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["🎯 Trip Evaluation"] --> B {"💰 Earnings Check"}
     B --> |Good| C {"📍 Distance Check"}
@@ -806,6 +1477,44 @@ graph TB
     class P refNode;
     class Y earnNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class D accent;
+    class G accent;
 ```
 
 ## 🛣️ Trip Execution & Navigation
@@ -813,6 +1522,41 @@ graph TB
 ### **🗺️ Navigation & Route Management**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 flowchart TD
     A["✅ Trip Accepted"] --> B["📍 Navigate to Pickup"]
     B --> C["🚗 En Route to Passenger"]
@@ -869,6 +1613,53 @@ flowchart TD
     class K refNode;
     class L earnNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class F accent;
+    class G accent;
+    class H accent;
+    class I accent;
+    class J accent;
+    class K accent;
+    class L accent;
 ```
 
 ### **📱 Driver Interface During Trip**
@@ -887,6 +1678,41 @@ flowchart TD
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["📱 Active Trip Screen"] --> B["🗺️ Navigation Map"]
     A --> C["📊 Trip Information"]
@@ -956,6 +1782,58 @@ graph TB
     class E2 commNode;
     class E3 refNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D process;
+    class E accent;
+    class B1 accent;
+    class B2 decision;
+    class B3 accent;
+    class C1 accent;
+    class C2 accent;
+    class C3 accent;
+    class D1 accent;
+    class D2 accent;
+    class D3 error;
+    class E1 accent;
+    class E2 accent;
+    class E3 accent;
 ```
 
 ### **💬 Communication Templates**
@@ -1003,6 +1881,41 @@ interface QuickMessages {
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["💰 Trip Fare: SDG 25.00"] --> B["📊 Commission Split"]
     B --> C["🚗 Driver Share: SDG 21.25&lt;br/&gt;85% of fare"]
@@ -1057,6 +1970,51 @@ graph TB
     class G2 revNode;
     class G3 commNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class F success;
+    class G accent;
+    class G1 accent;
+    class G2 accent;
+    class G3 secondary;
 ```
 
 ### **📊 Daily Earnings Tracking**
@@ -1111,6 +2069,41 @@ interface DailyEarnings {
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["📈 Maximize Earnings"] --> B["⏰ Peak Hours"]
     A --> C["📍 High-Demand Areas"]
@@ -1184,11 +2177,99 @@ graph TB
     class E2 refNode;
     class E3 earnNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E primary;
+    class B1 accent;
+    class B2 accent;
+    class B3 accent;
+    class C1 accent;
+    class C2 accent;
+    class C3 accent;
+    class C4 accent;
+    class D1 accent;
+    class D2 accent;
+    class D3 accent;
+    class E1 accent;
+    class E2 primary;
+    class E3 accent;
 ```
 
 ### **💳 Payment & Withdrawal**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 sequenceDiagram
     participant D as "🚗 Driver"
     participant W as "💰 Wallet"
@@ -1247,6 +2328,42 @@ sequenceDiagram
     class M revNode;
     class W commNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ## 📊 Performance & Analytics
@@ -1267,6 +2384,41 @@ sequenceDiagram
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["📊 Driver Dashboard"] --> B["💰 Earnings Overview"]
     A --> C["📈 Performance Metrics"]
@@ -1343,6 +2495,60 @@ graph TB
     class E2 earnNode;
     class E3 main;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class B1 accent;
+    class B2 accent;
+    class B3 accent;
+    class C1 accent;
+    class C2 accent;
+    class C3 accent;
+    class C4 accent;
+    class C5 accent;
+    class D1 accent;
+    class D2 accent;
+    class D3 accent;
+    class E1 accent;
+    class E2 accent;
+    class E3 accent;
 ```
 
 ### **⭐ Rating System**
@@ -1391,6 +2597,41 @@ interface DriverRating {
     "htmlLabels": true
     }
     }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
     A["🏆 Driver Achievements"] --> B["🚗 Trip Milestones"]
     A --> C["⭐ Rating Excellence"]
@@ -1463,6 +2704,58 @@ graph TB
     class E2 commNode;
     class E3 refNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class B1 accent;
+    class B2 accent;
+    class B3 accent;
+    class C1 accent;
+    class C2 accent;
+    class C3 accent;
+    class D1 accent;
+    class D2 accent;
+    class D3 accent;
+    class E1 accent;
+    class E2 accent;
+    class E3 accent;
 ```
 
 ## 🔄 Alternative Scenarios
@@ -1470,6 +2763,41 @@ graph TB
 ### **❌ Trip Cancellation Handling**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 flowchart TD
     A["🚗 Active Trip"] --> B {"❌ Cancellation Event"}
     B --> |Passenger Cancels| C["👤 Passenger Cancellation"]
@@ -1544,11 +2872,96 @@ flowchart TD
     class R earnNode;
     class V main;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class G accent;
+    class H accent;
+    class J accent;
+    class K error;
+    class L accent;
+    class M accent;
+    class N decision;
+    class O accent;
+    class P success;
+    class Q accent;
+    class R accent;
 ```
 
 ### **🚫 No-Show Scenarios**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 flowchart TD
     A["📍 Arrived at Pickup"] --> B["📞 Contact Passenger"]
     B --> C {"📱 Passenger Response"}
@@ -1619,11 +3032,94 @@ flowchart TD
     class P commNode;
     class Y refNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class D accent;
+    class E accent;
+    class F accent;
+    class H accent;
+    class I accent;
+    class J accent;
+    class L accent;
+    class M accent;
+    class N secondary;
+    class O accent;
+    class P accent;
 ```
 
 ### **⚠️ Vehicle Breakdown**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 flowchart TD
     A["🚗 Vehicle Issue"] --> B["🛑 Safe Stop"]
     B --> C["🚨 Emergency Hazards"]
@@ -1699,11 +3195,96 @@ flowchart TD
     class Q refNode;
     class Y earnNode;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A error;
+    class B accent;
+    class C accent;
+    class E accent;
+    class F accent;
+    class G accent;
+    class H accent;
+    class I accent;
+    class J accent;
+    class L accent;
+    class M primary;
+    class N process;
+    class O decision;
+    class P accent;
+    class Q accent;
 ```
 
 ### **🚨 Safety Incidents**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#fef3c7",
+    "primaryBorderColor": "#d97706",
+    "lineColor": "#d97706",
+    "secondaryColor": "#f59e0b",
+    "tertiaryColor": "#fbbf24",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#451a03",
+    "tertiaryBkg": "#fbbf24"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 flowchart TD
     A["🚨 Safety Concern"] --> B["🛑 Immediate Action"]
     B --> C {"🚨 Severity Level"}
@@ -1782,6 +3363,57 @@ flowchart TD
     class R earnNode;
     class Y main;
 
+
+
+
+    %% --- DRIVER (PROFESSIONAL GOLD) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#d97706,stroke-width:4px,color:#fef3c7,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#f59e0b,stroke-width:3px,color:#fef3c7,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#fbbf24,stroke-width:2px,color:#fbbf24,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#059669,stroke-width:3px,color:#059669,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#7c2d12,stroke-width:3px,color:#7c2d12,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#fbbf24,stroke-width:4px,color:#fbbf24,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#451a03,stroke:#d97706,stroke-width:2px,color:#fef3c7,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#dc2626,stroke-width:3px,color:#dc2626,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#f59e0b,stroke-width:2px,color:#f59e0b,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B process;
+    class D accent;
+    class E accent;
+    class F accent;
+    class G accent;
+    class H primary;
+    class I accent;
+    class J accent;
+    class K accent;
+    class M accent;
+    class N accent;
+    class O accent;
+    class P accent;
+    class Q accent;
+    class R decision;
 ```
 
 ---
