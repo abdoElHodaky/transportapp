@@ -1,0 +1,84 @@
+{
+  "trip": {
+    "title": "الرحلة",
+    "booking": "حجز الرحلة",
+    "details": "تفاصيل الرحلة",
+    "history": "تاريخ الرحلات",
+    "current": "الرحلة الحالية",
+    "upcoming": "الرحلات القادمة",
+    "completed": "الرحلات المكتملة",
+    "cancelled": "الرحلات الملغية"
+  },
+  "status": {
+    "requested": "مطلوبة",
+    "accepted": "مقبولة",
+    "driver_assigned": "تم تعيين السائق",
+    "driver_arrived": "وصل السائق",
+    "in_progress": "جارية",
+    "completed": "مكتملة",
+    "cancelled": "ملغية",
+    "cancelled_by_passenger": "ألغيت من قبل الراكب",
+    "cancelled_by_driver": "ألغيت من قبل السائق",
+    "cancelled_by_system": "ألغيت من قبل النظام"
+  },
+  "types": {
+    "standard": "عادية",
+    "premium": "مميزة",
+    "shared": "رحلة مشتركة",
+    "delivery": "توصيل"
+  },
+  "locations": {
+    "pickup": "موقع الانطلاق",
+    "dropoff": "موقع الوصول",
+    "current": "الموقع الحالي",
+    "destination": "الوجهة",
+    "from": "من",
+    "to": "إلى"
+  },
+  "fare": {
+    "estimated": "التكلفة المقدرة",
+    "actual": "التكلفة الفعلية",
+    "base": "التكلفة الأساسية",
+    "distance": "تكلفة المسافة",
+    "time": "تكلفة الوقت",
+    "total": "إجمالي التكلفة",
+    "platform_fee": "رسوم المنصة",
+    "driver_earnings": "أرباح السائق"
+  },
+  "time": {
+    "estimated_duration": "المدة المقدرة",
+    "actual_duration": "المدة الفعلية",
+    "estimated_arrival": "الوصول المقدر",
+    "pickup_time": "وقت الانطلاق",
+    "dropoff_time": "وقت الوصول",
+    "requested_at": "طُلبت في",
+    "completed_at": "اكتملت في"
+  },
+  "distance": {
+    "estimated": "المسافة المقدرة",
+    "actual": "المسافة الفعلية",
+    "total": "إجمالي المسافة"
+  },
+  "messages": {
+    "booking_success": "تم حجز الرحلة بنجاح! جاري البحث عن سائق...",
+    "driver_found": "تم العثور على سائق! {driverName} في الطريق إليك.",
+    "driver_arrived": "وصل السائق إلى موقع الانطلاق.",
+    "trip_started": "بدأت الرحلة. استمتع برحلتك!",
+    "trip_completed": "اكتملت الرحلة بنجاح. شكراً لاستخدام سكة!",
+    "trip_cancelled": "تم إلغاء الرحلة.",
+    "no_drivers": "لا يوجد سائقون متاحون في الوقت الحالي. يرجى المحاولة لاحقاً.",
+    "payment_required": "الدفع مطلوب لإكمال الرحلة.",
+    "rating_request": "يرجى تقييم تجربة رحلتك."
+  },
+  "actions": {
+    "book_trip": "احجز رحلة",
+    "cancel_trip": "إلغاء الرحلة",
+    "rate_trip": "قيم الرحلة",
+    "view_receipt": "عرض الإيصال",
+    "contact_driver": "اتصل بالسائق",
+    "share_trip": "شارك الرحلة",
+    "report_issue": "بلغ عن مشكلة",
+    "emergency": "طوارئ"
+  }
+}
+

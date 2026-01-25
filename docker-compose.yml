@@ -1,0 +1,187 @@
+# 🐳 Sikka Transportation Platform - Docker Compose
+version: '3.8'
+
+services:
+  # 🚀 Main Application
+  sikka-api:
+    build:
+      context: ./sikka-backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: sikka-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=sikka_user
+      - DATABASE_PASSWORD=sikka_password
+      - DATABASE_NAME=sikka_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=development-jwt-secret-key
+      - JWT_REFRESH_SECRET=development-refresh-secret-key
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - sikka-network
+    volumes:
+      - ./sikka-backend/logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🗄️ PostgreSQL Database
+  postgres:
+    image: postgres:13-alpine
+    container_name: sikka-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sikka_db
+      POSTGRES_USER: sikka_user
+      POSTGRES_PASSWORD: sikka_password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sikka-backend/database/init:/docker-entrypoint-initdb.d
+    networks:
+      - sikka-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sikka_user -d sikka_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ⚡ Redis Cache
+  redis:
+    image: redis:6-alpine
+    container_name: sikka-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - sikka-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 📊 Monitoring - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: sikka-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - sikka-network
+
+  # 📈 Monitoring - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: sikka-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - sikka-network
+
+  # 🔍 Log Management - Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    container_name: sikka-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - sikka-network
+
+  # 📝 Log Management - Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.0
+    container_name: sikka-kibana
+    restart: unless-stopped
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - sikka-network
+
+  # 🔄 Reverse Proxy - Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: sikka-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - sikka-api
+    networks:
+      - sikka-network
+
+# 📦 Named Volumes
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+# 🌐 Networks
+networks:
+  sikka-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
