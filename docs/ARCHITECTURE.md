@@ -769,133 +769,53 @@ graph TD
   "themeVariables": {
     "primaryColor": "#0d1117",
     "primaryTextColor": "#c9d1d9",
-    "primaryBorderColor": "#1f6feb",
-    "lineColor": "#1f6feb",
-    "secondaryColor": "#388bfd",
-    "tertiaryColor": "#79c0ff",
-    "background": "#0d1117",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#58a6ff",
+    "secondaryColor": "#30363d",
+    "tertiaryColor": "#161b22",
     "mainBkg": "#0d1117",
-    "secondBkg": "#30363d",
-    "tertiaryBkg": "#79c0ff"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "sequenceNumberColor": "#58a6ff"
   }
 }%%
 sequenceDiagram
-    participant PA as "Passenger App"
-    participant DA as "Driver App"
-    participant WS as "WebSocket Gateway"
-    participant TS as "Trip Service"
-    participant NS as "Notification Service"
+    autonumber
+
+    box rgba(63, 185, 80, 0.1) Passenger App
+        participant PA as 📱 Passenger App
+    end
     
+    box rgba(188, 140, 255, 0.1) Driver App
+        participant DA as 🏎️ Driver App
+    end
+
+    box rgba(218, 54, 51, 0.1) Infrastructure
+        participant WS as 🔌 WebSocket GW
+        participant TS as ⚙️ Trip Service
+        participant NS as 🔔 Notification
+    end
+
     Note over PA,DA: Trip Request Initiated
     
     PA->>WS: Connect & Join Trip Room
     DA->>WS: Connect & Join Driver Room
     
     TS->>WS: New Trip Available
-    WS->>DA: Broadcast Trip Request
+    WS-->>DA: Broadcast Trip Request
     
     DA->>WS: Accept Trip
     WS->>TS: Process Trip Acceptance
     TS->>WS: Trip Assigned Event
-    WS->>PA: Trip Assigned Notification
+    WS-->>PA: Trip Assigned Notification
     
-    loop Location Updates
+    loop Real-time Tracking
         DA->>WS: Driver Location Update
-        WS->>PA: Real-time Location
+        WS-->>PA: Real-time Location
     end
     
     DA->>WS: Trip Status Update
     WS->>TS: Update Trip Status
     TS->>NS: Trigger Notifications
-    WS->>PA: Status Change Notification
-
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
-
-    class DA main;
-    class NS decision;
-    class PA revNode;
-    class TS commNode;
-    class WS refNode;
-
-
-
-
-    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
-
+    WS-->>PA: Status Change Notification
 
 ```
 
@@ -1988,132 +1908,56 @@ graph TD
   "themeVariables": {
     "primaryColor": "#0d1117",
     "primaryTextColor": "#c9d1d9",
-    "primaryBorderColor": "#1f6feb",
-    "lineColor": "#1f6feb",
-    "secondaryColor": "#388bfd",
-    "tertiaryColor": "#79c0ff",
-    "background": "#0d1117",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#58a6ff",
+    "secondaryColor": "#30363d",
+    "tertiaryColor": "#161b22",
     "mainBkg": "#0d1117",
-    "secondBkg": "#30363d",
-    "tertiaryBkg": "#79c0ff"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "actorBkg": "#0d1117",
+    "actorBorder": "#58a6ff",
+    "actorTextColor": "#c9d1d9"
   }
 }%%
 sequenceDiagram
-    participant C as "Client"
-    participant AG as "API Gateway"
-    participant AS as "Auth Service"
-    participant RS as "Redis"
-    participant DB as "Database"
-    participant BS as "Business Service"
-    
+    autonumber
+
+    %% Participant Definitions with color-coded boxes
+    box rgba(188, 140, 255, 0.1) Entry Point
+        participant C as 📱 Client
+        participant AG as 🛡️ API Gateway
+    end
+
+    box rgba(210, 153, 34, 0.1) Identity Provider
+        participant AS as 🔑 Auth Service
+        participant RS as ⚡ Redis
+        participant DB as 🗄️ Database
+    end
+
+    box rgba(63, 185, 80, 0.1) Resources
+        participant BS as ⚙️ Business Service
+    end
+
+    Note over C, DB: Phase 1: Authentication (Login)
     C->>AG: Login Request
     AG->>AS: Validate Credentials
     AS->>DB: Check User Credentials
-    DB->>AS: User Data
+    DB-->>AS: User Data
     AS->>AS: Generate JWT & Refresh Token
     AS->>RS: Store Refresh Token
-    AS->>AG: Return Tokens
-    AG->>C: Authentication Success
+    AS-->>AG: Return Tokens
+    AG-->>C: Authentication Success
     
-    Note over C,BS: Subsequent API Calls
-    
+    Note over C, BS: Phase 2: Authorization (Subsequent Calls)
     C->>AG: API Request + JWT
     AG->>AS: Validate JWT
     AS->>AS: Verify Token Signature
     AS->>RS: Check Token Blacklist
-    RS->>AS: Token Valid
-    AS->>AG: Authentication Success
+    RS-->>AS: Token Valid
+    AS-->>AG: Authentication Success
+    
     AG->>BS: Authorized Request
-    BS->>AG: Business Response
-    AG->>C: API Response
-
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
-
-    class AG main;
-    class AS decision;
-    class BS revNode;
-    class C commNode;
-    class DB refNode;
-    class RS earnNode;
-
-
-
-
-    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+    BS-->>AG: Business Response
+    AG-->>C: API Response
 
 
 ```
@@ -2147,203 +1991,75 @@ System Config     | -         | -      | RW
 
 ```mermaid
 %%{init: {
-    "theme": "dark",
-    "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#58a6ff",
-    "primaryBorderColor": "#58a6ff",
-    "lineColor": "#58a6ff"
-    },
-    "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-    }
-    }}%%
-%%{init: {
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
     "primaryTextColor": "#c9d1d9",
     "primaryBorderColor": "#1f6feb",
-    "lineColor": "#1f6feb",
+    "lineColor": "#58a6ff",
     "secondaryColor": "#388bfd",
     "tertiaryColor": "#79c0ff",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#30363d",
-    "tertiaryBkg": "#79c0ff"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "mainBkg": "#0d1117"
   }
-}%%
+}}%%
 graph TB
-    subgraph """"Load" Balancer Layer"
-        A["Application Load Balancer"]
-        B["WebSocket Load Balancer"]
+    subgraph LBL ["Load Balancer Layer"]
+        A["Application LB"]
+        B["WebSocket LB"]
     end
     
-    subgraph """"Application" Instances"
+    subgraph APP ["Application Instances"]
         C["API Instance 1"]
         D["API Instance 2"]
         E["API Instance N"]
-        F["WebSocket Instance 1"]
-        G["WebSocket Instance 2"]
-        H["WebSocket Instance N"]
+        F["WS Instance 1"]
+        G["WS Instance 2"]
+        H["WS Instance N"]
     end
     
-    subgraph """"Data" Layer"
-        I["PostgreSQL Primary"]
-        J["PostgreSQL Read Replica 1"]
-        K["PostgreSQL Read Replica 2"]
-        L["Redis Cluster"]
+    subgraph DATA ["Data Layer"]
+        I[("PostgreSQL Primary")]
+        J[("PG Read Replica 1")]
+        K[("PG Read Replica 2")]
+        L[("Redis Cluster")]
     end
     
-    subgraph """"External" Services"
+    subgraph EXT ["External Services"]
         M["Payment Gateways"]
         N["SMS Services"]
         O["Push Notifications"]
     end
     
-    A --> C
-    A --> D
-    A --> E
-    B --> F
-    B --> G
-    B --> H
+    %% Relationships
+    A --> C & D & E
+    B --> F & G & H
     
-    C --> I
-    C --> J
-    C --> K
-    C --> L
+    C & D & E --> I
+    C & D & E --> J
+    C & D & E --> K
+    C & D & E --> L
     
-    D --> I
-    D --> J
-    D --> K
-    D --> L
+    F & G & H --> L
     
-    E --> I
-    E --> J
-    E --> K
-    E --> L
-    
-    F --> L
-    G --> L
-    H --> L
-    
-    C --> M
-    C --> N
-    C --> O
+    C --> M & N & O
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
+    %% --- STYLING ---
     
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9;
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
+    %% Class Assignments
+    class C,D,E primary;
+    class A,B,F,G,H secondary;
+    class I,J,K,L database;
+    class M,N decision;
     class O revNode;
 
 
-
-
-    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
     
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
-
-    class A secondary;
-    class B secondary;
-    class C primary;
-    class D primary;
-    class E primary;
-    class F secondary;
-    class G secondary;
-    class H secondary;
-    class I database;
-    class J database;
-    class K database;
-    class L database;
-    class M primary;
-    class N primary;
-    class O decision;
 ```
 
 ### **Caching Strategy**
