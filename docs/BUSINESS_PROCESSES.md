@@ -197,45 +197,47 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A[Trip Completed] --> B[Calculate Fare]
-    B --> C[Select Payment Method]
+    A["Trip Completed"] --> B["Calculate Fare"]
+    B --> C["Select Payment Method"]
     
-    C --> D{Payment Method}
-    D -->|Wallet| E[Wallet Payment]
-    D -->|EBS| F[EBS Gateway]
-    D -->|CyberPay| G[CyberPay Gateway]
-    D -->|Cash| H[Cash Payment]
+    C --> D{"Payment Method"}
+    D -->|Wallet| E["Wallet Payment"]
+    D -->|EBS| F["EBS Gateway"]
+    D -->|CyberPay| G["CyberPay Gateway"]
+    D -->|Cash| H["Cash Payment"]
     
-    E --> I[Check Balance]
-    I --> J{Sufficient?}
-    J -->|Yes| K[Deduct Amount]
-    J -->|No| L[Insufficient Funds]
+    E --> I["Check Wallet Balance"]
+    I --> J{"Sufficient Balance?"}
+    J -->|Yes| K["Deduct Amount"]
+    J -->|No| L["Insufficient Funds"]
     
-    F --> M[EBS Processing]
-    G --> N[CyberPay Processing]
+    F --> M["EBS Processing"]
+    G --> N["CyberPay Processing"]
     
-    M --> O{EBS Success?}
-    N --> P{CyberPay Success?}
+    M --> O{"EBS Success?"}
+    N --> P{"CyberPay Success?"}
     
-    O -->|Yes| Q[Payment Success]
-    O -->|No| R[Payment Failed]
+    O -->|Yes| Q["Payment Success"]
+    O -->|No| R["EBS Payment Failed"]
     P -->|Yes| Q
-    P -->|No| R
+    P -->|No| S["CyberPay Payment Failed"]
     
-    H --> S[Driver Confirms Cash]
-    S --> Q
+    H --> T["Driver Confirms Cash"]
+    T --> Q
     
     K --> Q
-    L --> T[Payment Failed]
-    R --> T
+    L --> U["Wallet Payment Failed"]
+    R --> V["Payment Failed"]
+    S --> V
+    U --> V
     
-    Q --> U[Update Balances]
-    U --> V[Driver Earnings (85%)]
-    U --> W[Platform Commission (15%)]
-    U --> X[Send Receipt]
+    Q --> W["Update Balances"]
+    W --> X["Driver Earnings (85%)"]
+    W --> Y["Platform Commission (15%)"]
+    W --> Z["Send Receipt"]
     
-    T --> Y[Retry Payment]
-    Y --> Z[Alternative Method]
+    V --> AA["Retry Payment"]
+    AA --> AB["Alternative Method"]
 ```
 
 ### **Wallet Management System**
