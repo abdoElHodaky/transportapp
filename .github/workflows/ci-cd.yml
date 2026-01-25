@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -231,4 +231,3 @@ jobs:
             echo "❌ Pipeline failed!"
           fi
           # Add notification logic here (Slack, Discord, email, etc.)
-
