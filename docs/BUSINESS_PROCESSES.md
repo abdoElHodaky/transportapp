@@ -400,7 +400,8 @@ flowchart TD
 ### **Financial Management**
 
 ```mermaid
-flowchart TD
+  flowchart TD
+    %% Node Definitions
     A["Financial Dashboard"] --> B{"Report Type"}
     
     B -->|Revenue| C["Revenue Analysis"]
@@ -408,29 +409,69 @@ flowchart TD
     B -->|Refunds| E["Refund Management"]
     B -->|Driver Earnings| F["Earnings Reports"]
     
-    subgraph RevenueFlow["Revenue Analysis Flow"]
-        C --> G["Select Period: Daily/Weekly/Monthly"]
-        G --> H["Generate Charts & Visualizations"]
-        H --> I["Export Data"]
+    subgraph RevenueFlow[" "]
+        direction TB
+        C --> G["Select Period"]
+        G --> H["Visualizations"]
+        H --> I["Export CSV"]
     end
     
-    subgraph CommissionFlow["Commission Tracking Flow"]
-        D --> J["Platform Commission (15%)"]
-        J --> K["Driver Earnings (85%)"]
-        K --> L["Apply Payment Processing Fees"]
+    subgraph CommissionFlow[" "]
+        direction TB
+        D --> J["Platform (15%)"]
+        J --> K["Driver (85%)"]
+        K --> L["Fee Logic"]
     end
     
-    subgraph RefundFlow["Refund Management Flow"]
-        E --> M["Review Pending Refunds"]
-        M --> N["Process Approved Refunds"]
-        N --> O["Update Financial Records"]
+    subgraph RefundFlow[" "]
+        direction TB
+        E --> M["Review"]
+        M --> N["Process"]
+        N --> O["Sync Logs"]
     end
     
-    subgraph EarningsFlow["Earnings Reports Flow"]
-        F --> P["Identify Top Earners"]
-        P --> Q["Calculate Performance Metrics"]
-        Q --> R["Design Incentive Programs"]
+    subgraph EarningsFlow[" "]
+        direction TB
+        F --> P["Top Earners"]
+        P --> Q["Metrics"]
+        Q --> R["Incentives"]
     end
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    %% Applying Classes
+    class A main;
+    class B decision;
+    class C,G,H,I revNode;
+    class D,J,K,L commNode;
+    class E,M,N,O refNode;
+    class F,P,Q,R earnNode;
+
+    %% Subgraph Blending
+    style RevenueFlow fill:#0d1117,stroke:#3fb950,stroke-width:1px,stroke-dasharray: 2
+    style CommissionFlow fill:#0d1117,stroke:#bc8cff,stroke-width:1px,stroke-dasharray: 2
+    style RefundFlow fill:#0d1117,stroke:#ff7b72,stroke-width:1px,stroke-dasharray: 2
+    style EarningsFlow fill:#0d1117,stroke:#388bfd,stroke-width:1px,stroke-dasharray: 2
+    
+    
 ```
 
 ### **System Monitoring**
