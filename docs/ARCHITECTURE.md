@@ -1051,7 +1051,7 @@ services:
     build: .
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://dev_user:dev_pass@postgres:5432/sikka_dev
+      - DATABASE_URL=postgresql://username:password@postgres:5432/sikka_dev
       - REDIS_URL=redis://redis:6379
     ports:
       - "3000:3000"
@@ -1202,4 +1202,3 @@ export class HealthController {
 ---
 
 This comprehensive architecture documentation provides the technical foundation for understanding, maintaining, and scaling the Sikka Transportation Platform.
-
