@@ -55,11 +55,11 @@ interface ChatMessage {
   },
   namespace: '/realtime',
 })
-export class WebSocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  private readonly logger = new Logger(WebSocketGateway.name);
+  private readonly logger = new Logger(RealtimeGateway.name);
   private connectedUsers = new Map<string, AuthenticatedSocket>();
   private redis: Redis;
   private redisSubscriber: Redis;

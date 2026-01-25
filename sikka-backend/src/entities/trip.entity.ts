@@ -15,6 +15,8 @@ import { Rating } from './rating.entity';
 
 export enum TripStatus {
   REQUESTED = 'requested',
+  SEARCHING_DRIVER = 'searching_driver',
+  DRIVER_ASSIGNED = 'driver_assigned',
   ACCEPTED = 'accepted',
   DRIVER_ARRIVED = 'driver_arrived',
   IN_PROGRESS = 'in_progress',
@@ -99,6 +101,22 @@ export class Trip {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   actualFare: number;
 
+  // Fare breakdown
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  baseFare: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  distanceFare: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  timeFare: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  surgeFare: number;
+
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
+  surgeMultiplier: number;
+
   // Distance information
   @Column({ type: 'decimal', precision: 8, scale: 2 })
   estimatedDistance: number;
@@ -142,6 +160,9 @@ export class Trip {
   driverAcceptedAt: Date;
 
   @Column({ nullable: true })
+  driverAssignedAt: Date;
+
+  @Column({ nullable: true })
   driverArrivedAt: Date;
 
   @Column({ nullable: true })
@@ -175,4 +196,3 @@ export class Trip {
   @OneToMany(() => Rating, (rating) => rating.trip)
   ratings: Rating[];
 }
-

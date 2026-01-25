@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { WebSocketGateway } from './websocket.gateway';
+import { RealtimeGateway } from './websocket.gateway';
 import { User } from '../../entities/user.entity';
 import { Trip } from '../../entities/trip.entity';
 
@@ -13,7 +13,7 @@ import { Trip } from '../../entities/trip.entity';
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  providers: [WebSocketGateway],
-  exports: [WebSocketGateway],
+  providers: [RealtimeGateway],
+  exports: [RealtimeGateway],
 })
 export class WebSocketModule {}

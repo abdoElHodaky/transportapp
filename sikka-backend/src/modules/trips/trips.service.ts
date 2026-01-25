@@ -170,10 +170,8 @@ export class TripsService {
     trip.status = statusDto.status;
 
     switch (statusDto.status) {
-      case TripStatus.DRIVER_ARRIVING:
-        // Driver is on the way to pickup
-        break;
       case TripStatus.DRIVER_ARRIVED:
+        // Driver has arrived at pickup location
         trip.driverArrivedAt = new Date();
         break;
       case TripStatus.IN_PROGRESS:
@@ -448,8 +446,7 @@ export class TripsService {
   private isValidStatusTransition(currentStatus: TripStatus, newStatus: TripStatus): boolean {
     const validTransitions = {
       [TripStatus.SEARCHING_DRIVER]: [TripStatus.DRIVER_ASSIGNED, TripStatus.CANCELLED],
-      [TripStatus.DRIVER_ASSIGNED]: [TripStatus.DRIVER_ARRIVING, TripStatus.CANCELLED],
-      [TripStatus.DRIVER_ARRIVING]: [TripStatus.DRIVER_ARRIVED, TripStatus.CANCELLED],
+      [TripStatus.DRIVER_ASSIGNED]: [TripStatus.DRIVER_ARRIVED, TripStatus.CANCELLED],
       [TripStatus.DRIVER_ARRIVED]: [TripStatus.IN_PROGRESS, TripStatus.CANCELLED],
       [TripStatus.IN_PROGRESS]: [TripStatus.COMPLETED, TripStatus.CANCELLED],
       [TripStatus.COMPLETED]: [],
@@ -475,4 +472,3 @@ export class TripsService {
     });
   }
 }
-
