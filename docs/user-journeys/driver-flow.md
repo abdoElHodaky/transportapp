@@ -62,40 +62,40 @@ flowchart TD
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class I revNode;;
-    class J commNode;;
-    class K refNode;;
-    class L earnNode;;
-    class M main;;
-    class N decision;;
-    class O revNode;;
-    class P commNode;;
-    class R refNode;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+    class R refNode;
 ```
 
 ### **📋 Required Documentation**
@@ -127,36 +127,36 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class B1 revNode;;
-    class C commNode;;
-    class C1 refNode;;
-    class D earnNode;;
-    class D1 main;;
-    class E decision;;
-    class E1 revNode;;
-    class F commNode;;
-    class F1 refNode;;
-    class G earnNode;;
-    class G1 main;;
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class C commNode;
+    class C1 refNode;
+    class D earnNode;
+    class D1 main;
+    class E decision;
+    class E1 revNode;
+    class F commNode;
+    class F1 refNode;
+    class G earnNode;
+    class G1 main;
 ```
 
 ### **🎓 Driver Training Program**
@@ -168,46 +168,46 @@ sequenceDiagram
     participant SYS as "🎓 Training System"
     participant CERT as "📜 Certification"
     
-    D ->> APP: Start Training
-    APP ->> SYS: Load Module 1: Safety
-    SYS ->> D: Safety Guidelines
-    D ->> SYS: Complete Quiz (80% required)
+    D->>APP: Start Training
+    APP->>SYS: Load Module 1: Safety
+    SYS->>D: Safety Guidelines
+    D->>SYS: Complete Quiz (80% required)
     
-    SYS ->> APP: Load Module 2: Customer Service
-    APP ->> D: Service Excellence Training
-    D ->> SYS: Complete Assessment
+    SYS->>APP: Load Module 2: Customer Service
+    APP->>D: Service Excellence Training
+    D->>SYS: Complete Assessment
     
-    SYS ->> APP: Load Module 3: App Usage
-    APP ->> D: Platform Tutorial
-    D ->> SYS: Practical Test
+    SYS->>APP: Load Module 3: App Usage
+    APP->>D: Platform Tutorial
+    D->>SYS: Practical Test
     
-    SYS ->> CERT: Generate Certificate
-    CERT ->> D: Training Completed
-    D ->> APP: Ready to Drive!
+    SYS->>CERT: Generate Certificate
+    CERT->>D: Training Completed
+    D->>APP: Ready to Drive!
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class APP main;;
-    class D decision;;
-    class SYS revNode;;
+    class APP main;
+    class D decision;
+    class SYS revNode;
 ```
 
 ## 🚗 Vehicle Setup & Documentation
@@ -268,32 +268,32 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class B1 revNode;;
-    class C commNode;;
-    class C1 refNode;;
-    class D earnNode;;
-    class D1 main;;
-    class E decision;;
-    class E1 revNode;;
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class C commNode;
+    class C1 refNode;
+    class D earnNode;
+    class D1 main;
+    class E decision;
+    class E1 revNode;
 ```
 
 ## 📱 Going Online & Availability
@@ -330,40 +330,40 @@ flowchart TD
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class I revNode;;
-    class J commNode;;
-    class K refNode;;
-    class L earnNode;;
-    class M main;;
-    class N decision;;
-    class O revNode;;
-    class T commNode;;
-    class Y refNode;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class T commNode;
+    class Y refNode;
 ```
 
 ### **📍 Location & Availability Management**
@@ -396,38 +396,38 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class B1 revNode;;
-    class B2 commNode;;
-    class B3 refNode;;
-    class C earnNode;;
-    class C1 main;;
-    class C2 decision;;
-    class C3 revNode;;
-    class C4 commNode;;
-    class D refNode;;
-    class D1 earnNode;;
-    class D2 main;;
-    class D3 decision;;
-    class D4 revNode;;
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class B2 commNode;
+    class B3 refNode;
+    class C earnNode;
+    class C1 main;
+    class C2 decision;
+    class C3 revNode;
+    class C4 commNode;
+    class D refNode;
+    class D1 earnNode;
+    class D2 main;
+    class D3 decision;
+    class D4 revNode;
 ```
 
 ### **⚙️ Driver Preferences**
@@ -480,52 +480,52 @@ sequenceDiagram
     participant D2 as "🚗 Driver 2"
     participant D3 as "🚗 Driver 3"
     
-    P ->> SYS: Request Trip
-    SYS ->> SYS: Find Nearby Drivers
+    P->>SYS: Request Trip
+    SYS->>SYS: Find Nearby Drivers
     
     par Notify Multiple Drivers
-        SYS ->> D1: Trip Request (30s timer)
-        SYS ->> D2: Trip Request (30s timer)
-        SYS ->> D3: Trip Request (30s timer)
+        SYS->>D1: Trip Request (30s timer)
+        SYS->>D2: Trip Request (30s timer)
+        SYS->>D3: Trip Request (30s timer)
     end
     
     Note over D1,D3: Drivers see trip details and decide
     
     alt First to Accept
-        D2 ->> SYS: Accept Trip
-        SYS ->> D1: Trip Taken
-        SYS ->> D3: Trip Taken
-        SYS ->> P: Driver Assigned
+        D2->>SYS: Accept Trip
+        SYS->>D1: Trip Taken
+        SYS->>D3: Trip Taken
+        SYS->>P: Driver Assigned
     else No Response
         Note over SYS: Expand search radius
-        SYS ->> SYS: Find More Drivers
+        SYS->>SYS: Find More Drivers
     end
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class D1 main;;
-    class D2 decision;;
-    class D3 revNode;;
-    class P commNode;;
-    class SYS refNode;;
+    class D1 main;
+    class D2 decision;
+    class D3 revNode;
+    class P commNode;
+    class SYS refNode;
 ```
 
 ### **📊 Trip Request Details**
@@ -594,33 +594,33 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class I revNode;;
-    class J commNode;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
 ```
 
 ### **🎯 Acceptance Strategy**
@@ -649,35 +649,35 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class L revNode;;
-    class N commNode;;
-    class P refNode;;
-    class Y earnNode;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class L revNode;
+    class N commNode;
+    class P refNode;
+    class Y earnNode;
 ```
 
 ## 🛣️ Trip Execution & Navigation
@@ -705,35 +705,35 @@ flowchart TD
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class I revNode;;
-    class J commNode;;
-    class K refNode;;
-    class L earnNode;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
 ```
 
 ### **📱 Driver Interface During Trip**
@@ -767,40 +767,40 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class B1 revNode;;
-    class B2 commNode;;
-    class B3 refNode;;
-    class C earnNode;;
-    class C1 main;;
-    class C2 decision;;
-    class C3 revNode;;
-    class D commNode;;
-    class D1 refNode;;
-    class D2 earnNode;;
-    class D3 main;;
-    class E decision;;
-    class E1 revNode;;
-    class E2 commNode;;
-    class E3 refNode;;
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class B2 commNode;
+    class B3 refNode;
+    class C earnNode;
+    class C1 main;
+    class C2 decision;
+    class C3 revNode;
+    class D commNode;
+    class D1 refNode;
+    class D2 earnNode;
+    class D3 main;
+    class E decision;
+    class E1 revNode;
+    class E2 commNode;
+    class E3 refNode;
 ```
 
 ### **💬 Communication Templates**
@@ -855,33 +855,33 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class G1 decision;;
-    class G2 revNode;;
-    class G3 commNode;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class G1 decision;
+    class G2 revNode;
+    class G3 commNode;
 ```
 
 ### **📊 Daily Earnings Tracking**
@@ -954,41 +954,41 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class B1 revNode;;
-    class B2 commNode;;
-    class B3 refNode;;
-    class C earnNode;;
-    class C1 main;;
-    class C2 decision;;
-    class C3 revNode;;
-    class C4 commNode;;
-    class D refNode;;
-    class D1 earnNode;;
-    class D2 main;;
-    class D3 decision;;
-    class E revNode;;
-    class E1 commNode;;
-    class E2 refNode;;
-    class E3 earnNode;;
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class B2 commNode;
+    class B3 refNode;
+    class C earnNode;
+    class C1 main;
+    class C2 decision;
+    class C3 revNode;
+    class C4 commNode;
+    class D refNode;
+    class D1 earnNode;
+    class D2 main;
+    class D3 decision;
+    class E revNode;
+    class E1 commNode;
+    class E2 refNode;
+    class E3 earnNode;
 ```
 
 ### **💳 Payment & Withdrawal**
@@ -1002,49 +1002,49 @@ sequenceDiagram
     
     Note over D,M: Trip completed, earnings credited
     
-    D ->> W: Check Balance
-    W ->> D: Current Balance: SDG 245.50
+    D->>W: Check Balance
+    W->>D: Current Balance: SDG 245.50
     
     alt Bank Transfer
-        D ->> W: Request Withdrawal (SDG 200)
-        W ->> B: Transfer Request
-        B ->> W: Transfer Confirmed
-        W ->> D: Withdrawal Successful
+        D->>W: Request Withdrawal (SDG 200)
+        W->>B: Transfer Request
+        B->>W: Transfer Confirmed
+        W->>D: Withdrawal Successful
     else Mobile Money
-        D ->> W: Request Mobile Transfer
-        W ->> M: Transfer to Mobile Wallet
-        M ->> W: Transfer Confirmed
-        W ->> D: Mobile Transfer Complete
+        D->>W: Request Mobile Transfer
+        W->>M: Transfer to Mobile Wallet
+        M->>W: Transfer Confirmed
+        W->>D: Mobile Transfer Complete
     else Cash Collection
-        D ->> W: Request Cash Pickup
-        W ->> W: Schedule Cash Collection
-        W ->> D: Collection Point Assigned
+        D->>W: Request Cash Pickup
+        W->>W: Schedule Cash Collection
+        W->>D: Collection Point Assigned
     end
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class B main;;
-    class D decision;;
-    class M revNode;;
-    class W commNode;;
+    class B main;
+    class D decision;
+    class M revNode;
+    class W commNode;
 ```
 
 ## 📊 Performance & Analytics
@@ -1085,42 +1085,42 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class B1 revNode;;
-    class B2 commNode;;
-    class B3 refNode;;
-    class C earnNode;;
-    class C1 main;;
-    class C2 decision;;
-    class C3 revNode;;
-    class C4 commNode;;
-    class C5 refNode;;
-    class D earnNode;;
-    class D1 main;;
-    class D2 decision;;
-    class D3 revNode;;
-    class E commNode;;
-    class E1 refNode;;
-    class E2 earnNode;;
-    class E3 main;;
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class B2 commNode;
+    class B3 refNode;
+    class C earnNode;
+    class C1 main;
+    class C2 decision;
+    class C3 revNode;
+    class C4 commNode;
+    class C5 refNode;
+    class D earnNode;
+    class D1 main;
+    class D2 decision;
+    class D3 revNode;
+    class E commNode;
+    class E1 refNode;
+    class E2 earnNode;
+    class E3 main;
 ```
 
 ### **⭐ Rating System**
@@ -1187,40 +1187,40 @@ graph TB
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class B1 revNode;;
-    class B2 commNode;;
-    class B3 refNode;;
-    class C earnNode;;
-    class C1 main;;
-    class C2 decision;;
-    class C3 revNode;;
-    class D commNode;;
-    class D1 refNode;;
-    class D2 earnNode;;
-    class D3 main;;
-    class E decision;;
-    class E1 revNode;;
-    class E2 commNode;;
-    class E3 refNode;;
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class B2 commNode;
+    class B3 refNode;
+    class C earnNode;
+    class C1 main;
+    class C2 decision;
+    class C3 revNode;
+    class D commNode;
+    class D1 refNode;
+    class D2 earnNode;
+    class D3 main;
+    class E decision;
+    class E1 revNode;
+    class E2 commNode;
+    class E3 refNode;
 ```
 
 ## 🔄 Alternative Scenarios
@@ -1259,42 +1259,42 @@ flowchart TD
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class I revNode;;
-    class J commNode;;
-    class K refNode;;
-    class L earnNode;;
-    class M main;;
-    class N decision;;
-    class O revNode;;
-    class P commNode;;
-    class Q refNode;;
-    class R earnNode;;
-    class V main;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+    class Q refNode;
+    class R earnNode;
+    class V main;
 ```
 
 ### **🚫 No-Show Scenarios**
@@ -1329,40 +1329,40 @@ flowchart TD
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class I revNode;;
-    class J commNode;;
-    class K refNode;;
-    class L earnNode;;
-    class M main;;
-    class N decision;;
-    class O revNode;;
-    class P commNode;;
-    class Y refNode;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+    class Y refNode;
 ```
 
 ### **⚠️ Vehicle Breakdown**
@@ -1401,41 +1401,41 @@ flowchart TD
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class I revNode;;
-    class J commNode;;
-    class K refNode;;
-    class L earnNode;;
-    class M main;;
-    class N decision;;
-    class O revNode;;
-    class P commNode;;
-    class Q refNode;;
-    class Y earnNode;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+    class Q refNode;
+    class Y earnNode;
 ```
 
 ### **🚨 Safety Incidents**
@@ -1476,42 +1476,42 @@ flowchart TD
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class A main;;
-    class B decision;;
-    class C revNode;;
-    class D commNode;;
-    class E refNode;;
-    class F earnNode;;
-    class G main;;
-    class H decision;;
-    class I revNode;;
-    class J commNode;;
-    class K refNode;;
-    class L earnNode;;
-    class M main;;
-    class N decision;;
-    class O revNode;;
-    class P commNode;;
-    class Q refNode;;
-    class R earnNode;;
-    class Y main;;
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+    class Q refNode;
+    class R earnNode;
+    class Y main;
 ```
 
 ---

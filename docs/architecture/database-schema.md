@@ -212,22 +212,22 @@ erDiagram
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 ```
 
 ## 🏗️ Entity Specifications
@@ -456,8 +456,8 @@ graph LR
     USER["👤 User"] ---|1:1| WALLET["💰 Wallet"]
     USER ---|1:1| DRIVER["🚗 Driver Profile"]
     
-    classDef entity fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;;
-    class USER,WALLET,DRIVER entity;;
+    classDef entity fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    class USER,WALLET,DRIVER entity;
 ```
 
 ### **🔄 One-to-Many Relationships**
@@ -474,8 +474,8 @@ graph TB
     TRIP["🚗 Trip"] ---|1:N| RATING["⭐ Ratings"]
     TRIP ---|1:N| TRANS
     
-    classDef entity fill:#e8f5e8,stroke:#388e3c,stroke-width:2px;;
-    class USER,WALLET,TRIP entity;;
+    classDef entity fill:#e8f5e8,stroke:#388e3c,stroke-width:2px;
+    class USER,WALLET,TRIP entity;
 ```
 
 ### **🔄 Many-to-Many Relationships**
@@ -484,8 +484,8 @@ graph TB
 graph LR
     USER1["👤 User From"] ---|M:N| TRANS["💳 Transfer Transaction"] ---|M:N| USER2["👤 User To"]
     
-    classDef entity fill:#fff3e0,stroke:#f57c00,stroke-width:2px;;
-    class USER1,USER2,TRANS entity;;
+    classDef entity fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    class USER1,USER2,TRANS entity;
 ```
 
 ## 📈 Indexing Strategy

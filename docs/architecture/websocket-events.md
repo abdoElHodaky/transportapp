@@ -56,15 +56,15 @@ graph TB
     PS --> DB
     US --> DB
     
-    classDef client fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;;
-    classDef gateway fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;;
-    classDef service fill:#e8f5e8,stroke:#388e3c,stroke-width:2px;;
-    classDef storage fill:#fff3e0,stroke:#f57c00,stroke-width:2px;;
+    classDef client fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef gateway fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef service fill:#e8f5e8,stroke:#388e3c,stroke-width:2px;
+    classDef storage fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
     
-    class PA,DA,AD client;;
-    class WS,CM,RM,EM,AM gateway;;
-    class TS,LS,PS,US service;;
-    class REDIS,DB storage;;
+    class PA,DA,AD client;
+    class WS,CM,RM,EM,AM gateway;
+    class TS,LS,PS,US service;
+    class REDIS,DB storage;
 ```
 
 ## 🔌 Connection Management
@@ -78,43 +78,43 @@ sequenceDiagram
     participant AUTH as "🔐 Auth Service"
     participant REDIS as "⚡ Redis"
     
-    C ->> WS: Connect with JWT Token
-    WS ->> AUTH: Validate JWT Token
-    AUTH ->> WS: Token Valid + User Info
-    WS ->> REDIS: Store Connection Info
-    WS ->> C: Connection Established
+    C->>WS: Connect with JWT Token
+    WS->>AUTH: Validate JWT Token
+    AUTH->>WS: Token Valid + User Info
+    WS->>REDIS: Store Connection Info
+    WS->>C: Connection Established
     
     loop Heartbeat
-        C ->> WS: ping
-        WS ->> C: pong
+        C->>WS: ping
+        WS->>C: pong
     end
     
-    C ->> WS: Disconnect
-    WS ->> REDIS: Remove Connection Info
-    WS ->> WS: Leave All Rooms
+    C->>WS: Disconnect
+    WS->>REDIS: Remove Connection Info
+    WS->>WS: Leave All Rooms
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class C main;;
-    class WS decision;;
+    class C main;
+    class WS decision;
 ```
 
 ### **🔐 Authentication Events**
@@ -192,51 +192,51 @@ sequenceDiagram
     participant TS as "🚗 Trip Service"
     participant D as "🚗 Driver"
     
-    P ->> WS: trip_request
-    WS ->> TS: Create Trip
-    TS ->> WS: Trip Created
-    WS ->> D: new_trip_available
+    P->>WS: trip_request
+    WS->>TS: Create Trip
+    TS->>WS: Trip Created
+    WS->>D: new_trip_available
     
-    D ->> WS: trip_accept
-    WS ->> TS: Accept Trip
-    TS ->> WS: Trip Accepted
-    WS ->> P: trip_accepted
-    WS ->> D: trip_assignment_confirmed
+    D->>WS: trip_accept
+    WS->>TS: Accept Trip
+    TS->>WS: Trip Accepted
+    WS->>P: trip_accepted
+    WS->>D: trip_assignment_confirmed
     
-    D ->> WS: driver_arrived
-    WS ->> TS: Update Status
-    WS ->> P: driver_arrived
+    D->>WS: driver_arrived
+    WS->>TS: Update Status
+    WS->>P: driver_arrived
     
-    D ->> WS: trip_started
-    WS ->> P: trip_started
+    D->>WS: trip_started
+    WS->>P: trip_started
     
-    D ->> WS: trip_completed
-    WS ->> P: trip_completed
+    D->>WS: trip_completed
+    WS->>P: trip_completed
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class D main;;
-    class P decision;;
-    class TS revNode;;
-    class WS commNode;;
+    class D main;
+    class P decision;
+    class TS revNode;
+    class WS commNode;
 ```
 
 ### **📤 Client → Server Events**
@@ -418,36 +418,36 @@ sequenceDiagram
     participant P as "📱 Passenger App"
     
     loop Every 5-10 seconds
-        D ->> WS: driver_location_update
-        WS ->> LS: Update Location
-        LS ->> REDIS: Cache Location
-        WS ->> P: driver_location_update (if in trip)
+        D->>WS: driver_location_update
+        WS->>LS: Update Location
+        LS->>REDIS: Cache Location
+        WS->>P: driver_location_update (if in trip)
     end
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class D main;;
-    class LS decision;;
-    class P revNode;;
-    class WS commNode;;
+    class D main;
+    class LS decision;
+    class P revNode;
+    class WS commNode;
 ```
 
 ### **📤 Client → Server Events**
@@ -547,39 +547,39 @@ sequenceDiagram
     participant GW as "🏦 Payment Gateway"
     participant D as "🚗 Driver"
     
-    P ->> WS: process_payment
-    WS ->> PS: Process Payment
-    PS ->> GW: Gateway Request
-    GW ->> PS: Payment Response
-    PS ->> WS: Payment Result
-    WS ->> P: payment_completed
-    WS ->> D: payment_received
+    P->>WS: process_payment
+    WS->>PS: Process Payment
+    PS->>GW: Gateway Request
+    GW->>PS: Payment Response
+    PS->>WS: Payment Result
+    WS->>P: payment_completed
+    WS->>D: payment_received
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
     %% Main Dashboard (Neon Cyan/Blue)
-    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;;
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
     
     %% Decision Diamond (Gold Glow)
-    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
     
     %% Revenue (Emerald Gradient Style)
-    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
     
     %% Commission (Purple Gradient Style)
-    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;;
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
     
     %% Refund (Ruby Gradient Style)
-    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;;
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
     
     %% Earnings (Sapphire Gradient Style)
-    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;;
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 
-    class D main;;
-    class GW decision;;
-    class P revNode;;
-    class PS commNode;;
-    class WS refNode;;
+    class D main;
+    class GW decision;
+    class P revNode;
+    class PS commNode;
+    class WS refNode;
 ```
 
 ### **📥 Server → Client Events**
