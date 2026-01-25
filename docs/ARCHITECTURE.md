@@ -21,7 +21,6 @@ This document provides a comprehensive overview of the Sikka Transportation Plat
 ### **High-Level System Architecture**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     subgraph "Client Layer"
         A[Passenger Mobile App]
@@ -91,6 +90,48 @@ graph TB
     K --> U
     
     J --> P
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+    class Q refNode;
+    class R earnNode;
+    class S main;
+    class T decision;
+    class U revNode;
 ```
 
 ### **Architectural Principles**
@@ -120,7 +161,6 @@ graph TB
 ### **Core Services Architecture**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
     subgraph "Authentication Domain"
         A1[Auth Controller]
@@ -193,6 +233,54 @@ graph LR
     N2 --> N3
     N2 --> N4
     N2 --> N5
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A1 main;
+    class A2 decision;
+    class A3 revNode;
+    class A4 commNode;
+    class L1 refNode;
+    class L2 earnNode;
+    class L3 main;
+    class L4 decision;
+    class N1 revNode;
+    class N2 commNode;
+    class N3 refNode;
+    class N4 earnNode;
+    class N5 main;
+    class P1 decision;
+    class P2 revNode;
+    class P3 commNode;
+    class P4 refNode;
+    class P5 earnNode;
+    class T1 main;
+    class T2 decision;
+    class T3 revNode;
+    class T4 commNode;
+    class T5 refNode;
+    class U1 earnNode;
+    class U2 main;
+    class U3 decision;
+    class U4 revNode;
 ```
 
 ### **Service Responsibilities**
@@ -232,7 +320,6 @@ graph LR
 ### **Request Processing Flow**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant C as Client
     participant LB as Load Balancer
@@ -267,12 +354,39 @@ sequenceDiagram
     BS->>AG: Business Response
     AG->>LB: API Response
     LB->>C: HTTP Response
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class AG main;
+    class AS decision;
+    class BS revNode;
+    class C commNode;
+    class DB refNode;
+    class EXT earnNode;
+    class LB main;
 ```
 
 ### **Event-Driven Communication**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TD
     A[Trip Status Change] --> B[Event Publisher]
     B --> C[Redis Pub/Sub]
@@ -293,12 +407,48 @@ graph TD
     J --> N[SMS Gateway]
     K --> O[Analytics Dashboard]
     L --> P[Compliance Reports]
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
 ```
 
 ### **WebSocket Communication Flow**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant PA as Passenger App
     participant DA as Driver App
@@ -328,6 +478,32 @@ sequenceDiagram
     WS->>TS: Update Trip Status
     TS->>NS: Trigger Notifications
     WS->>PA: Status Change Notification
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class DA main;
+    class NS decision;
+    class PA revNode;
+    class TS commNode;
+    class WS refNode;
 ```
 
 ---
@@ -337,7 +513,6 @@ sequenceDiagram
 ### **Entity Relationship Diagram**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 erDiagram
     USER {
         uuid id PK
@@ -454,6 +629,26 @@ erDiagram
     WALLET ||--o{ TRANSACTION : "contains"
     
     PAYMENT ||--o{ TRANSACTION : "generates"
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
 ```
 
 ### **Database Optimization Strategy**
@@ -586,7 +781,6 @@ POST   /api/v1/trips/{id}/rate    # Rate trip
 ### **API Security Layers**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TD
     A[API Request] --> B[Rate Limiting]
     B --> C[CORS Validation]
@@ -608,6 +802,42 @@ graph TD
     L --> O
     M --> O
     N --> O
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
 ```
 
 ---
@@ -617,7 +847,6 @@ graph TD
 ### **WebSocket Architecture**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     subgraph "Client Layer"
         A[Passenger App]
@@ -664,6 +893,40 @@ graph TB
     
     L --> M
     M --> F
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
 ```
 
 ### **Real-time Event Types**
@@ -708,7 +971,6 @@ interface PaymentEvent {
 ### **Connection Management**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 stateDiagram-v2
     [*] --> Connecting
     Connecting --> Connected: Auth Success
@@ -726,6 +988,31 @@ stateDiagram-v2
     
     Disconnected --> Connecting: Reconnect
     Disconnected --> [*]: Session End
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class C decision;
+    class D revNode;
+    class I commNode;
 ```
 
 ---
@@ -735,7 +1022,6 @@ stateDiagram-v2
 ### **Multi-Layer Security Model**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TD
     A[Client Request] --> B[Network Security]
     B --> C[API Gateway Security]
@@ -800,12 +1086,57 @@ graph TD
     F --> F2
     F --> F3
     F --> F4
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class B2 commNode;
+    class B3 refNode;
+    class C earnNode;
+    class C1 main;
+    class C2 decision;
+    class C3 revNode;
+    class C4 commNode;
+    class D refNode;
+    class D1 earnNode;
+    class D2 main;
+    class D3 decision;
+    class D4 revNode;
+    class E commNode;
+    class E1 refNode;
+    class E2 earnNode;
+    class E3 main;
+    class E4 decision;
+    class F revNode;
+    class F1 commNode;
+    class F2 refNode;
+    class F3 earnNode;
+    class F4 main;
 ```
 
 ### **Authentication & Authorization Flow**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant C as Client
     participant AG as API Gateway
@@ -834,6 +1165,33 @@ sequenceDiagram
     AG->>BS: Authorized Request
     BS->>AG: Business Response
     AG->>C: API Response
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class AG main;
+    class AS decision;
+    class BS revNode;
+    class C commNode;
+    class DB refNode;
+    class RS earnNode;
 ```
 
 ### **Data Protection Strategy**
@@ -864,7 +1222,6 @@ System Config     | -         | -      | RW
 ### **Horizontal Scaling Architecture**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     subgraph "Load Balancer Layer"
         A[Application Load Balancer]
@@ -922,12 +1279,47 @@ graph TB
     C --> M
     C --> N
     C --> O
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
 ```
 
 ### **Caching Strategy**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
     A[Client Request] --> B[API Gateway]
     B --> C{Cache Check}
@@ -953,6 +1345,40 @@ graph LR
     
     G --> I
     G --> J
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
 ```
 
 ### **Performance Optimization Techniques**
@@ -985,7 +1411,6 @@ graph LR
 ### **Container-Based Deployment**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     subgraph "Production Environment"
         subgraph "Kubernetes Cluster"
@@ -1038,6 +1463,41 @@ graph TB
     B --> J
     C --> J
     D --> J
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
 ```
 
 ### **Environment Configuration**
@@ -1115,7 +1575,6 @@ services:
 ### **Monitoring & Observability**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
     subgraph "Application Metrics"
         A[API Response Times]
@@ -1161,6 +1620,43 @@ graph LR
     M --> N
     M --> O
     M --> P
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
 ```
 
 ### **Health Check Strategy**

@@ -72,7 +72,6 @@ graph TB
 ### **🤝 Connection Lifecycle**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant C as 📱 Client
     participant WS as 🌐 WebSocket Gateway
@@ -93,6 +92,29 @@ sequenceDiagram
     C->>WS: Disconnect
     WS->>REDIS: Remove Connection Info
     WS->>WS: Leave All Rooms
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class C main;
+    class WS decision;
 ```
 
 ### **🔐 Authentication Events**
@@ -164,7 +186,6 @@ socket.emit('leave_room', {
 ### **🎯 Trip Request Flow**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as 📱 Passenger
     participant WS as 🌐 WebSocket
@@ -191,6 +212,31 @@ sequenceDiagram
     
     D->>WS: trip_completed
     WS->>P: trip_completed
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class D main;
+    class P decision;
+    class TS revNode;
+    class WS commNode;
 ```
 
 ### **📤 Client → Server Events**
@@ -364,7 +410,6 @@ socket.on('trip_completed', (data) => {
 ### **🗺️ Real-time Location Tracking**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant D as 🚗 Driver App
     participant WS as 🌐 WebSocket
@@ -378,6 +423,31 @@ sequenceDiagram
         LS->>REDIS: Cache Location
         WS->>P: driver_location_update (if in trip)
     end
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class D main;
+    class LS decision;
+    class P revNode;
+    class WS commNode;
 ```
 
 ### **📤 Client → Server Events**
@@ -470,7 +540,6 @@ socket.on('nearby_drivers', (data) => {
 ### **💰 Payment Processing Flow**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as 📱 Passenger
     participant WS as 🌐 WebSocket
@@ -485,6 +554,32 @@ sequenceDiagram
     PS->>WS: Payment Result
     WS->>P: payment_completed
     WS->>D: payment_received
+
+    %% --- DARK GRADIENT & GLOW STYLING ---
+    
+    %% Main Dashboard (Neon Cyan/Blue)
+    classDef main fill:#0d1117,stroke:#58a6ff,stroke-width:4px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Diamond (Gold Glow)
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    
+    %% Revenue (Emerald Gradient Style)
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    
+    %% Commission (Purple Gradient Style)
+    classDef commNode fill:#12101e,stroke:#bc8cff,color:#e2c5ff,stroke-width:2px;
+    
+    %% Refund (Ruby Gradient Style)
+    classDef refNode fill:#1a0b0b,stroke:#ff7b72,color:#ffa198,stroke-width:2px;
+    
+    %% Earnings (Sapphire Gradient Style)
+    classDef earnNode fill:#051221,stroke:#388bfd,color:#a5d6ff,stroke-width:2px;
+
+    class D main;
+    class GW decision;
+    class P revNode;
+    class PS commNode;
+    class WS refNode;
 ```
 
 ### **📥 Server → Client Events**
