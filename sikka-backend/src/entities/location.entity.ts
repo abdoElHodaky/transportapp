@@ -13,6 +13,7 @@ import { Trip } from './trip.entity';
 
 export enum LocationType {
   DRIVER_LOCATION = 'driver_location',
+  USER_LOCATION = 'user_location',
   TRIP_PICKUP = 'trip_pickup',
   TRIP_DROPOFF = 'trip_dropoff',
   TRIP_ROUTE = 'trip_route',
@@ -84,6 +85,23 @@ export class Location {
   @Column({ nullable: true })
   timeFromPrevious: number; // Time from previous point in seconds
 
+  // Location source and quality
+  @Column({ 
+    type: 'enum', 
+    enum: ['gps', 'network', 'manual', 'estimated'],
+    default: 'gps'
+  })
+  source: string;
+
+  @Column({ type: 'int', nullable: true })
+  batteryLevel: number; // Battery level when location was recorded (0-100)
+
+  @Column({ nullable: true })
+  networkType: string; // Network type (wifi, 4g, 3g, etc.)
+
+  @Column({ type: 'timestamp', nullable: true })
+  recordedAt: Date; // When the location was actually recorded
+
   // Metadata
   @Column({ type: 'json', nullable: true })
   metadata: Record<string, any>;
@@ -129,4 +147,3 @@ export class Location {
     return degrees * (Math.PI / 180);
   }
 }
-
