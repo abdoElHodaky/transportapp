@@ -30,41 +30,41 @@ The Sikka Transportation Platform uses **Socket.IO** for real-time bidirectional
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     %% Client Applications
-    PA[📱 Passenger App] --> WS[🌐 WebSocket Gateway]
-    DA[🚗 Driver App] --> WS
-    AD[💻 Admin Dashboard] --> WS
+    PA["📱 Passenger App"] --> WS["🌐 WebSocket Gateway"]
+    DA["🚗 Driver App"] --> WS
+    AD["💻 Admin Dashboard"] --> WS
     
     %% WebSocket Gateway Components
-    WS --> CM[🔌 Connection Manager]
-    WS --> RM[🏠 Room Manager]
-    WS --> EM[📡 Event Manager]
-    WS --> AM[🔐 Auth Manager]
+    WS --> CM["🔌 Connection Manager"]
+    WS --> RM["🏠 Room Manager"]
+    WS --> EM["📡 Event Manager"]
+    WS --> AM["🔐 Auth Manager"]
     
     %% Backend Services
-    EM --> TS[🚗 Trip Service]
-    EM --> LS[📍 Location Service]
-    EM --> PS[💳 Payment Service]
-    EM --> US[👥 User Service]
+    EM --> TS["🚗 Trip Service"]
+    EM --> LS["📍 Location Service"]
+    EM --> PS["💳 Payment Service"]
+    EM --> US["👥 User Service"]
     
     %% Data Storage
-    CM --> REDIS[(⚡ Redis<br/>Session Store)]
+    CM --> REDIS["(⚡ Redis<br/>Session Store)"]
     RM --> REDIS
     LS --> REDIS
     
     %% Database
-    TS --> DB[(🗄️ PostgreSQL)]
+    TS --> DB["(🗄️ PostgreSQL)"]
     PS --> DB
     US --> DB
     
-    classDef client fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    classDef gateway fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef service fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    classDef storage fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef client fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    classDef gateway fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef service fill:#e8f5e8,stroke:#388e3c,stroke-width:2px;
+    classDef storage fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
     
-    class PA,DA,AD client
-    class WS,CM,RM,EM,AM gateway
-    class TS,LS,PS,US service
-    class REDIS,DB storage
+    class PA,DA,AD client;
+    class WS,CM,RM,EM,AM gateway;
+    class TS,LS,PS,US service;
+    class REDIS,DB storage;
 ```
 
 ## 🔌 Connection Management
@@ -73,25 +73,25 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    participant C as 📱 Client
-    participant WS as 🌐 WebSocket Gateway
-    participant AUTH as 🔐 Auth Service
-    participant REDIS as ⚡ Redis
+    participant C as "📱 Client"
+    participant WS as "🌐 WebSocket Gateway"
+    participant AUTH as "🔐 Auth Service"
+    participant REDIS as "⚡ Redis"
     
-    C->>WS: Connect with JWT Token
-    WS->>AUTH: Validate JWT Token
-    AUTH->>WS: Token Valid + User Info
-    WS->>REDIS: Store Connection Info
-    WS->>C: Connection Established
+    C ->> WS: Connect with JWT Token
+    WS ->> AUTH: Validate JWT Token
+    AUTH ->> WS: Token Valid + User Info
+    WS ->> REDIS: Store Connection Info
+    WS ->> C: Connection Established
     
     loop Heartbeat
-        C->>WS: ping
-        WS->>C: pong
+        C ->> WS: ping
+        WS ->> C: pong
     end
     
-    C->>WS: Disconnect
-    WS->>REDIS: Remove Connection Info
-    WS->>WS: Leave All Rooms
+    C ->> WS: Disconnect
+    WS ->> REDIS: Remove Connection Info
+    WS ->> WS: Leave All Rooms
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
@@ -187,31 +187,31 @@ socket.emit('leave_room', {
 
 ```mermaid
 sequenceDiagram
-    participant P as 📱 Passenger
-    participant WS as 🌐 WebSocket
-    participant TS as 🚗 Trip Service
-    participant D as 🚗 Driver
+    participant P as "📱 Passenger"
+    participant WS as "🌐 WebSocket"
+    participant TS as "🚗 Trip Service"
+    participant D as "🚗 Driver"
     
-    P->>WS: trip_request
-    WS->>TS: Create Trip
-    TS->>WS: Trip Created
-    WS->>D: new_trip_available
+    P ->> WS: trip_request
+    WS ->> TS: Create Trip
+    TS ->> WS: Trip Created
+    WS ->> D: new_trip_available
     
-    D->>WS: trip_accept
-    WS->>TS: Accept Trip
-    TS->>WS: Trip Accepted
-    WS->>P: trip_accepted
-    WS->>D: trip_assignment_confirmed
+    D ->> WS: trip_accept
+    WS ->> TS: Accept Trip
+    TS ->> WS: Trip Accepted
+    WS ->> P: trip_accepted
+    WS ->> D: trip_assignment_confirmed
     
-    D->>WS: driver_arrived
-    WS->>TS: Update Status
-    WS->>P: driver_arrived
+    D ->> WS: driver_arrived
+    WS ->> TS: Update Status
+    WS ->> P: driver_arrived
     
-    D->>WS: trip_started
-    WS->>P: trip_started
+    D ->> WS: trip_started
+    WS ->> P: trip_started
     
-    D->>WS: trip_completed
-    WS->>P: trip_completed
+    D ->> WS: trip_completed
+    WS ->> P: trip_completed
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
@@ -411,17 +411,17 @@ socket.on('trip_completed', (data) => {
 
 ```mermaid
 sequenceDiagram
-    participant D as 🚗 Driver App
-    participant WS as 🌐 WebSocket
-    participant LS as 📍 Location Service
-    participant REDIS as ⚡ Redis
-    participant P as 📱 Passenger App
+    participant D as "🚗 Driver App"
+    participant WS as "🌐 WebSocket"
+    participant LS as "📍 Location Service"
+    participant REDIS as "⚡ Redis"
+    participant P as "📱 Passenger App"
     
     loop Every 5-10 seconds
-        D->>WS: driver_location_update
-        WS->>LS: Update Location
-        LS->>REDIS: Cache Location
-        WS->>P: driver_location_update (if in trip)
+        D ->> WS: driver_location_update
+        WS ->> LS: Update Location
+        LS ->> REDIS: Cache Location
+        WS ->> P: driver_location_update (if in trip)
     end
 
     %% --- DARK GRADIENT & GLOW STYLING ---
@@ -541,19 +541,19 @@ socket.on('nearby_drivers', (data) => {
 
 ```mermaid
 sequenceDiagram
-    participant P as 📱 Passenger
-    participant WS as 🌐 WebSocket
-    participant PS as 💳 Payment Service
-    participant GW as 🏦 Payment Gateway
-    participant D as 🚗 Driver
+    participant P as "📱 Passenger"
+    participant WS as "🌐 WebSocket"
+    participant PS as "💳 Payment Service"
+    participant GW as "🏦 Payment Gateway"
+    participant D as "🚗 Driver"
     
-    P->>WS: process_payment
-    WS->>PS: Process Payment
-    PS->>GW: Gateway Request
-    GW->>PS: Payment Response
-    PS->>WS: Payment Result
-    WS->>P: payment_completed
-    WS->>D: payment_received
+    P ->> WS: process_payment
+    WS ->> PS: Process Payment
+    PS ->> GW: Gateway Request
+    GW ->> PS: Payment Response
+    PS ->> WS: Payment Result
+    WS ->> P: payment_completed
+    WS ->> D: payment_received
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     

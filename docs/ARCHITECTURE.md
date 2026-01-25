@@ -22,40 +22,40 @@ This document provides a comprehensive overview of the Sikka Transportation Plat
 
 ```mermaid
 graph TB
-    subgraph "Client Layer"
-        A[Passenger Mobile App]
-        B[Driver Mobile App]
-        C[Admin Web Dashboard]
+    subgraph ""Client" Layer"
+        A["Passenger Mobile App"]
+        B["Driver Mobile App"]
+        C["Admin Web Dashboard"]
     end
     
-    subgraph "API Gateway Layer"
-        D[Load Balancer]
-        E[API Gateway]
-        F[Rate Limiter]
+    subgraph ""API" Gateway Layer"
+        D["Load Balancer"]
+        E["API Gateway"]
+        F["Rate Limiter"]
     end
     
-    subgraph "Application Layer"
-        G[Authentication Service]
-        H[Trip Management Service]
-        I[Payment Service]
-        J[User Service]
-        K[Notification Service]
-        L[Location Service]
-        M[WebSocket Gateway]
+    subgraph ""Application" Layer"
+        G["Authentication Service"]
+        H["Trip Management Service"]
+        I["Payment Service"]
+        J["User Service"]
+        K["Notification Service"]
+        L["Location Service"]
+        M["WebSocket Gateway"]
     end
     
-    subgraph "Data Layer"
-        N[(PostgreSQL)]
-        O[(Redis Cache)]
-        P[File Storage]
+    subgraph ""Data" Layer"
+        N["(PostgreSQL)"]
+        O["(Redis Cache)"]
+        P["File Storage"]
     end
     
-    subgraph "External Services"
-        Q[EBS Payment Gateway]
-        R[CyberPay Gateway]
-        S[SMS Service]
-        T[Maps API]
-        U[Push Notifications]
+    subgraph ""External" Services"
+        Q["EBS Payment Gateway"]
+        R["CyberPay Gateway"]
+        S["SMS Service"]
+        T["Maps API"]
+        U["Push Notifications"]
     end
     
     A --> D
@@ -162,49 +162,49 @@ graph TB
 
 ```mermaid
 graph LR
-    subgraph "Authentication Domain"
-        A1[Auth Controller]
-        A2[Auth Service]
-        A3[JWT Strategy]
-        A4[OTP Service]
+    subgraph ""Authentication" Domain"
+        A1["Auth Controller"]
+        A2["Auth Service"]
+        A3["JWT Strategy"]
+        A4["OTP Service"]
     end
     
-    subgraph "User Management Domain"
-        U1[User Controller]
-        U2[User Service]
-        U3[Profile Service]
-        U4[Driver Verification]
+    subgraph ""User" Management Domain"
+        U1["User Controller"]
+        U2["User Service"]
+        U3["Profile Service"]
+        U4["Driver Verification"]
     end
     
-    subgraph "Trip Management Domain"
-        T1[Trip Controller]
-        T2[Trip Service]
-        T3[Matching Service]
-        T4[Fare Calculator]
-        T5[Route Optimizer]
+    subgraph ""Trip" Management Domain"
+        T1["Trip Controller"]
+        T2["Trip Service"]
+        T3["Matching Service"]
+        T4["Fare Calculator"]
+        T5["Route Optimizer"]
     end
     
-    subgraph "Payment Domain"
-        P1[Payment Controller]
-        P2[Payment Service]
-        P3[Wallet Service]
-        P4[Gateway Manager]
-        P5[Transaction Service]
+    subgraph ""Payment" Domain"
+        P1["Payment Controller"]
+        P2["Payment Service"]
+        P3["Wallet Service"]
+        P4["Gateway Manager"]
+        P5["Transaction Service"]
     end
     
-    subgraph "Location Domain"
-        L1[Location Controller]
-        L2[Location Service]
-        L3[Geospatial Service]
-        L4[Route Service]
+    subgraph ""Location" Domain"
+        L1["Location Controller"]
+        L2["Location Service"]
+        L3["Geospatial Service"]
+        L4["Route Service"]
     end
     
-    subgraph "Notification Domain"
-        N1[Notification Controller]
-        N2[Notification Service]
-        N3[Push Service]
-        N4[SMS Service]
-        N5[Email Service]
+    subgraph ""Notification" Domain"
+        N1["Notification Controller"]
+        N2["Notification Service"]
+        N3["Push Service"]
+        N4["SMS Service"]
+        N5["Email Service"]
     end
     
     A1 --> A2
@@ -321,39 +321,39 @@ graph LR
 
 ```mermaid
 sequenceDiagram
-    participant C as Client
-    participant LB as Load Balancer
-    participant AG as API Gateway
-    participant RL as Rate Limiter
-    participant AS as Auth Service
-    participant BS as Business Service
-    participant DB as Database
-    participant Cache as Redis
-    participant EXT as External Service
+    participant C as "Client"
+    participant LB as "Load Balancer"
+    participant AG as "API Gateway"
+    participant RL as "Rate Limiter"
+    participant AS as "Auth Service"
+    participant BS as "Business Service"
+    participant DB as "Database"
+    participant Cache as "Redis"
+    participant EXT as "External Service"
     
-    C->>LB: HTTP Request
-    LB->>AG: Route Request
-    AG->>RL: Check Rate Limits
-    RL->>AS: Validate JWT Token
-    AS->>Cache: Check Token Cache
-    Cache->>AS: Token Valid
-    AS->>AG: Authentication Success
-    AG->>BS: Business Logic Request
+    C ->> LB: HTTP Request
+    LB ->> AG: Route Request
+    AG ->> RL: Check Rate Limits
+    RL ->> AS: Validate JWT Token
+    AS ->> Cache: Check Token Cache
+    Cache ->> AS: Token Valid
+    AS ->> AG: Authentication Success
+    AG ->> BS: Business Logic Request
     
-    BS->>Cache: Check Cache
-    Cache->>BS: Cache Miss
-    BS->>DB: Database Query
-    DB->>BS: Query Result
-    BS->>Cache: Update Cache
+    BS ->> Cache: Check Cache
+    Cache ->> BS: Cache Miss
+    BS ->> DB: Database Query
+    DB ->> BS: Query Result
+    BS ->> Cache: Update Cache
     
     alt External Service Required
-        BS->>EXT: External API Call
-        EXT->>BS: External Response
+        BS ->> EXT: External API Call
+        EXT ->> BS: External Response
     end
     
-    BS->>AG: Business Response
-    AG->>LB: API Response
-    LB->>C: HTTP Response
+    BS ->> AG: Business Response
+    AG ->> LB: API Response
+    LB ->> C: HTTP Response
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
@@ -388,25 +388,25 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    A[Trip Status Change] --> B[Event Publisher]
-    B --> C[Redis Pub/Sub]
+    A["Trip Status Change"] --> B["Event Publisher"]
+    B --> C["Redis Pub/Sub"]
     
-    C --> D[WebSocket Gateway]
-    C --> E[Notification Service]
-    C --> F[Analytics Service]
-    C --> G[Audit Service]
+    C --> D["WebSocket Gateway"]
+    C --> E["Notification Service"]
+    C --> F["Analytics Service"]
+    C --> G["Audit Service"]
     
-    D --> H[Real-time Updates]
-    E --> I[Push Notifications]
-    E --> J[SMS Notifications]
-    F --> K[Metrics Collection]
-    G --> L[Audit Logs]
+    D --> H["Real-time Updates"]
+    E --> I["Push Notifications"]
+    E --> J["SMS Notifications"]
+    F --> K["Metrics Collection"]
+    G --> L["Audit Logs"]
     
-    H --> M[Mobile Apps]
+    H --> M["Mobile Apps"]
     I --> M
-    J --> N[SMS Gateway]
-    K --> O[Analytics Dashboard]
-    L --> P[Compliance Reports]
+    J --> N["SMS Gateway"]
+    K --> O["Analytics Dashboard"]
+    L --> P["Compliance Reports"]
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
@@ -450,34 +450,34 @@ graph TD
 
 ```mermaid
 sequenceDiagram
-    participant PA as Passenger App
-    participant DA as Driver App
-    participant WS as WebSocket Gateway
-    participant TS as Trip Service
-    participant NS as Notification Service
+    participant PA as "Passenger App"
+    participant DA as "Driver App"
+    participant WS as "WebSocket Gateway"
+    participant TS as "Trip Service"
+    participant NS as "Notification Service"
     
     Note over PA,DA: Trip Request Initiated
     
-    PA->>WS: Connect & Join Trip Room
-    DA->>WS: Connect & Join Driver Room
+    PA ->> WS: Connect & Join Trip Room
+    DA ->> WS: Connect & Join Driver Room
     
-    TS->>WS: New Trip Available
-    WS->>DA: Broadcast Trip Request
+    TS ->> WS: New Trip Available
+    WS ->> DA: Broadcast Trip Request
     
-    DA->>WS: Accept Trip
-    WS->>TS: Process Trip Acceptance
-    TS->>WS: Trip Assigned Event
-    WS->>PA: Trip Assigned Notification
+    DA ->> WS: Accept Trip
+    WS ->> TS: Process Trip Acceptance
+    TS ->> WS: Trip Assigned Event
+    WS ->> PA: Trip Assigned Notification
     
     loop Location Updates
-        DA->>WS: Driver Location Update
-        WS->>PA: Real-time Location
+        DA ->> WS: Driver Location Update
+        WS ->> PA: Real-time Location
     end
     
-    DA->>WS: Trip Status Update
-    WS->>TS: Update Trip Status
-    TS->>NS: Trigger Notifications
-    WS->>PA: Status Change Notification
+    DA ->> WS: Trip Status Update
+    WS ->> TS: Update Trip Status
+    TS ->> NS: Trigger Notifications
+    WS ->> PA: Status Change Notification
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
@@ -782,22 +782,22 @@ POST   /api/v1/trips/{id}/rate    # Rate trip
 
 ```mermaid
 graph TD
-    A[API Request] --> B[Rate Limiting]
-    B --> C[CORS Validation]
-    C --> D[Input Validation]
-    D --> E[JWT Authentication]
-    E --> F[Role Authorization]
-    F --> G[Business Logic]
-    G --> H[Response Sanitization]
-    H --> I[API Response]
+    A["API Request"] --> B["Rate Limiting"]
+    B --> C["CORS Validation"]
+    C --> D["Input Validation"]
+    D --> E["JWT Authentication"]
+    E --> F["Role Authorization"]
+    F --> G["Business Logic"]
+    G --> H["Response Sanitization"]
+    H --> I["API Response"]
     
-    B --> J[Rate Limit Exceeded]
-    C --> K[CORS Violation]
-    D --> L[Invalid Input]
-    E --> M[Authentication Failed]
-    F --> N[Authorization Failed]
+    B --> J["Rate Limit Exceeded"]
+    C --> K["CORS Violation"]
+    D --> L["Invalid Input"]
+    E --> M["Authentication Failed"]
+    F --> N["Authorization Failed"]
     
-    J --> O[Error Response]
+    J --> O["Error Response"]
     K --> O
     L --> O
     M --> O
@@ -848,29 +848,29 @@ graph TD
 
 ```mermaid
 graph TB
-    subgraph "Client Layer"
-        A[Passenger App]
-        B[Driver App]
-        C[Admin Dashboard]
+    subgraph ""Client" Layer"
+        A["Passenger App"]
+        B["Driver App"]
+        C["Admin Dashboard"]
     end
     
-    subgraph "WebSocket Gateway"
-        D[Connection Manager]
-        E[Room Manager]
-        F[Event Router]
-        G[Authentication Handler]
+    subgraph ""WebSocket" Gateway"
+        D["Connection Manager"]
+        E["Room Manager"]
+        F["Event Router"]
+        G["Authentication Handler"]
     end
     
-    subgraph "Business Services"
-        H[Trip Service]
-        I[Location Service]
-        J[Notification Service]
-        K[Payment Service]
+    subgraph ""Business" Services"
+        H["Trip Service"]
+        I["Location Service"]
+        J["Notification Service"]
+        K["Payment Service"]
     end
     
-    subgraph "Message Broker"
-        L[Redis Pub/Sub]
-        M[Event Queue]
+    subgraph ""Message" Broker"
+        L["Redis Pub/Sub"]
+        M["Event Queue"]
     end
     
     A --> D
@@ -1023,44 +1023,44 @@ stateDiagram-v2
 
 ```mermaid
 graph TD
-    A[Client Request] --> B[Network Security]
-    B --> C[API Gateway Security]
-    C --> D[Application Security]
-    D --> E[Data Security]
-    E --> F[Infrastructure Security]
+    A["Client Request"] --> B["Network Security"]
+    B --> C["API Gateway Security"]
+    C --> D["Application Security"]
+    D --> E["Data Security"]
+    E --> F["Infrastructure Security"]
     
-    subgraph "Network Layer"
-        B1[HTTPS/TLS 1.3]
-        B2[DDoS Protection]
-        B3[Firewall Rules]
+    subgraph ""Network" Layer"
+        B1["HTTPS/TLS 1.3"]
+        B2["DDoS Protection"]
+        B3["Firewall Rules"]
     end
     
-    subgraph "API Gateway Layer"
-        C1[Rate Limiting]
-        C2[CORS Policy]
-        C3[Input Validation]
-        C4[Request Sanitization]
+    subgraph ""API" Gateway Layer"
+        C1["Rate Limiting"]
+        C2["CORS Policy"]
+        C3["Input Validation"]
+        C4["Request Sanitization"]
     end
     
-    subgraph "Application Layer"
-        D1[JWT Authentication]
-        D2[Role-Based Authorization]
-        D3[Session Management]
-        D4[Audit Logging]
+    subgraph ""Application" Layer"
+        D1["JWT Authentication"]
+        D2["Role-Based Authorization"]
+        D3["Session Management"]
+        D4["Audit Logging"]
     end
     
-    subgraph "Data Layer"
-        E1[Encryption at Rest]
-        E2[Encryption in Transit]
-        E3[Database Security]
-        E4[Backup Encryption]
+    subgraph ""Data" Layer"
+        E1["Encryption at Rest"]
+        E2["Encryption in Transit"]
+        E3["Database Security"]
+        E4["Backup Encryption"]
     end
     
-    subgraph "Infrastructure Layer"
-        F1[Container Security]
-        F2[Network Segmentation]
-        F3[Access Controls]
-        F4[Monitoring & Alerting]
+    subgraph ""Infrastructure" Layer"
+        F1["Container Security"]
+        F2["Network Segmentation"]
+        F3["Access Controls"]
+        F4["Monitoring & Alerting"]
     end
     
     B --> B1
@@ -1138,33 +1138,33 @@ graph TD
 
 ```mermaid
 sequenceDiagram
-    participant C as Client
-    participant AG as API Gateway
-    participant AS as Auth Service
-    participant RS as Redis
-    participant DB as Database
-    participant BS as Business Service
+    participant C as "Client"
+    participant AG as "API Gateway"
+    participant AS as "Auth Service"
+    participant RS as "Redis"
+    participant DB as "Database"
+    participant BS as "Business Service"
     
-    C->>AG: Login Request
-    AG->>AS: Validate Credentials
-    AS->>DB: Check User Credentials
-    DB->>AS: User Data
-    AS->>AS: Generate JWT & Refresh Token
-    AS->>RS: Store Refresh Token
-    AS->>AG: Return Tokens
-    AG->>C: Authentication Success
+    C ->> AG: Login Request
+    AG ->> AS: Validate Credentials
+    AS ->> DB: Check User Credentials
+    DB ->> AS: User Data
+    AS ->> AS: Generate JWT & Refresh Token
+    AS ->> RS: Store Refresh Token
+    AS ->> AG: Return Tokens
+    AG ->> C: Authentication Success
     
     Note over C,BS: Subsequent API Calls
     
-    C->>AG: API Request + JWT
-    AG->>AS: Validate JWT
-    AS->>AS: Verify Token Signature
-    AS->>RS: Check Token Blacklist
-    RS->>AS: Token Valid
-    AS->>AG: Authentication Success
-    AG->>BS: Authorized Request
-    BS->>AG: Business Response
-    AG->>C: API Response
+    C ->> AG: API Request + JWT
+    AG ->> AS: Validate JWT
+    AS ->> AS: Verify Token Signature
+    AS ->> RS: Check Token Blacklist
+    RS ->> AS: Token Valid
+    AS ->> AG: Authentication Success
+    AG ->> BS: Authorized Request
+    BS ->> AG: Business Response
+    AG ->> C: API Response
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
@@ -1223,31 +1223,31 @@ System Config     | -         | -      | RW
 
 ```mermaid
 graph TB
-    subgraph "Load Balancer Layer"
-        A[Application Load Balancer]
-        B[WebSocket Load Balancer]
+    subgraph ""Load" Balancer Layer"
+        A["Application Load Balancer"]
+        B["WebSocket Load Balancer"]
     end
     
-    subgraph "Application Instances"
-        C[API Instance 1]
-        D[API Instance 2]
-        E[API Instance N]
-        F[WebSocket Instance 1]
-        G[WebSocket Instance 2]
-        H[WebSocket Instance N]
+    subgraph ""Application" Instances"
+        C["API Instance 1"]
+        D["API Instance 2"]
+        E["API Instance N"]
+        F["WebSocket Instance 1"]
+        G["WebSocket Instance 2"]
+        H["WebSocket Instance N"]
     end
     
-    subgraph "Data Layer"
-        I[PostgreSQL Primary]
-        J[PostgreSQL Read Replica 1]
-        K[PostgreSQL Read Replica 2]
-        L[Redis Cluster]
+    subgraph ""Data" Layer"
+        I["PostgreSQL Primary"]
+        J["PostgreSQL Read Replica 1"]
+        K["PostgreSQL Read Replica 2"]
+        L["Redis Cluster"]
     end
     
-    subgraph "External Services"
-        M[Payment Gateways]
-        N[SMS Services]
-        O[Push Notifications]
+    subgraph ""External" Services"
+        M["Payment Gateways"]
+        N["SMS Services"]
+        O["Push Notifications"]
     end
     
     A --> C
@@ -1321,21 +1321,21 @@ graph TB
 
 ```mermaid
 graph LR
-    A[Client Request] --> B[API Gateway]
-    B --> C{Cache Check}
+    A["Client Request"] --> B["API Gateway"]
+    B --> C{"Cache Check"}
     
-    C -->|Hit| D[Return Cached Data]
-    C -->|Miss| E[Business Logic]
+    C --> |Hit| D["Return Cached Data"]
+    C --> |Miss| E["Business Logic"]
     
-    E --> F[Database Query]
-    F --> G[Update Cache]
-    G --> H[Return Data]
+    E --> F["Database Query"]
+    F --> G["Update Cache"]
+    G --> H["Return Data"]
     
-    subgraph "Cache Layers"
-        I[Redis - Session Cache]
-        J[Redis - Data Cache]
-        K[CDN - Static Assets]
-        L[Application Cache]
+    subgraph ""Cache" Layers"
+        I["Redis - Session Cache"]
+        J["Redis - Data Cache"]
+        K["CDN - Static Assets"]
+        L["Application Cache"]
     end
     
     C --> I
@@ -1412,32 +1412,32 @@ graph LR
 
 ```mermaid
 graph TB
-    subgraph "Production Environment"
-        subgraph "Kubernetes Cluster"
-            A[Ingress Controller]
-            B[API Deployment]
-            C[WebSocket Deployment]
-            D[Worker Deployment]
-            E[Redis Deployment]
+    subgraph ""Production" Environment"
+        subgraph ""Kubernetes" Cluster"
+            A["Ingress Controller"]
+            B["API Deployment"]
+            C["WebSocket Deployment"]
+            D["Worker Deployment"]
+            E["Redis Deployment"]
         end
         
-        subgraph "Database Layer"
-            F[PostgreSQL Primary]
-            G[PostgreSQL Standby]
+        subgraph ""Database" Layer"
+            F["PostgreSQL Primary"]
+            G["PostgreSQL Standby"]
         end
         
-        subgraph "Monitoring"
-            H[Prometheus]
-            I[Grafana]
-            J[ELK Stack]
+        subgraph ""Monitoring""
+            H["Prometheus"]
+            I["Grafana"]
+            J["ELK Stack"]
         end
     end
     
-    subgraph "CI/CD Pipeline"
-        K[Git Repository]
-        L[GitHub Actions]
-        M[Docker Registry]
-        N[Deployment Scripts]
+    subgraph ""CI/CD" Pipeline"
+        K["Git Repository"]
+        L["GitHub Actions"]
+        M["Docker Registry"]
+        N["Deployment Scripts"]
     end
     
     K --> L
@@ -1576,32 +1576,32 @@ services:
 
 ```mermaid
 graph LR
-    subgraph "Application Metrics"
-        A[API Response Times]
-        B[Error Rates]
-        C[Throughput]
-        D[Active Connections]
+    subgraph ""Application" Metrics"
+        A["API Response Times"]
+        B["Error Rates"]
+        C["Throughput"]
+        D["Active Connections"]
     end
     
-    subgraph "Infrastructure Metrics"
-        E[CPU Usage]
-        F[Memory Usage]
-        G[Disk I/O]
-        H[Network I/O]
+    subgraph ""Infrastructure" Metrics"
+        E["CPU Usage"]
+        F["Memory Usage"]
+        G["Disk I/O"]
+        H["Network I/O"]
     end
     
-    subgraph "Business Metrics"
-        I[Active Trips]
-        J[Payment Success Rate]
-        K[User Registrations]
-        L[Driver Utilization]
+    subgraph ""Business" Metrics"
+        I["Active Trips"]
+        J["Payment Success Rate"]
+        K["User Registrations"]
+        L["Driver Utilization"]
     end
     
-    subgraph "Monitoring Stack"
-        M[Prometheus]
-        N[Grafana]
-        O[AlertManager]
-        P[ELK Stack]
+    subgraph ""Monitoring" Stack"
+        M["Prometheus"]
+        N["Grafana"]
+        O["AlertManager"]
+        P["ELK Stack"]
     end
     
     A --> M

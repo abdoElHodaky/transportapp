@@ -38,21 +38,21 @@ The driver journey in the Sikka Transportation Platform is designed for **maximu
 
 ```mermaid
 flowchart TD
-    A[📱 Download Sikka Driver] --> B[📞 Phone Verification]
-    B --> C[👤 Personal Information]
-    C --> D[🆔 Identity Verification]
-    D --> E[🚗 Vehicle Information]
-    E --> F[📄 Document Upload]
-    F --> G[🏦 Banking Details]
-    G --> H[📚 Training Module]
-    H --> I[✅ Background Check]
-    I --> J{🔍 Verification Status}
-    J -->|Approved| K[🎉 Account Activated]
-    J -->|Pending| L[⏳ Under Review]
-    J -->|Rejected| M[❌ Application Denied]
+    A["📱 Download Sikka Driver"] --> B["📞 Phone Verification"]
+    B --> C["👤 Personal Information"]
+    C --> D["🆔 Identity Verification"]
+    D --> E["🚗 Vehicle Information"]
+    E --> F["📄 Document Upload"]
+    F --> G["🏦 Banking Details"]
+    G --> H["📚 Training Module"]
+    H --> I["✅ Background Check"]
+    I --> J{"🔍 Verification Status"}
+    J --> |Approved| K["🎉 Account Activated"]
+    J --> |Pending| L["⏳ Under Review"]
+    J --> |Rejected| M["❌ Application Denied"]
     
-    L --> N[📞 Support Contact]
-    M --> O[🔄 Reapplication Process]
+    L --> N["📞 Support Contact"]
+    M --> O["🔄 Reapplication Process"]
     
     style A fill:#e3f2fd
     style K fill:#c8e6c9
@@ -102,19 +102,19 @@ flowchart TD
 
 ```mermaid
 graph TB
-    A[📄 Driver Documents] --> B[🆔 National ID]
-    A --> C[🚗 Driving License]
-    A --> D[🚙 Vehicle Registration]
-    A --> E[🛡️ Insurance Certificate]
-    A --> F[🏥 Medical Certificate]
-    A --> G[🚫 Criminal Background Check]
+    A["📄 Driver Documents"] --> B["🆔 National ID"]
+    A --> C["🚗 Driving License"]
+    A --> D["🚙 Vehicle Registration"]
+    A --> E["🛡️ Insurance Certificate"]
+    A --> F["🏥 Medical Certificate"]
+    A --> G["🚫 Criminal Background Check"]
     
-    B --> B1[✅ Valid & Clear Photo]
-    C --> C1[✅ Valid for 2+ years]
-    D --> D1[✅ Vehicle ownership proof]
-    E --> E1[✅ Comprehensive coverage]
-    F --> F1[✅ Issued within 6 months]
-    G --> G1[✅ Clean record required]
+    B --> B1["✅ Valid & Clear Photo"]
+    C --> C1["✅ Valid for 2+ years"]
+    D --> D1["✅ Vehicle ownership proof"]
+    E --> E1["✅ Comprehensive coverage"]
+    F --> F1["✅ Issued within 6 months"]
+    G --> G1["✅ Clean record required"]
     
     style A fill:#e8f5e8
     style B1 fill:#c8e6c9
@@ -163,27 +163,27 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    participant D as 🚗 Driver
-    participant APP as 📱 Training App
-    participant SYS as 🎓 Training System
-    participant CERT as 📜 Certification
+    participant D as "🚗 Driver"
+    participant APP as "📱 Training App"
+    participant SYS as "🎓 Training System"
+    participant CERT as "📜 Certification"
     
-    D->>APP: Start Training
-    APP->>SYS: Load Module 1: Safety
-    SYS->>D: Safety Guidelines
-    D->>SYS: Complete Quiz (80% required)
+    D ->> APP: Start Training
+    APP ->> SYS: Load Module 1: Safety
+    SYS ->> D: Safety Guidelines
+    D ->> SYS: Complete Quiz (80% required)
     
-    SYS->>APP: Load Module 2: Customer Service
-    APP->>D: Service Excellence Training
-    D->>SYS: Complete Assessment
+    SYS ->> APP: Load Module 2: Customer Service
+    APP ->> D: Service Excellence Training
+    D ->> SYS: Complete Assessment
     
-    SYS->>APP: Load Module 3: App Usage
-    APP->>D: Platform Tutorial
-    D->>SYS: Practical Test
+    SYS ->> APP: Load Module 3: App Usage
+    APP ->> D: Platform Tutorial
+    D ->> SYS: Practical Test
     
-    SYS->>CERT: Generate Certificate
-    CERT->>D: Training Completed
-    D->>APP: Ready to Drive!
+    SYS ->> CERT: Generate Certificate
+    CERT ->> D: Training Completed
+    D ->> APP: Ready to Drive!
 
     %% --- DARK GRADIENT & GLOW STYLING ---
     
@@ -249,15 +249,15 @@ interface VehicleRequirements {
 
 ```mermaid
 graph TB
-    A[🚗 Vehicle Categories] --> B[🚙 Standard<br/>Sedan, Hatchback]
-    A --> C[🚗 Premium<br/>Luxury Sedan, SUV]
-    A --> D[🚐 Shared<br/>7+ Seater Van]
-    A --> E[📦 Delivery<br/>Pickup, Van]
+    A["🚗 Vehicle Categories"] --> B["🚙 Standard<br/>Sedan, Hatchback"]
+    A --> C["🚗 Premium<br/>Luxury Sedan, SUV"]
+    A --> D["🚐 Shared<br/>7+ Seater Van"]
+    A --> E["📦 Delivery<br/>Pickup, Van"]
     
-    B --> B1[💰 Base Rate: SDG 2/km]
-    C --> C1[💰 Premium Rate: SDG 3/km]
-    D --> D1[💰 Shared Rate: SDG 1.5/km]
-    E --> E1[💰 Delivery Rate: SDG 2.5/km]
+    B --> B1["💰 Base Rate: SDG 2/km"]
+    C --> C1["💰 Premium Rate: SDG 3/km"]
+    D --> D1["💰 Shared Rate: SDG 1.5/km"]
+    E --> E1["💰 Delivery Rate: SDG 2.5/km"]
     
     style A fill:#e8f5e8
     style B1 fill:#fff3e0
@@ -302,26 +302,26 @@ graph TB
 
 ```mermaid
 flowchart TD
-    A[📱 Open Driver App] --> B[🔐 Biometric Login]
-    B --> C[📍 Location Permission]
-    C --> D[🚗 Vehicle Inspection]
-    D --> E[📊 Daily Goals Setting]
-    E --> F[🟢 Go Online]
-    F --> G[📡 Waiting for Trips]
+    A["📱 Open Driver App"] --> B["🔐 Biometric Login"]
+    B --> C["📍 Location Permission"]
+    C --> D["🚗 Vehicle Inspection"]
+    D --> E["📊 Daily Goals Setting"]
+    E --> F["🟢 Go Online"]
+    F --> G["📡 Waiting for Trips"]
     
-    G --> H{🔔 Trip Request}
-    H -->|Accept| I[🚗 Active Trip]
-    H -->|Decline| G
-    H -->|Timeout| G
+    G --> H{"🔔 Trip Request"}
+    H --> |Accept| I["🚗 Active Trip"]
+    H --> |Decline| G
+    H --> |Timeout| G
     
-    I --> J[🏁 Trip Completed]
-    J --> K{🔄 Continue Driving?}
-    K -->|Yes| G
-    K -->|No| L[🔴 Go Offline]
+    I --> J["🏁 Trip Completed"]
+    J --> K{"🔄 Continue Driving?"}
+    K --> |Yes| G
+    K --> |No| L["🔴 Go Offline"]
     
-    L --> M[📊 Daily Summary]
-    M --> N[💰 Earnings Report]
-    N --> O[📱 Close App]
+    L --> M["📊 Daily Summary"]
+    M --> N["💰 Earnings Report"]
+    N --> O["📱 Close App"]
     
     style F fill:#c8e6c9
     style I fill:#e3f2fd
@@ -370,23 +370,23 @@ flowchart TD
 
 ```mermaid
 graph TB
-    A[📍 Driver Location] --> B[🗺️ GPS Tracking]
-    A --> C[🏠 Preferred Areas]
-    A --> D[⚡ Availability Status]
+    A["📍 Driver Location"] --> B["🗺️ GPS Tracking"]
+    A --> C["🏠 Preferred Areas"]
+    A --> D["⚡ Availability Status"]
     
-    B --> B1[📡 Real-time Updates]
-    B --> B2[🔋 Battery Optimization]
-    B --> B3[📶 Network Efficiency]
+    B --> B1["📡 Real-time Updates"]
+    B --> B2["🔋 Battery Optimization"]
+    B --> B3["📶 Network Efficiency"]
     
-    C --> C1[🏙️ City Center]
-    C --> C2[🏢 Business District]
-    C --> C3[✈️ Airport Zone]
-    C --> C4[🏥 Hospital Area]
+    C --> C1["🏙️ City Center"]
+    C --> C2["🏢 Business District"]
+    C --> C3["✈️ Airport Zone"]
+    C --> C4["🏥 Hospital Area"]
     
-    D --> D1[🟢 Available]
-    D --> D2[🟡 Busy]
-    D --> D3[🔴 Offline]
-    D --> D4[⏸️ Break]
+    D --> D1["🟢 Available"]
+    D --> D2["🟡 Busy"]
+    D --> D3["🔴 Offline"]
+    D --> D4["⏸️ Break"]
     
     style A fill:#e8f5e8
     style B1 fill:#e3f2fd
@@ -474,31 +474,31 @@ interface DriverPreferences {
 
 ```mermaid
 sequenceDiagram
-    participant P as 📱 Passenger
-    participant SYS as 🔌 System
-    participant D1 as 🚗 Driver 1
-    participant D2 as 🚗 Driver 2
-    participant D3 as 🚗 Driver 3
+    participant P as "📱 Passenger"
+    participant SYS as "🔌 System"
+    participant D1 as "🚗 Driver 1"
+    participant D2 as "🚗 Driver 2"
+    participant D3 as "🚗 Driver 3"
     
-    P->>SYS: Request Trip
-    SYS->>SYS: Find Nearby Drivers
+    P ->> SYS: Request Trip
+    SYS ->> SYS: Find Nearby Drivers
     
     par Notify Multiple Drivers
-        SYS->>D1: Trip Request (30s timer)
-        SYS->>D2: Trip Request (30s timer)
-        SYS->>D3: Trip Request (30s timer)
+        SYS ->> D1: Trip Request (30s timer)
+        SYS ->> D2: Trip Request (30s timer)
+        SYS ->> D3: Trip Request (30s timer)
     end
     
     Note over D1,D3: Drivers see trip details and decide
     
     alt First to Accept
-        D2->>SYS: Accept Trip
-        SYS->>D1: Trip Taken
-        SYS->>D3: Trip Taken
-        SYS->>P: Driver Assigned
+        D2 ->> SYS: Accept Trip
+        SYS ->> D1: Trip Taken
+        SYS ->> D3: Trip Taken
+        SYS ->> P: Driver Assigned
     else No Response
         Note over SYS: Expand search radius
-        SYS->>SYS: Find More Drivers
+        SYS ->> SYS: Find More Drivers
     end
 
     %% --- DARK GRADIENT & GLOW STYLING ---
@@ -574,17 +574,17 @@ interface TripRequest {
 
 ```mermaid
 graph TB
-    A[🔔 Trip Request] --> B[📊 Trip Details Card]
-    B --> C[💰 Earnings: SDG 21.25]
-    B --> D[📍 Distance: 2.3 km away]
-    B --> E[⏱️ Duration: 15 min trip]
-    B --> F[⭐ Passenger: 4.8 rating]
+    A["🔔 Trip Request"] --> B["📊 Trip Details Card"]
+    B --> C["💰 Earnings: SDG 21.25"]
+    B --> D["📍 Distance: 2.3 km away"]
+    B --> E["⏱️ Duration: 15 min trip"]
+    B --> F["⭐ Passenger: 4.8 rating"]
     
-    B --> G[✅ Accept (15s left)]
-    B --> H[❌ Decline]
+    B --> G["✅ Accept (15s left)"]
+    B --> H["❌ Decline"]
     
-    G --> I[🚗 Trip Assigned]
-    H --> J[📱 Back to Waiting]
+    G --> I["🚗 Trip Assigned"]
+    H --> J["📱 Back to Waiting"]
     
     style A fill:#fff3e0
     style G fill:#c8e6c9
@@ -627,21 +627,21 @@ graph TB
 
 ```mermaid
 graph TB
-    A[🎯 Trip Evaluation] --> B{💰 Earnings Check}
-    B -->|Good| C{📍 Distance Check}
-    B -->|Poor| D[❌ Decline]
+    A["🎯 Trip Evaluation"] --> B{"💰 Earnings Check"}
+    B --> |Good| C{"📍 Distance Check"}
+    B --> |Poor| D["❌ Decline"]
     
-    C -->|Close| E{⭐ Passenger Rating}
-    C -->|Far| F{🚗 Return Trip Likely?}
+    C --> |Close| E{"⭐ Passenger Rating"}
+    C --> |Far| F{"🚗 Return Trip Likely?"}
     
-    E -->|High| G[✅ Accept]
-    E -->|Low| H{💰 Worth the Risk?}
+    E --> |High| G["✅ Accept"]
+    E --> |Low| H{"💰 Worth the Risk?"}
     
-    F -->|Yes| G
-    F -->|No| D
+    F --> |Yes| G
+    F --> |No| D
     
-    H -->|Yes| G
-    H -->|No| D
+    H --> |Yes| G
+    H --> |No| D
     
     style G fill:#c8e6c9
     style D fill:#ffcdd2
@@ -686,17 +686,17 @@ graph TB
 
 ```mermaid
 flowchart TD
-    A[✅ Trip Accepted] --> B[📍 Navigate to Pickup]
-    B --> C[🚗 En Route to Passenger]
-    C --> D[📱 Update ETA]
-    D --> E[📍 Arrived at Pickup]
-    E --> F[📞 Call/Message Passenger]
-    F --> G[👤 Passenger Located]
-    G --> H[🚀 Start Trip]
-    H --> I[🗺️ Navigate to Destination]
-    I --> J[📍 Real-time Location Updates]
-    J --> K[🏁 Arrived at Destination]
-    K --> L[✅ Complete Trip]
+    A["✅ Trip Accepted"] --> B["📍 Navigate to Pickup"]
+    B --> C["🚗 En Route to Passenger"]
+    C --> D["📱 Update ETA"]
+    D --> E["📍 Arrived at Pickup"]
+    E --> F["📞 Call/Message Passenger"]
+    F --> G["👤 Passenger Located"]
+    G --> H["🚀 Start Trip"]
+    H --> I["🗺️ Navigate to Destination"]
+    I --> J["📍 Real-time Location Updates"]
+    J --> K["🏁 Arrived at Destination"]
+    K --> L["✅ Complete Trip"]
     
     style A fill:#e3f2fd
     style H fill:#fff3e0
@@ -740,26 +740,26 @@ flowchart TD
 
 ```mermaid
 graph TB
-    A[📱 Active Trip Screen] --> B[🗺️ Navigation Map]
-    A --> C[📊 Trip Information]
-    A --> D[🔧 Trip Actions]
-    A --> E[📞 Communication]
+    A["📱 Active Trip Screen"] --> B["🗺️ Navigation Map"]
+    A --> C["📊 Trip Information"]
+    A --> D["🔧 Trip Actions"]
+    A --> E["📞 Communication"]
     
-    B --> B1[🛣️ Turn-by-turn directions]
-    B --> B2[🚦 Traffic conditions]
-    B --> B3[⛽ Nearby gas stations]
+    B --> B1["🛣️ Turn-by-turn directions"]
+    B --> B2["🚦 Traffic conditions"]
+    B --> B3["⛽ Nearby gas stations"]
     
-    C --> C1[⏱️ Trip timer]
-    C --> C2[📏 Distance covered]
-    C --> C3[💰 Current earnings]
+    C --> C1["⏱️ Trip timer"]
+    C --> C2["📏 Distance covered"]
+    C --> C3["💰 Current earnings"]
     
-    D --> D1[⏸️ Pause trip]
-    D --> D2[🚨 Emergency button]
-    D --> D3[❌ Report issue]
+    D --> D1["⏸️ Pause trip"]
+    D --> D2["🚨 Emergency button"]
+    D --> D3["❌ Report issue"]
     
-    E --> E1[📞 Call passenger]
-    E --> E2[💬 Quick messages]
-    E --> E3[📍 Share location]
+    E --> E1["📞 Call passenger"]
+    E --> E2["💬 Quick messages"]
+    E --> E3["📍 Share location"]
     
     style A fill:#e3f2fd
     style D2 fill:#ffcdd2
@@ -836,17 +836,17 @@ interface QuickMessages {
 
 ```mermaid
 graph TB
-    A[💰 Trip Fare: SDG 25.00] --> B[📊 Commission Split]
-    B --> C[🚗 Driver Share: SDG 21.25<br/>85% of fare]
-    B --> D[🏢 Platform Fee: SDG 3.75<br/>15% of fare]
+    A["💰 Trip Fare: SDG 25.00"] --> B["📊 Commission Split"]
+    B --> C["🚗 Driver Share: SDG 21.25<br/>85% of fare"]
+    B --> D["🏢 Platform Fee: SDG 3.75<br/>15% of fare"]
     
-    C --> E[💳 Instant Transfer]
-    E --> F[🏦 Driver Wallet]
-    F --> G[💸 Cash Out Options]
+    C --> E["💳 Instant Transfer"]
+    E --> F["🏦 Driver Wallet"]
+    F --> G["💸 Cash Out Options"]
     
-    G --> G1[🏦 Bank Transfer]
-    G --> G2[💵 Cash Collection]
-    G --> G3[📱 Mobile Money]
+    G --> G1["🏦 Bank Transfer"]
+    G --> G2["💵 Cash Collection"]
+    G --> G3["📱 Mobile Money"]
     
     style A fill:#fff3e0
     style C fill:#c8e6c9
@@ -924,27 +924,27 @@ interface DailyEarnings {
 
 ```mermaid
 graph TB
-    A[📈 Maximize Earnings] --> B[⏰ Peak Hours]
-    A --> C[📍 High-Demand Areas]
-    A --> D[🎯 Trip Selection]
-    A --> E[⭐ Service Quality]
+    A["📈 Maximize Earnings"] --> B["⏰ Peak Hours"]
+    A --> C["📍 High-Demand Areas"]
+    A --> D["🎯 Trip Selection"]
+    A --> E["⭐ Service Quality"]
     
-    B --> B1[🌅 Morning Rush: 7-9 AM]
-    B --> B2[🌆 Evening Rush: 5-7 PM]
-    B --> B3[🌙 Weekend Nights]
+    B --> B1["🌅 Morning Rush: 7-9 AM"]
+    B --> B2["🌆 Evening Rush: 5-7 PM"]
+    B --> B3["🌙 Weekend Nights"]
     
-    C --> C1[🏢 Business Districts]
-    C --> C2[✈️ Airport Routes]
-    C --> C3[🏥 Hospital Areas]
-    C --> C4[🛍️ Shopping Centers]
+    C --> C1["🏢 Business Districts"]
+    C --> C2["✈️ Airport Routes"]
+    C --> C3["🏥 Hospital Areas"]
+    C --> C4["🛍️ Shopping Centers"]
     
-    D --> D1[💰 Higher fare trips]
-    D --> D2[📍 Return trip potential]
-    D --> D3[🚫 Avoid traffic areas]
+    D --> D1["💰 Higher fare trips"]
+    D --> D2["📍 Return trip potential"]
+    D --> D3["🚫 Avoid traffic areas"]
     
-    E --> E1[⭐ Maintain high rating]
-    E --> E2[💬 Excellent service]
-    E --> E3[🚗 Clean vehicle]
+    E --> E1["⭐ Maintain high rating"]
+    E --> E2["💬 Excellent service"]
+    E --> E3["🚗 Clean vehicle"]
     
     style A fill:#e8f5e8
     style B1 fill:#fff3e0
@@ -995,30 +995,30 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    participant D as 🚗 Driver
-    participant W as 💰 Wallet
-    participant B as 🏦 Bank
-    participant M as 📱 Mobile Money
+    participant D as "🚗 Driver"
+    participant W as "💰 Wallet"
+    participant B as "🏦 Bank"
+    participant M as "📱 Mobile Money"
     
     Note over D,M: Trip completed, earnings credited
     
-    D->>W: Check Balance
-    W->>D: Current Balance: SDG 245.50
+    D ->> W: Check Balance
+    W ->> D: Current Balance: SDG 245.50
     
     alt Bank Transfer
-        D->>W: Request Withdrawal (SDG 200)
-        W->>B: Transfer Request
-        B->>W: Transfer Confirmed
-        W->>D: Withdrawal Successful
+        D ->> W: Request Withdrawal (SDG 200)
+        W ->> B: Transfer Request
+        B ->> W: Transfer Confirmed
+        W ->> D: Withdrawal Successful
     else Mobile Money
-        D->>W: Request Mobile Transfer
-        W->>M: Transfer to Mobile Wallet
-        M->>W: Transfer Confirmed
-        W->>D: Mobile Transfer Complete
+        D ->> W: Request Mobile Transfer
+        W ->> M: Transfer to Mobile Wallet
+        M ->> W: Transfer Confirmed
+        W ->> D: Mobile Transfer Complete
     else Cash Collection
-        D->>W: Request Cash Pickup
-        W->>W: Schedule Cash Collection
-        W->>D: Collection Point Assigned
+        D ->> W: Request Cash Pickup
+        W ->> W: Schedule Cash Collection
+        W ->> D: Collection Point Assigned
     end
 
     %% --- DARK GRADIENT & GLOW STYLING ---
@@ -1053,28 +1053,28 @@ sequenceDiagram
 
 ```mermaid
 graph TB
-    A[📊 Driver Dashboard] --> B[💰 Earnings Overview]
-    A --> C[📈 Performance Metrics]
-    A --> D[⭐ Rating & Feedback]
-    A --> E[🎯 Goals & Achievements]
+    A["📊 Driver Dashboard"] --> B["💰 Earnings Overview"]
+    A --> C["📈 Performance Metrics"]
+    A --> D["⭐ Rating & Feedback"]
+    A --> E["🎯 Goals & Achievements"]
     
-    B --> B1[📅 Daily/Weekly/Monthly]
-    B --> B2[💵 Total Earnings]
-    B --> B3[📊 Earnings Trends]
+    B --> B1["📅 Daily/Weekly/Monthly"]
+    B --> B2["💵 Total Earnings"]
+    B --> B3["📊 Earnings Trends"]
     
-    C --> C1[🚗 Total Trips]
-    C --> C2[⏱️ Online Hours]
-    C --> C3[📍 Distance Covered]
-    C --> C4[✅ Acceptance Rate]
-    C --> C5[❌ Cancellation Rate]
+    C --> C1["🚗 Total Trips"]
+    C --> C2["⏱️ Online Hours"]
+    C --> C3["📍 Distance Covered"]
+    C --> C4["✅ Acceptance Rate"]
+    C --> C5["❌ Cancellation Rate"]
     
-    D --> D1[⭐ Overall Rating]
-    D --> D2[💬 Recent Reviews]
-    D --> D3[📊 Rating Breakdown]
+    D --> D1["⭐ Overall Rating"]
+    D --> D2["💬 Recent Reviews"]
+    D --> D3["📊 Rating Breakdown"]
     
-    E --> E1[🎯 Daily Goals]
-    E --> E2[🏆 Achievements]
-    E --> E3[📈 Progress Tracking]
+    E --> E1["🎯 Daily Goals"]
+    E --> E2["🏆 Achievements"]
+    E --> E3["📈 Progress Tracking"]
     
     style A fill:#e3f2fd
     style B fill:#c8e6c9
@@ -1157,26 +1157,26 @@ interface DriverRating {
 
 ```mermaid
 graph TB
-    A[🏆 Driver Achievements] --> B[🚗 Trip Milestones]
-    A --> C[⭐ Rating Excellence]
-    A --> D[💰 Earnings Goals]
-    A --> E[📅 Consistency Awards]
+    A["🏆 Driver Achievements"] --> B["🚗 Trip Milestones"]
+    A --> C["⭐ Rating Excellence"]
+    A --> D["💰 Earnings Goals"]
+    A --> E["📅 Consistency Awards"]
     
-    B --> B1[🥉 100 Trips]
-    B --> B2[🥈 500 Trips]
-    B --> B3[🥇 1000 Trips]
+    B --> B1["🥉 100 Trips"]
+    B --> B2["🥈 500 Trips"]
+    B --> B3["🥇 1000 Trips"]
     
-    C --> C1[⭐ 4.8+ Rating (30 days)]
-    C --> C2[🌟 5.0 Rating (Week)]
-    C --> C3[👑 Top Rated Driver]
+    C --> C1["⭐ 4.8+ Rating (30 days)"]
+    C --> C2["🌟 5.0 Rating (Week)"]
+    C --> C3["👑 Top Rated Driver"]
     
-    D --> D1[💰 SDG 1000/day]
-    D --> D2[💎 SDG 5000/week]
-    D --> D3[👑 Top Earner]
+    D --> D1["💰 SDG 1000/day"]
+    D --> D2["💎 SDG 5000/week"]
+    D --> D3["👑 Top Earner"]
     
-    E --> E1[📅 30 Days Active]
-    E --> E2[⚡ Peak Hours Champion]
-    E --> E3[🎯 Goal Achiever]
+    E --> E1["📅 30 Days Active"]
+    E --> E2["⚡ Peak Hours Champion"]
+    E --> E3["🎯 Goal Achiever"]
     
     style A fill:#e8f5e8
     style B3 fill:#ffd700
@@ -1229,28 +1229,28 @@ graph TB
 
 ```mermaid
 flowchart TD
-    A[🚗 Active Trip] --> B{❌ Cancellation Event}
-    B -->|Passenger Cancels| C[👤 Passenger Cancellation]
-    B -->|Driver Cancels| D[🚗 Driver Cancellation]
-    B -->|Emergency| E[🚨 Emergency Cancellation]
+    A["🚗 Active Trip"] --> B{"❌ Cancellation Event"}
+    B --> |Passenger Cancels| C["👤 Passenger Cancellation"]
+    B --> |Driver Cancels| D["🚗 Driver Cancellation"]
+    B --> |Emergency| E["🚨 Emergency Cancellation"]
     
-    C --> F{⏰ Cancellation Timing}
-    F -->|Before Pickup| G[💰 Cancellation Fee to Driver]
-    F -->|After Pickup| H[💰 Minimum Fare Charged]
+    C --> F{"⏰ Cancellation Timing"}
+    F --> |Before Pickup| G["💰 Cancellation Fee to Driver"]
+    F --> |After Pickup| H["💰 Minimum Fare Charged"]
     
-    D --> I{🔍 Reason Required}
-    I -->|Valid Reason| J[✅ No Penalty]
-    I -->|Invalid Reason| K[⚠️ Warning Issued]
+    D --> I{"🔍 Reason Required"}
+    I --> |Valid Reason| J["✅ No Penalty"]
+    I --> |Invalid Reason| K["⚠️ Warning Issued"]
     
-    E --> L[🚨 Emergency Protocol]
-    L --> M[📞 Support Contact]
-    L --> N[🚓 Authorities if needed]
+    E --> L["🚨 Emergency Protocol"]
+    L --> M["📞 Support Contact"]
+    L --> N["🚓 Authorities if needed"]
     
-    G --> O[📱 Return to Available]
-    H --> P[💳 Process Payment]
+    G --> O["📱 Return to Available"]
+    H --> P["💳 Process Payment"]
     J --> O
-    K --> Q[📊 Record Incident]
-    M --> R[🎧 Support Assistance]
+    K --> Q["📊 Record Incident"]
+    M --> R["🎧 Support Assistance"]
     
     style E fill:#ffcdd2
     style L fill:#ffcdd2
@@ -1301,27 +1301,27 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[📍 Arrived at Pickup] --> B[📞 Contact Passenger]
-    B --> C{📱 Passenger Response}
-    C -->|Answers| D[👤 Passenger Coming]
-    C -->|No Answer| E[⏰ Wait Timer (5 min)]
+    A["📍 Arrived at Pickup"] --> B["📞 Contact Passenger"]
+    B --> C{"📱 Passenger Response"}
+    C --> |Answers| D["👤 Passenger Coming"]
+    C --> |No Answer| E["⏰ Wait Timer (5 min)"]
     
-    D --> F[⏱️ Additional Wait]
-    F --> G{👤 Passenger Arrives}
-    G -->|Yes| H[🚀 Start Trip]
-    G -->|No| I[❌ Mark No-Show]
+    D --> F["⏱️ Additional Wait"]
+    F --> G{"👤 Passenger Arrives"}
+    G --> |Yes| H["🚀 Start Trip"]
+    G --> |No| I["❌ Mark No-Show"]
     
-    E --> J[📞 Second Call Attempt]
-    J --> K{📱 Response}
-    K -->|Answers| D
-    K -->|No Answer| L[💬 Send SMS]
+    E --> J["📞 Second Call Attempt"]
+    J --> K{"📱 Response"}
+    K --> |Answers| D
+    K --> |No Answer| L["💬 Send SMS"]
     
-    L --> M[⏰ Final Wait (2 min)]
+    L --> M["⏰ Final Wait (2 min)"]
     M --> I
     
-    I --> N[💰 No-Show Fee Applied]
-    N --> O[📊 Report Incident]
-    O --> P[📱 Return to Available]
+    I --> N["💰 No-Show Fee Applied"]
+    N --> O["📊 Report Incident"]
+    O --> P["📱 Return to Available"]
     
     style I fill:#ffcdd2
     style N fill:#fff3e0
@@ -1369,29 +1369,29 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[🚗 Vehicle Issue] --> B[🛑 Safe Stop]
-    B --> C[🚨 Emergency Hazards]
-    C --> D{👤 Passenger in Vehicle?}
-    D -->|Yes| E[👤 Passenger Safety First]
-    D -->|No| F[📞 Call Support]
+    A["🚗 Vehicle Issue"] --> B["🛑 Safe Stop"]
+    B --> C["🚨 Emergency Hazards"]
+    C --> D{"👤 Passenger in Vehicle?"}
+    D --> |Yes| E["👤 Passenger Safety First"]
+    D --> |No| F["📞 Call Support"]
     
-    E --> G[🚖 Arrange Alternative Transport]
-    G --> H[💰 No Charge to Passenger]
-    H --> I[📞 Call Support]
+    E --> G["🚖 Arrange Alternative Transport"]
+    G --> H["💰 No Charge to Passenger"]
+    H --> I["📞 Call Support"]
     
-    F --> J[🔧 Assess Situation]
+    F --> J["🔧 Assess Situation"]
     I --> J
     
-    J --> K{🔧 Quick Fix Possible?}
-    K -->|Yes| L[🛠️ Minor Repair]
-    K -->|No| M[🚛 Call Tow Service]
+    J --> K{"🔧 Quick Fix Possible?"}
+    K --> |Yes| L["🛠️ Minor Repair"]
+    K --> |No| M["🚛 Call Tow Service"]
     
-    L --> N[✅ Resume Operations]
-    M --> O[🏠 End Shift Early]
+    L --> N["✅ Resume Operations"]
+    M --> O["🏠 End Shift Early"]
     
-    N --> P[📊 Report Incident]
+    N --> P["📊 Report Incident"]
     O --> P
-    P --> Q[📝 Maintenance Log]
+    P --> Q["📝 Maintenance Log"]
     
     style A fill:#ffcdd2
     style B fill:#ffcdd2
@@ -1442,31 +1442,31 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[🚨 Safety Concern] --> B[🛑 Immediate Action]
-    B --> C{🚨 Severity Level}
-    C -->|High| D[🚓 Call Police (999)]
-    C -->|Medium| E[📞 Call Sikka Support]
-    C -->|Low| F[📝 Report Incident]
+    A["🚨 Safety Concern"] --> B["🛑 Immediate Action"]
+    B --> C{"🚨 Severity Level"}
+    C --> |High| D["🚓 Call Police (999)"]
+    C --> |Medium| E["📞 Call Sikka Support"]
+    C --> |Low| F["📝 Report Incident"]
     
-    D --> G[📍 Share Location]
-    G --> H[🚨 Emergency Services]
-    H --> I[📞 Sikka Emergency Line]
+    D --> G["📍 Share Location"]
+    G --> H["🚨 Emergency Services"]
+    H --> I["📞 Sikka Emergency Line"]
     
-    E --> J[🎧 Support Agent]
-    J --> K[📋 Incident Assessment]
-    K --> L{🔍 Action Required}
-    L -->|Yes| M[🚓 Escalate to Authorities]
-    L -->|No| N[📝 Document Incident]
+    E --> J["🎧 Support Agent"]
+    J --> K["📋 Incident Assessment"]
+    K --> L{"🔍 Action Required"}
+    L --> |Yes| M["🚓 Escalate to Authorities"]
+    L --> |No| N["📝 Document Incident"]
     
-    F --> O[📊 Safety Report]
+    F --> O["📊 Safety Report"]
     
-    I --> P[📋 Follow-up Support]
+    I --> P["📋 Follow-up Support"]
     M --> P
     N --> P
     O --> P
     
-    P --> Q[🛡️ Safety Review]
-    Q --> R[📚 Additional Training if needed]
+    P --> Q["🛡️ Safety Review"]
+    Q --> R["📚 Additional Training if needed"]
     
     style A fill:#ffcdd2
     style D fill:#ffcdd2

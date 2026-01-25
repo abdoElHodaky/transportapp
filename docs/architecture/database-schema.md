@@ -453,39 +453,39 @@ export class Transaction {
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
-    USER[👤 User] ---|1:1| WALLET[💰 Wallet]
-    USER ---|1:1| DRIVER[🚗 Driver Profile]
+    USER["👤 User"] ---|1:1| WALLET["💰 Wallet"]
+    USER ---|1:1| DRIVER["🚗 Driver Profile"]
     
-    classDef entity fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    class USER,WALLET,DRIVER entity
+    classDef entity fill:#e3f2fd,stroke:#1976d2,stroke-width:2px;
+    class USER,WALLET,DRIVER entity;
 ```
 
 ### **🔄 One-to-Many Relationships**
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
-    USER[👤 User] ---|1:N| TRIP_P[🚗 Trips as Passenger]
-    USER ---|1:N| TRIP_D[🚗 Trips as Driver]
-    USER ---|1:N| RATING_G[⭐ Ratings Given]
-    USER ---|1:N| RATING_R[⭐ Ratings Received]
-    USER ---|1:N| TRANS[💳 Transactions]
+    USER["👤 User"] ---|1:N| TRIP_P["🚗 Trips as Passenger"]
+    USER ---|1:N| TRIP_D["🚗 Trips as Driver"]
+    USER ---|1:N| RATING_G["⭐ Ratings Given"]
+    USER ---|1:N| RATING_R["⭐ Ratings Received"]
+    USER ---|1:N| TRANS["💳 Transactions"]
     
-    WALLET[💰 Wallet] ---|1:N| TRANS
-    TRIP[🚗 Trip] ---|1:N| RATING[⭐ Ratings]
+    WALLET["💰 Wallet"] ---|1:N| TRANS
+    TRIP["🚗 Trip"] ---|1:N| RATING["⭐ Ratings"]
     TRIP ---|1:N| TRANS
     
-    classDef entity fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    class USER,WALLET,TRIP entity
+    classDef entity fill:#e8f5e8,stroke:#388e3c,stroke-width:2px;
+    class USER,WALLET,TRIP entity;
 ```
 
 ### **🔄 Many-to-Many Relationships**
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
-    USER1[👤 User From] ---|M:N| TRANS[💳 Transfer Transaction] ---|M:N| USER2[👤 User To]
+    USER1["👤 User From"] ---|M:N| TRANS["💳 Transfer Transaction"] ---|M:N| USER2["👤 User To"]
     
-    classDef entity fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    class USER1,USER2,TRANS entity
+    classDef entity fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    class USER1,USER2,TRANS entity;
 ```
 
 ## 📈 Indexing Strategy
