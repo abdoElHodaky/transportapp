@@ -22,173 +22,79 @@ This document outlines the key business processes and user journeys in the Sikka
   "theme": "dark",
   "themeVariables": {
     "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "fontSize": "16px",
+    "fontFamily": "arial"
   },
   "flowchart": {
     "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "htmlLabels": true,
+    "curve": "stepBefore"
   }
-}%%
+}}%%
 flowchart TD
-    A["Passenger Opens App"] --> B["Enter Destination"]
-    B --> C["Select Trip Type"]
-    C --> D["View Fare Estimate"]
-    D --> E["Confirm Booking"]
-    E --> F["Find Available Drivers"]
-    
-    F --> G {"Driver Available?"}
-    G --> |No| H["Notify: No Drivers"]
-    G --> |Yes| I["Send Trip Request to Drivers"]
-    
-    I --> J {"Driver Accepts?"}
-    J --> |No| K["Try Next Driver"]
-    K --> J
-    J --> |Yes| L["Trip Assigned"]
-    
-    L --> M["Driver Navigates to Pickup"]
-    M --> N["Driver Arrives at Pickup"]
-    N --> O["Passenger Enters Vehicle"]
-    O --> P["Trip Starts"]
-    P --> Q["Navigate to Destination"]
-    Q --> R["Trip Completed"]
-    R --> S["Process Payment"]
-    S --> T["Rate & Review"]
-    T --> U["Trip Finished"]
-    
-    H --> V["Suggest Alternative"]
-    V --> W["Retry or Cancel"]
+    %% Phase 1: Setup (Blue)
+    subgraph Setup
+    A["Passenger Opens App"]
+    B["Enter Destination"]
+    C["Select Trip Type"]
+    end
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    %% Phase 2: Booking (Yellow/Gold)
+    subgraph Booking
+    D["View Fare Estimate"]
+    E["Confirm Booking"]
+    F["Find Available Drivers"]
+    G{"Driver Available?"}
+    end
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class O revNode;
-    class P commNode;
-    class Q refNode;
-    class R earnNode;
-    class S main;
-    class T decision;
-    class U revNode;
-    class V commNode;
-    class W refNode;
-    class Y earnNode;
+    %% Phase 3: Matching (Purple)
+    subgraph Matching
+    I["Send Trip Request"]
+    J{"Driver Accepts?"}
+    K["Try Next Driver"]
+    L["Trip Assigned"]
+    end
 
+    %% Phase 4: Transit (Green)
+    subgraph Transit
+    M["Driver Navigates to Pickup"]
+    N["Driver Arrives"]
+    O["Passenger Enters Vehicle"]
+    P["Trip Starts"]
+    Q["Navigate to Destination"]
+    end
 
+    %% Phase 5: Conclusion (Red/Pink)
+    subgraph Conclusion
+    R["Trip Completed"]
+    S["Process Payment"]
+    T["Rate & Review"]
+    U["Trip Finished"]
+    end
 
+    %% Connections
+    A --> B --> C --> D --> E --> F --> G
+    G -->|Yes| I
+    G -->|No| H["Notify: No Drivers"]
+    I --> J
+    J -->|No| K --> J
+    J -->|Yes| L --> M --> N --> O --> P --> Q --> R --> S --> T --> U
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+    %% Color-Coded Class Definitions
+    classDef setup fill:#1f6feb,stroke:#58a6ff,stroke-width:6px,color:#ffffff
+    classDef booking fill:#9e6a03,stroke:#d29922,stroke-width:6px,color:#ffffff
+    classDef matching fill:#8957e5,stroke:#bc8cff,stroke-width:6px,color:#ffffff
+    classDef transit fill:#238636,stroke:#3fb950,stroke-width:6px,color:#ffffff
+    classDef finish fill:#da3633,stroke:#f85149,stroke-width:6px,color:#ffffff
+    classDef decision fill:#0d1117,stroke:#ffffff,stroke-width:4px,color:#ffffff,stroke-dasharray: 5 5
 
-    class A secondary;
-    class B accent;
-    class C accent;
-    class D accent;
-    class E accent;
-    class F accent;
-    class H decision;
-    class I accent;
-    class K accent;
-    class L accent;
-    class M accent;
-    class N accent;
-    class O accent;
-    class P accent;
-    class Q accent;
-    class R accent;
-    class S success;
-    class T accent;
-    class U accent;
-    class V accent;
-    class W accent;
+    %% Applying Classes
+    class A,B,C setup
+    class D,E,F booking
+    class I,K,L matching
+    class M,N,O,P,Q transit
+    class R,S,T,U finish
+    class G,J decision
 ```
 
 ### **Detailed Trip States**
