@@ -27,43 +27,133 @@ The Sikka Transportation Platform uses **Socket.IO** for real-time bidirectional
 ### **🏗️ Architecture Overview**
 
 ```mermaid
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
-    %% Client Applications
-    PA[📱 Passenger App] --> WS[🌐 WebSocket Gateway]
-    DA[🚗 Driver App] --> WS
-    AD[💻 Admin Dashboard] --> WS
+    %%  Client Applications
+    PA["📱 Passenger App"] --> WS["🌐 WebSocket Gateway"]
+    DA["🚗 Driver App"] --> WS
+    AD["💻 Admin Dashboard"] --> WS
     
-    %% WebSocket Gateway Components
-    WS --> CM[🔌 Connection Manager]
-    WS --> RM[🏠 Room Manager]
-    WS --> EM[📡 Event Manager]
-    WS --> AM[🔐 Auth Manager]
+    %%  WebSocket Gateway Components
+    WS --> CM["🔌 Connection Manager"]
+    WS --> RM["🏠 Room Manager"]
+    WS --> EM["📡 Event Manager"]
+    WS --> AM["🔐 Auth Manager"]
     
-    %% Backend Services
-    EM --> TS[🚗 Trip Service]
-    EM --> LS[📍 Location Service]
-    EM --> PS[💳 Payment Service]
-    EM --> US[👥 User Service]
+    %%  Backend Services
+    EM --> TS["🚗 Trip Service"]
+    EM --> LS["📍 Location Service"]
+    EM --> PS["💳 Payment Service"]
+    EM --> US["👥 User Service"]
     
-    %% Data Storage
-    CM --> REDIS[(⚡ Redis<br/>Session Store)]
+    %%  Data Storage
+    CM --> REDIS["(⚡ Redis&lt;br/&gt;Session Store)"]
     RM --> REDIS
     LS --> REDIS
     
-    %% Database
-    TS --> DB[(🗄️ PostgreSQL)]
+    %%  Database
+    TS --> DB["(🗄️ PostgreSQL)"]
     PS --> DB
     US --> DB
     
-    classDef client fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    classDef gateway fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef service fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    classDef storage fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef client fill : #e3f2fd, stroke:#1976d2, stroke-width: 2px;
     
-    class PA,DA,AD client
-    class WS,CM,RM,EM,AM gateway
-    class TS,LS,PS,US service
-    class REDIS,DB storage
+    classDef gateway fill : #f3e5f5, stroke:#7b1fa2, stroke-width: 2px;
+    
+    classDef service fill : #e8f5e8, stroke:#388e3c, stroke-width: 2px;
+    
+    classDef storage fill : #fff3e0, stroke:#f57c00, stroke-width: 2px;
+    
+    
+    class PA,DA,AD client;
+    class WS,CM,RM,EM,AM gateway;
+    class TS,LS,PS,US service;
+    class REDIS,DB storage;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class PA secondary;
+    class WS primary;
+    class DA secondary;
+    class AD accent;
+    class CM accent;
+    class RM accent;
+    class EM accent;
+    class AM accent;
+    class TS primary;
+    class LS primary;
+    class PS primary;
+    class US primary;
+    class REDIS database;
+    class DB database;
 ```
 
 ## 🔌 Connection Management
@@ -71,11 +161,46 @@ graph TB
 ### **🤝 Connection Lifecycle**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 sequenceDiagram
-    participant C as 📱 Client
-    participant WS as 🌐 WebSocket Gateway
-    participant AUTH as 🔐 Auth Service
-    participant REDIS as ⚡ Redis
+    participant C as "📱 Client"
+    participant WS as "🌐 WebSocket Gateway"
+    participant AUTH as "🔐 Auth Service"
+    participant REDIS as "⚡ Redis"
     
     C->>WS: Connect with JWT Token
     WS->>AUTH: Validate JWT Token
@@ -91,6 +216,72 @@ sequenceDiagram
     C->>WS: Disconnect
     WS->>REDIS: Remove Connection Info
     WS->>WS: Leave All Rooms
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class C main;
+    class WS decision;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ### **🔐 Authentication Events**
@@ -162,11 +353,46 @@ socket.emit('leave_room', {
 ### **🎯 Trip Request Flow**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 sequenceDiagram
-    participant P as 📱 Passenger
-    participant WS as 🌐 WebSocket
-    participant TS as 🚗 Trip Service
-    participant D as 🚗 Driver
+    participant P as "📱 Passenger"
+    participant WS as "🌐 WebSocket"
+    participant TS as "🚗 Trip Service"
+    participant D as "🚗 Driver"
     
     P->>WS: trip_request
     WS->>TS: Create Trip
@@ -188,6 +414,74 @@ sequenceDiagram
     
     D->>WS: trip_completed
     WS->>P: trip_completed
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class D main;
+    class P decision;
+    class TS revNode;
+    class WS commNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ### **📤 Client → Server Events**
@@ -361,12 +655,47 @@ socket.on('trip_completed', (data) => {
 ### **🗺️ Real-time Location Tracking**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 sequenceDiagram
-    participant D as 🚗 Driver App
-    participant WS as 🌐 WebSocket
-    participant LS as 📍 Location Service
-    participant REDIS as ⚡ Redis
-    participant P as 📱 Passenger App
+    participant D as "🚗 Driver App"
+    participant WS as "🌐 WebSocket"
+    participant LS as "📍 Location Service"
+    participant REDIS as "⚡ Redis"
+    participant P as "📱 Passenger App"
     
     loop Every 5-10 seconds
         D->>WS: driver_location_update
@@ -374,6 +703,74 @@ sequenceDiagram
         LS->>REDIS: Cache Location
         WS->>P: driver_location_update (if in trip)
     end
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class D main;
+    class LS decision;
+    class P revNode;
+    class WS commNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ### **📤 Client → Server Events**
@@ -466,12 +863,47 @@ socket.on('nearby_drivers', (data) => {
 ### **💰 Payment Processing Flow**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 sequenceDiagram
-    participant P as 📱 Passenger
-    participant WS as 🌐 WebSocket
-    participant PS as 💳 Payment Service
-    participant GW as 🏦 Payment Gateway
-    participant D as 🚗 Driver
+    participant P as "📱 Passenger"
+    participant WS as "🌐 WebSocket"
+    participant PS as "💳 Payment Service"
+    participant GW as "🏦 Payment Gateway"
+    participant D as "🚗 Driver"
     
     P->>WS: process_payment
     WS->>PS: Process Payment
@@ -480,6 +912,75 @@ sequenceDiagram
     PS->>WS: Payment Result
     WS->>P: payment_completed
     WS->>D: payment_received
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class D main;
+    class GW decision;
+    class P revNode;
+    class PS commNode;
+    class WS refNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ### **📥 Server → Client Events**

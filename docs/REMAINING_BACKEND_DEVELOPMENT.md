@@ -167,20 +167,118 @@ GET    /admin/export/:type       # Data export
 
 ### **Phase 1: Foundation (Week 1-2)**
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#ccffcc",
+    "primaryBorderColor": "#00ff41",
+    "lineColor": "#00ff41",
+    "secondaryColor": "#39ff14",
+    "tertiaryColor": "#7fff00",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#003300",
+    "tertiaryBkg": "#7fff00"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 gantt
     title Backend Development Timeline
-    dateFormat  YYYY-MM-DD
+    dateFormat YYYY-MM-DD
     section Phase 1
-    Location Service     :active, loc, 2024-01-01, 10d
-    WebSocket Gateway    :ws, after loc, 5d
+    Location Service : active, loc, 2024-01-01, 10d
+    WebSocket Gateway : ws, after loc, 5d
     
     section Phase 2
-    Notification Service :notif, 2024-01-08, 7d
-    Admin Analytics     :admin, 2024-01-10, 7d
+    Notification Service : notif, 2024-01-08, 7d
+    Admin Analytics : admin, 2024-01-10, 7d
     
     section Phase 3
-    Performance Opt     :perf, 2024-01-15, 5d
-    Testing Suite       :test, 2024-01-17, 5d
+    Performance Opt : perf, 2024-01-15, 5d
+    Testing Suite : test, 2024-01-17, 5d
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+
+
+
+    %% --- BACKEND (MATRIX GREEN) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#00ff41,stroke-width:4px,color:#ccffcc,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#39ff14,stroke-width:3px,color:#ccffcc,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#7fff00,stroke-width:2px,color:#7fff00,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#00ff00,stroke-width:3px,color:#00ff00,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#ffff00,stroke-width:3px,color:#ffff00,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#ff0000,stroke-width:3px,color:#ff0000,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#7fff00,stroke-width:4px,color:#7fff00,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#003300,stroke:#00ff41,stroke-width:2px,color:#ccffcc,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#ffff00,stroke-width:3px,color:#ffff00,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#39ff14,stroke-width:2px,color:#39ff14,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ### **Development Priorities**

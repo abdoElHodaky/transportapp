@@ -21,41 +21,89 @@ This document provides a comprehensive overview of the Sikka Transportation Plat
 ### **High-Level System Architecture**
 
 ```mermaid
+%%{init: {
+    "theme": "dark",
+    "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#58a6ff",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#58a6ff"
+    },
+    "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+    }
+    }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
-    subgraph "Client Layer"
-        A[Passenger Mobile App]
-        B[Driver Mobile App]
-        C[Admin Web Dashboard]
+    subgraph """"Client" Layer"
+        A["Passenger Mobile App"]
+        B["Driver Mobile App"]
+        C["Admin Web Dashboard"]
     end
     
-    subgraph "API Gateway Layer"
-        D[Load Balancer]
-        E[API Gateway]
-        F[Rate Limiter]
+    subgraph """"API" Gateway Layer"
+        D["Load Balancer"]
+        E["API Gateway"]
+        F["Rate Limiter"]
     end
     
-    subgraph "Application Layer"
-        G[Authentication Service]
-        H[Trip Management Service]
-        I[Payment Service]
-        J[User Service]
-        K[Notification Service]
-        L[Location Service]
-        M[WebSocket Gateway]
+    subgraph """"Application" Layer"
+        G["Authentication Service"]
+        H["Trip Management Service"]
+        I["Payment Service"]
+        J["User Service"]
+        K["Notification Service"]
+        L["Location Service"]
+        M["WebSocket Gateway"]
     end
     
-    subgraph "Data Layer"
-        N[(PostgreSQL)]
-        O[(Redis Cache)]
-        P[File Storage]
+    subgraph """"Data" Layer"
+        N["(PostgreSQL)"]
+        O["(Redis Cache)"]
+        P["File Storage"]
     end
     
-    subgraph "External Services"
-        Q[EBS Payment Gateway]
-        R[CyberPay Gateway]
-        S[SMS Service]
-        T[Maps API]
-        U[Push Notifications]
+    subgraph """"External" Services"
+        Q["EBS Payment Gateway"]
+        R["CyberPay Gateway"]
+        S["SMS Service"]
+        T["Maps API"]
+        U["Push Notifications"]
     end
     
     A --> D
@@ -90,6 +138,111 @@ graph TB
     K --> U
     
     J --> P
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+    class Q refNode;
+    class R earnNode;
+    class S main;
+    class T decision;
+    class U revNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A secondary;
+    class B secondary;
+    class C secondary;
+    class D accent;
+    class E primary;
+    class F accent;
+    class G primary;
+    class H primary;
+    class I primary;
+    class J primary;
+    class K primary;
+    class L primary;
+    class M primary;
+    class N database;
+    class O database;
+    class P database;
+    class Q primary;
+    class R primary;
+    class S primary;
+    class T primary;
+    class U decision;
 ```
 
 ### **Architectural Principles**
@@ -119,50 +272,85 @@ graph TB
 ### **Core Services Architecture**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph LR
-    subgraph "Authentication Domain"
-        A1[Auth Controller]
-        A2[Auth Service]
-        A3[JWT Strategy]
-        A4[OTP Service]
+    subgraph """"Authentication" Domain"
+        A1["Auth Controller"]
+        A2["Auth Service"]
+        A3["JWT Strategy"]
+        A4["OTP Service"]
     end
     
-    subgraph "User Management Domain"
-        U1[User Controller]
-        U2[User Service]
-        U3[Profile Service]
-        U4[Driver Verification]
+    subgraph """"User" Management Domain"
+        U1["User Controller"]
+        U2["User Service"]
+        U3["Profile Service"]
+        U4["Driver Verification"]
     end
     
-    subgraph "Trip Management Domain"
-        T1[Trip Controller]
-        T2[Trip Service]
-        T3[Matching Service]
-        T4[Fare Calculator]
-        T5[Route Optimizer]
+    subgraph """"Trip" Management Domain"
+        T1["Trip Controller"]
+        T2["Trip Service"]
+        T3["Matching Service"]
+        T4["Fare Calculator"]
+        T5["Route Optimizer"]
     end
     
-    subgraph "Payment Domain"
-        P1[Payment Controller]
-        P2[Payment Service]
-        P3[Wallet Service]
-        P4[Gateway Manager]
-        P5[Transaction Service]
+    subgraph """"Payment" Domain"
+        P1["Payment Controller"]
+        P2["Payment Service"]
+        P3["Wallet Service"]
+        P4["Gateway Manager"]
+        P5["Transaction Service"]
     end
     
-    subgraph "Location Domain"
-        L1[Location Controller]
-        L2[Location Service]
-        L3[Geospatial Service]
-        L4[Route Service]
+    subgraph """"Location" Domain"
+        L1["Location Controller"]
+        L2["Location Service"]
+        L3["Geospatial Service"]
+        L4["Route Service"]
     end
     
-    subgraph "Notification Domain"
-        N1[Notification Controller]
-        N2[Notification Service]
-        N3[Push Service]
-        N4[SMS Service]
-        N5[Email Service]
+    subgraph """"Notification" Domain"
+        N1["Notification Controller"]
+        N2["Notification Service"]
+        N3["Push Service"]
+        N4["SMS Service"]
+        N5["Email Service"]
     end
     
     A1 --> A2
@@ -191,6 +379,123 @@ graph LR
     N2 --> N3
     N2 --> N4
     N2 --> N5
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class A1 main;
+    class A2 decision;
+    class A3 revNode;
+    class A4 commNode;
+    class L1 refNode;
+    class L2 earnNode;
+    class L3 main;
+    class L4 decision;
+    class N1 revNode;
+    class N2 commNode;
+    class N3 refNode;
+    class N4 earnNode;
+    class N5 main;
+    class P1 decision;
+    class P2 revNode;
+    class P3 commNode;
+    class P4 refNode;
+    class P5 earnNode;
+    class T1 main;
+    class T2 decision;
+    class T3 revNode;
+    class T4 commNode;
+    class T5 refNode;
+    class U1 earnNode;
+    class U2 main;
+    class U3 decision;
+    class U4 revNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A1 accent;
+    class A2 primary;
+    class A3 accent;
+    class A4 primary;
+    class U1 accent;
+    class U2 primary;
+    class U3 primary;
+    class U4 decision;
+    class T1 accent;
+    class T2 primary;
+    class T3 primary;
+    class T4 accent;
+    class T5 accent;
+    class P1 success;
+    class P2 primary;
+    class P3 primary;
+    class P4 primary;
+    class P5 primary;
+    class L1 accent;
+    class L2 primary;
+    class L3 primary;
+    class L4 primary;
+    class N1 decision;
+    class N2 primary;
+    class N3 primary;
+    class N4 primary;
+    class N5 primary;
 ```
 
 ### **Service Responsibilities**
@@ -230,99 +535,288 @@ graph LR
 ### **Request Processing Flow**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#58a6ff",
+    "secondaryColor": "#30363d",
+    "tertiaryColor": "#161b22",
+    "mainBkg": "#0d1117",
+    "sequenceNumberColor": "#58a6ff"
+  }
+}%%
 sequenceDiagram
-    participant C as Client
-    participant LB as Load Balancer
-    participant AG as API Gateway
-    participant RL as Rate Limiter
-    participant AS as Auth Service
-    participant BS as Business Service
-    participant DB as Database
-    participant Cache as Redis
-    participant EXT as External Service
+    autonumber
     
+    %% --- Participants ---
+    participant C as 📱 Client
+    participant LB as ⚖️ Load Balancer
+    participant AG as 🛡️ API Gateway
+    participant RL as 🚦 Rate Limiter
+    participant AS as 🔑 Auth Service
+    participant BS as ⚙️ Business Service
+    participant DB as 🗄️ Database
+    participant Cache as ⚡ Redis
+    participant EXT as 🌐 External Service
+
+    %% --- Request Flow ---
     C->>LB: HTTP Request
     LB->>AG: Route Request
+    
+    box rgba(31, 111, 235, 0.1) Security Layer
+        participant AG
+        participant RL
+        participant AS
+    end
+
     AG->>RL: Check Rate Limits
     RL->>AS: Validate JWT Token
     AS->>Cache: Check Token Cache
-    Cache->>AS: Token Valid
-    AS->>AG: Authentication Success
+    Cache-->>AS: Token Valid
+    AS-->>AG: Authentication Success
+
+    box rgba(63, 185, 80, 0.1) Logic & Data
+        participant BS
+        participant DB
+        participant Cache
+    end
+
     AG->>BS: Business Logic Request
     
     BS->>Cache: Check Cache
-    Cache->>BS: Cache Miss
+    Cache-->>BS: Cache Miss
     BS->>DB: Database Query
-    DB->>BS: Query Result
+    DB-->>BS: Query Result
     BS->>Cache: Update Cache
     
-    alt External Service Required
-        BS->>EXT: External API Call
-        EXT->>BS: External Response
+    rect rgba(188, 140, 255, 0.1)
+        alt External Service Required
+            BS->>EXT: External API Call
+            EXT-->>BS: External Response
+        end
     end
     
-    BS->>AG: Business Response
-    AG->>LB: API Response
-    LB->>C: HTTP Response
+    BS-->>AG: Business Response
+    AG-->>LB: API Response
+    LB-->>C: HTTP Response
+
+
 ```
 
 ### **Event-Driven Communication**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TD
-    A[Trip Status Change] --> B[Event Publisher]
-    B --> C[Redis Pub/Sub]
+    A["Trip Status Change"] --> B["Event Publisher"]
+    B --> C["Redis Pub/Sub"]
     
-    C --> D[WebSocket Gateway]
-    C --> E[Notification Service]
-    C --> F[Analytics Service]
-    C --> G[Audit Service]
+    C --> D["WebSocket Gateway"]
+    C --> E["Notification Service"]
+    C --> F["Analytics Service"]
+    C --> G["Audit Service"]
     
-    D --> H[Real-time Updates]
-    E --> I[Push Notifications]
-    E --> J[SMS Notifications]
-    F --> K[Metrics Collection]
-    G --> L[Audit Logs]
+    D --> H["Real-time Updates"]
+    E --> I["Push Notifications"]
+    E --> J["SMS Notifications"]
+    F --> K["Metrics Collection"]
+    G --> L["Audit Logs"]
     
-    H --> M[Mobile Apps]
+    H --> M["Mobile Apps"]
     I --> M
-    J --> N[SMS Gateway]
-    K --> O[Analytics Dashboard]
-    L --> P[Compliance Reports]
+    J --> N["SMS Gateway"]
+    K --> O["Analytics Dashboard"]
+    L --> P["Compliance Reports"]
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A accent;
+    class B accent;
+    class C database;
+    class D primary;
+    class E primary;
+    class F primary;
+    class G primary;
+    class H accent;
+    class I decision;
+    class J decision;
+    class K accent;
+    class L accent;
+    class M secondary;
+    class N primary;
+    class O accent;
+    class P accent;
 ```
 
 ### **WebSocket Communication Flow**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#58a6ff",
+    "secondaryColor": "#30363d",
+    "tertiaryColor": "#161b22",
+    "mainBkg": "#0d1117",
+    "sequenceNumberColor": "#58a6ff"
+  }
+}%%
 sequenceDiagram
-    participant PA as Passenger App
-    participant DA as Driver App
-    participant WS as WebSocket Gateway
-    participant TS as Trip Service
-    participant NS as Notification Service
+    autonumber
+
+    box rgba(63, 185, 80, 0.1) Passenger App
+        participant PA as 📱 Passenger App
+    end
     
+    box rgba(188, 140, 255, 0.1) Driver App
+        participant DA as 🏎️ Driver App
+    end
+
+    box rgba(218, 54, 51, 0.1) Infrastructure
+        participant WS as 🔌 WebSocket GW
+        participant TS as ⚙️ Trip Service
+        participant NS as 🔔 Notification
+    end
+
     Note over PA,DA: Trip Request Initiated
     
     PA->>WS: Connect & Join Trip Room
     DA->>WS: Connect & Join Driver Room
     
     TS->>WS: New Trip Available
-    WS->>DA: Broadcast Trip Request
+    WS-->>DA: Broadcast Trip Request
     
     DA->>WS: Accept Trip
     WS->>TS: Process Trip Acceptance
     TS->>WS: Trip Assigned Event
-    WS->>PA: Trip Assigned Notification
+    WS-->>PA: Trip Assigned Notification
     
-    loop Location Updates
+    loop Real-time Tracking
         DA->>WS: Driver Location Update
-        WS->>PA: Real-time Location
+        WS-->>PA: Real-time Location
     end
     
     DA->>WS: Trip Status Update
     WS->>TS: Update Trip Status
     TS->>NS: Trigger Notifications
-    WS->>PA: Status Change Notification
+    WS-->>PA: Status Change Notification
+
 ```
 
 ---
@@ -332,6 +826,41 @@ sequenceDiagram
 ### **Entity Relationship Diagram**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 erDiagram
     USER {
         uuid id PK
@@ -434,20 +963,83 @@ erDiagram
         timestamp createdAt
     }
     
-    USER ||--o{ TRIP : "passenger"
-    USER ||--o{ TRIP : "driver"
+    USER ||--o { TRIP : "passenger"
+    USER ||--o { TRIP : "driver"
     USER ||--|| WALLET : "owns"
-    USER ||--o{ RATING : "rates"
-    USER ||--o{ RATING : "rated"
-    USER ||--o{ LOCATION : "tracks"
+    USER ||--o { RATING : "rates"
+    USER ||--o { RATING : "rated"
+    USER ||--o { LOCATION : "tracks"
     
     TRIP ||--|| PAYMENT : "has"
-    TRIP ||--o{ RATING : "receives"
-    TRIP ||--o{ LOCATION : "tracks"
+    TRIP ||--o { RATING : "receives"
+    TRIP ||--o { LOCATION : "tracks"
     
-    WALLET ||--o{ TRANSACTION : "contains"
+    WALLET ||--o { TRANSACTION : "contains"
     
-    PAYMENT ||--o{ TRANSACTION : "generates"
+    PAYMENT ||--o { TRANSACTION : "generates"
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ### **Database Optimization Strategy**
@@ -580,27 +1172,155 @@ POST   /api/v1/trips/{id}/rate    # Rate trip
 ### **API Security Layers**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TD
-    A[API Request] --> B[Rate Limiting]
-    B --> C[CORS Validation]
-    C --> D[Input Validation]
-    D --> E[JWT Authentication]
-    E --> F[Role Authorization]
-    F --> G[Business Logic]
-    G --> H[Response Sanitization]
-    H --> I[API Response]
+    A["API Request"] --> B["Rate Limiting"]
+    B --> C["CORS Validation"]
+    C --> D["Input Validation"]
+    D --> E["JWT Authentication"]
+    E --> F["Role Authorization"]
+    F --> G["Business Logic"]
+    G --> H["Response Sanitization"]
+    H --> I["API Response"]
     
-    B --> J[Rate Limit Exceeded]
-    C --> K[CORS Violation]
-    D --> L[Invalid Input]
-    E --> M[Authentication Failed]
-    F --> N[Authorization Failed]
+    B --> J["Rate Limit Exceeded"]
+    C --> K["CORS Violation"]
+    D --> L["Invalid Input"]
+    E --> M["Authentication Failed"]
+    F --> N["Authorization Failed"]
     
-    J --> O[Error Response]
+    J --> O["Error Response"]
     K --> O
     L --> O
     M --> O
     N --> O
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A primary;
+    class B accent;
+    class C accent;
+    class D accent;
+    class E accent;
+    class F accent;
+    class G accent;
+    class H accent;
+    class I primary;
+    class J accent;
+    class K accent;
+    class L accent;
+    class M error;
+    class N error;
+    class O error;
 ```
 
 ---
@@ -610,30 +1330,78 @@ graph TD
 ### **WebSocket Architecture**
 
 ```mermaid
+%%{init: {
+    "theme": "dark",
+    "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#58a6ff",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#58a6ff"
+    },
+    "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+    }
+    }}%%
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
-    subgraph "Client Layer"
-        A[Passenger App]
-        B[Driver App]
-        C[Admin Dashboard]
+    subgraph """"Client" Layer"
+        A["Passenger App"]
+        B["Driver App"]
+        C["Admin Dashboard"]
     end
     
-    subgraph "WebSocket Gateway"
-        D[Connection Manager]
-        E[Room Manager]
-        F[Event Router]
-        G[Authentication Handler]
+    subgraph """"WebSocket" Gateway"
+        D["Connection Manager"]
+        E["Room Manager"]
+        F["Event Router"]
+        G["Authentication Handler"]
     end
     
-    subgraph "Business Services"
-        H[Trip Service]
-        I[Location Service]
-        J[Notification Service]
-        K[Payment Service]
+    subgraph """"Business" Services"
+        H["Trip Service"]
+        I["Location Service"]
+        J["Notification Service"]
+        K["Payment Service"]
     end
     
-    subgraph "Message Broker"
-        L[Redis Pub/Sub]
-        M[Event Queue]
+    subgraph """"Message" Broker"
+        L["Redis Pub/Sub"]
+        M["Event Queue"]
     end
     
     A --> D
@@ -656,6 +1424,95 @@ graph TB
     
     L --> M
     M --> F
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A secondary;
+    class B secondary;
+    class C accent;
+    class D accent;
+    class E accent;
+    class F accent;
+    class G accent;
+    class H primary;
+    class I primary;
+    class J primary;
+    class K primary;
+    class L database;
+    class M accent;
 ```
 
 ### **Real-time Event Types**
@@ -700,23 +1557,126 @@ interface PaymentEvent {
 ### **Connection Management**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 stateDiagram-v2
     [*] --> Connecting
-    Connecting --> Connected: Auth Success
-    Connecting --> Disconnected: Auth Failed
+    Connecting --> Connected : Auth Success
+    Connecting --> Disconnected : Auth Failed
     
-    Connected --> Authenticated: JWT Valid
-    Connected --> Disconnected: JWT Invalid
+    Connected --> Authenticated : JWT Valid
+    Connected --> Disconnected : JWT Invalid
     
-    Authenticated --> InRoom: Join Room
-    InRoom --> InRoom: Send/Receive Events
-    InRoom --> Authenticated: Leave Room
+    Authenticated --> InRoom : Join Room
+    InRoom --> InRoom : Send/Receive Events
+    InRoom --> Authenticated : Leave Room
     
-    Authenticated --> Disconnected: Client Disconnect
-    InRoom --> Disconnected: Connection Lost
+    Authenticated --> Disconnected : Client Disconnect
+    InRoom --> Disconnected : Connection Lost
     
-    Disconnected --> Connecting: Reconnect
+    Disconnected --> Connecting : Reconnect
     Disconnected --> [*]: Session End
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class A main;
+    class C decision;
+    class D revNode;
+    class I commNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ---
@@ -726,45 +1686,80 @@ stateDiagram-v2
 ### **Multi-Layer Security Model**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TD
-    A[Client Request] --> B[Network Security]
-    B --> C[API Gateway Security]
-    C --> D[Application Security]
-    D --> E[Data Security]
-    E --> F[Infrastructure Security]
+    A["Client Request"] --> B["Network Security"]
+    B --> C["API Gateway Security"]
+    C --> D["Application Security"]
+    D --> E["Data Security"]
+    E --> F["Infrastructure Security"]
     
-    subgraph "Network Layer"
-        B1[HTTPS/TLS 1.3]
-        B2[DDoS Protection]
-        B3[Firewall Rules]
+    subgraph """"Network" Layer"
+        B1["HTTPS/TLS 1.3"]
+        B2["DDoS Protection"]
+        B3["Firewall Rules"]
     end
     
-    subgraph "API Gateway Layer"
-        C1[Rate Limiting]
-        C2[CORS Policy]
-        C3[Input Validation]
-        C4[Request Sanitization]
+    subgraph """"API" Gateway Layer"
+        C1["Rate Limiting"]
+        C2["CORS Policy"]
+        C3["Input Validation"]
+        C4["Request Sanitization"]
     end
     
-    subgraph "Application Layer"
-        D1[JWT Authentication]
-        D2[Role-Based Authorization]
-        D3[Session Management]
-        D4[Audit Logging]
+    subgraph """"Application" Layer"
+        D1["JWT Authentication"]
+        D2["Role-Based Authorization"]
+        D3["Session Management"]
+        D4["Audit Logging"]
     end
     
-    subgraph "Data Layer"
-        E1[Encryption at Rest]
-        E2[Encryption in Transit]
-        E3[Database Security]
-        E4[Backup Encryption]
+    subgraph """"Data" Layer"
+        E1["Encryption at Rest"]
+        E2["Encryption in Transit"]
+        E3["Database Security"]
+        E4["Backup Encryption"]
     end
     
-    subgraph "Infrastructure Layer"
-        F1[Container Security]
-        F2[Network Segmentation]
-        F3[Access Controls]
-        F4[Monitoring & Alerting]
+    subgraph """"Infrastructure" Layer"
+        F1["Container Security"]
+        F2["Network Segmentation"]
+        F3["Access Controls"]
+        F4["Monitoring & Alerting"]
     end
     
     B --> B1
@@ -790,39 +1785,181 @@ graph TD
     F --> F2
     F --> F3
     F --> F4
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class A main;
+    class B decision;
+    class B1 revNode;
+    class B2 commNode;
+    class B3 refNode;
+    class C earnNode;
+    class C1 main;
+    class C2 decision;
+    class C3 revNode;
+    class C4 commNode;
+    class D refNode;
+    class D1 earnNode;
+    class D2 main;
+    class D3 decision;
+    class D4 revNode;
+    class E commNode;
+    class E1 refNode;
+    class E2 earnNode;
+    class E3 main;
+    class E4 decision;
+    class F revNode;
+    class F1 commNode;
+    class F2 refNode;
+    class F3 earnNode;
+    class F4 main;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A secondary;
+    class B accent;
+    class C primary;
+    class D secondary;
+    class E accent;
+    class F accent;
+    class B1 accent;
+    class B2 accent;
+    class B3 accent;
+    class C1 accent;
+    class C2 accent;
+    class C3 accent;
+    class C4 accent;
+    class D1 accent;
+    class D2 accent;
+    class D3 accent;
+    class D4 accent;
+    class E1 accent;
+    class E2 accent;
+    class E3 database;
+    class E4 accent;
+    class F1 accent;
+    class F2 accent;
+    class F3 accent;
+    class F4 warning;
 ```
 
 ### **Authentication & Authorization Flow**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#58a6ff",
+    "secondaryColor": "#30363d",
+    "tertiaryColor": "#161b22",
+    "mainBkg": "#0d1117",
+    "actorBkg": "#0d1117",
+    "actorBorder": "#58a6ff",
+    "actorTextColor": "#c9d1d9"
+  }
+}%%
 sequenceDiagram
-    participant C as Client
-    participant AG as API Gateway
-    participant AS as Auth Service
-    participant RS as Redis
-    participant DB as Database
-    participant BS as Business Service
-    
+    autonumber
+
+    %% Participant Definitions with color-coded boxes
+    box rgba(188, 140, 255, 0.1) Entry Point
+        participant C as 📱 Client
+        participant AG as 🛡️ API Gateway
+    end
+
+    box rgba(210, 153, 34, 0.1) Identity Provider
+        participant AS as 🔑 Auth Service
+        participant RS as ⚡ Redis
+        participant DB as 🗄️ Database
+    end
+
+    box rgba(63, 185, 80, 0.1) Resources
+        participant BS as ⚙️ Business Service
+    end
+
+    Note over C, DB: Phase 1: Authentication (Login)
     C->>AG: Login Request
     AG->>AS: Validate Credentials
     AS->>DB: Check User Credentials
-    DB->>AS: User Data
+    DB-->>AS: User Data
     AS->>AS: Generate JWT & Refresh Token
     AS->>RS: Store Refresh Token
-    AS->>AG: Return Tokens
-    AG->>C: Authentication Success
+    AS-->>AG: Return Tokens
+    AG-->>C: Authentication Success
     
-    Note over C,BS: Subsequent API Calls
-    
+    Note over C, BS: Phase 2: Authorization (Subsequent Calls)
     C->>AG: API Request + JWT
     AG->>AS: Validate JWT
     AS->>AS: Verify Token Signature
     AS->>RS: Check Token Blacklist
-    RS->>AS: Token Valid
-    AS->>AG: Authentication Success
+    RS-->>AS: Token Valid
+    AS-->>AG: Authentication Success
+    
     AG->>BS: Authorized Request
-    BS->>AG: Business Response
-    AG->>C: API Response
+    BS-->>AG: Business Response
+    AG-->>C: API Response
+
+
 ```
 
 ### **Data Protection Strategy**
@@ -853,93 +1990,131 @@ System Config     | -         | -      | RW
 ### **Horizontal Scaling Architecture**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#58a6ff",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "mainBkg": "#0d1117"
+  }
+}}%%
 graph TB
-    subgraph "Load Balancer Layer"
-        A[Application Load Balancer]
-        B[WebSocket Load Balancer]
+    subgraph LBL ["Load Balancer Layer"]
+        A["Application LB"]
+        B["WebSocket LB"]
     end
     
-    subgraph "Application Instances"
-        C[API Instance 1]
-        D[API Instance 2]
-        E[API Instance N]
-        F[WebSocket Instance 1]
-        G[WebSocket Instance 2]
-        H[WebSocket Instance N]
+    subgraph APP ["Application Instances"]
+        C["API Instance 1"]
+        D["API Instance 2"]
+        E["API Instance N"]
+        F["WS Instance 1"]
+        G["WS Instance 2"]
+        H["WS Instance N"]
     end
     
-    subgraph "Data Layer"
-        I[PostgreSQL Primary]
-        J[PostgreSQL Read Replica 1]
-        K[PostgreSQL Read Replica 2]
-        L[Redis Cluster]
+    subgraph DATA ["Data Layer"]
+        I[("PostgreSQL Primary")]
+        J[("PG Read Replica 1")]
+        K[("PG Read Replica 2")]
+        L[("Redis Cluster")]
     end
     
-    subgraph "External Services"
-        M[Payment Gateways]
-        N[SMS Services]
-        O[Push Notifications]
+    subgraph EXT ["External Services"]
+        M["Payment Gateways"]
+        N["SMS Services"]
+        O["Push Notifications"]
     end
     
-    A --> C
-    A --> D
-    A --> E
-    B --> F
-    B --> G
-    B --> H
+    %% Relationships
+    A --> C & D & E
+    B --> F & G & H
     
-    C --> I
-    C --> J
-    C --> K
-    C --> L
+    C & D & E --> I
+    C & D & E --> J
+    C & D & E --> K
+    C & D & E --> L
     
-    D --> I
-    D --> J
-    D --> K
-    D --> L
+    F & G & H --> L
     
-    E --> I
-    E --> J
-    E --> K
-    E --> L
+    C --> M & N & O
+
+    %% --- STYLING ---
     
-    F --> L
-    G --> L
-    H --> L
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9;
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    classDef decision fill:#161b22,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    classDef revNode fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+
+    %% Class Assignments
+    class C,D,E primary;
+    class A,B,F,G,H secondary;
+    class I,J,K,L database;
+    class M,N decision;
+    class O revNode;
+
+
     
-    C --> M
-    C --> N
-    C --> O
 ```
 
 ### **Caching Strategy**
 
 ```mermaid
 graph LR
-    A[Client Request] --> B[API Gateway]
-    B --> C{Cache Check}
+    A["Client Request"] --> B["API Gateway"]
+    B --> C{"Cache Check"}
     
-    C -->|Hit| D[Return Cached Data]
-    C -->|Miss| E[Business Logic]
+    C -->|Hit| D["Return Cached Data"]
+    C -->|Miss| E["Business Logic"]
     
-    E --> F[Database Query]
-    F --> G[Update Cache]
-    G --> H[Return Data]
+    E --> F[("Database Query")]
+    F --> G["Update Cache"]
+    G --> H["Return Data"]
     
-    subgraph "Cache Layers"
-        I[Redis - Session Cache]
-        J[Redis - Data Cache]
-        K[CDN - Static Assets]
-        L[Application Cache]
+    subgraph Cache_Layers["Cache Layers"]
+        I["Redis - Session Cache"]
+        J["Redis - Data Cache"]
+        K["CDN - Static Assets"]
+        L["Application Cache"]
     end
     
-    C --> I
-    C --> J
-    C --> K
-    C --> L
+    C -.-> I
+    C -.-> J
+    C -.-> K
+    C -.-> L
     
-    G --> I
-    G --> J
+    G -.-> I
+    G -.-> J
+
+    %% --- CACHING COLOR PALETTE ---
+    
+    %% Gateway/Entry (Cyan)
+    classDef entry fill:#0d1117,stroke:#58a6ff,stroke-width:3px,color:#58a6ff,font-weight:bold;
+    
+    %% Decision Points (Gold/Warning)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:2px,color:#d29922,stroke-dasharray:5 5;
+    
+    %% Cache Hits (Emerald/Success)
+    classDef hit fill:#04190b,stroke:#3fb950,stroke-width:2px,color:#aff5b4;
+    
+    %% Cache Miss/Processing (Ruby/Error-ish)
+    classDef miss fill:#1a0b0b,stroke:#ff7b72,stroke-width:2px,color:#ffa198;
+    
+    %% Data Storage (Sapphire/Database)
+    classDef storage fill:#051221,stroke:#388bfd,stroke-width:3px,color:#a5d6ff;
+
+    %% Applying Classes
+    class A,B entry;
+    class C decision;
+    class D,I,J,K,L hit;
+    class E,G miss;
+    class F storage;
+    class H entry;
 ```
 
 ### **Performance Optimization Techniques**
@@ -972,58 +2147,83 @@ graph LR
 ### **Container-Based Deployment**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "darkMode": true,
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#58a6ff",
+    "lineColor": "#58a6ff",
+    "background": "#0d1117"
+  }
+}}%%
 graph TB
-    subgraph "Production Environment"
-        subgraph "Kubernetes Cluster"
-            A[Ingress Controller]
-            B[API Deployment]
-            C[WebSocket Deployment]
-            D[Worker Deployment]
-            E[Redis Deployment]
+    subgraph Production ["Production Environment"]
+        subgraph K8s ["Kubernetes Cluster"]
+            A["Ingress Controller"]
+            B["API Deployment"]
+            C["WebSocket Deployment"]
+            D["Worker Deployment"]
+            E[("Redis Cache")]
         end
         
-        subgraph "Database Layer"
-            F[PostgreSQL Primary]
-            G[PostgreSQL Standby]
+        subgraph DB ["Database Layer"]
+            F[("PostgreSQL Primary")]
+            G[("PostgreSQL Standby")]
         end
         
-        subgraph "Monitoring"
-            H[Prometheus]
-            I[Grafana]
-            J[ELK Stack]
+        subgraph Monitoring ["Observability"]
+            H["Prometheus"]
+            I["Grafana"]
+            J["ELK Stack"]
         end
     end
     
-    subgraph "CI/CD Pipeline"
-        K[Git Repository]
-        L[GitHub Actions]
-        M[Docker Registry]
-        N[Deployment Scripts]
+    subgraph CICD ["CI/CD Pipeline"]
+        K["Git Repository"]
+        L["GitHub Actions"]
+        M["Docker Registry"]
+        N["Helm/Kustomize"]
     end
     
+    %% Pipeline Flow
     K --> L
     L --> M
     M --> N
     N --> A
     
+    %% Traffic & Cache Flow
     A --> B
     A --> C
     B --> E
     C --> E
     D --> E
     
+    %% Storage Flow
     B --> F
     C --> F
     D --> F
-    F --> G
+    F -.-> G
     
-    B --> H
-    C --> H
-    D --> H
+    %% Telemetry Flow
+    B & C & D --> H
     H --> I
-    B --> J
-    C --> J
-    D --> J
+    B & C & D --> J
+
+    %% --- STYLING ---
+    classDef cluster fill:#161b22,stroke:#30363d,color:#8b949e;
+    classDef entry fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#58a6ff,font-weight:bold;
+    classDef app fill:#0d1117,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9;
+    classDef data fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-style:italic;
+    classDef monitor fill:#0d1117,stroke:#d29922,stroke-width:2px,color:#d29922;
+    classDef pipeline fill:#12101e,stroke:#bc8cff,stroke-width:2px,color:#e2c5ff;
+
+    class A entry;
+    class B,C,D app;
+    class E,F,G data;
+    class H,I,J monitor;
+    class K,L,M,N pipeline;
 ```
 
 ### **Environment Configuration**
@@ -1037,7 +2237,7 @@ services:
     build: .
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://dev_user:dev_pass@postgres:5432/sikka_dev
+      - DATABASE_URL=postgresql://[USERNAME]:[PASSWORD]@postgres:5432/sikka_dev
       - REDIS_URL=redis://redis:6379
     ports:
       - "3000:3000"
@@ -1101,33 +2301,68 @@ services:
 ### **Monitoring & Observability**
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph LR
-    subgraph "Application Metrics"
-        A[API Response Times]
-        B[Error Rates]
-        C[Throughput]
-        D[Active Connections]
+    subgraph """"Application" Metrics"
+        A["API Response Times"]
+        B["Error Rates"]
+        C["Throughput"]
+        D["Active Connections"]
     end
     
-    subgraph "Infrastructure Metrics"
-        E[CPU Usage]
-        F[Memory Usage]
-        G[Disk I/O]
-        H[Network I/O]
+    subgraph """"Infrastructure" Metrics"
+        E["CPU Usage"]
+        F["Memory Usage"]
+        G["Disk I/O"]
+        H["Network I/O"]
     end
     
-    subgraph "Business Metrics"
-        I[Active Trips]
-        J[Payment Success Rate]
-        K[User Registrations]
-        L[Driver Utilization]
+    subgraph """"Business" Metrics"
+        I["Active Trips"]
+        J["Payment Success Rate"]
+        K["User Registrations"]
+        L["Driver Utilization"]
     end
     
-    subgraph "Monitoring Stack"
-        M[Prometheus]
-        N[Grafana]
-        O[AlertManager]
-        P[ELK Stack]
+    subgraph """"Monitoring" Stack"
+        M["Prometheus"]
+        N["Grafana"]
+        O["AlertManager"]
+        P["ELK Stack"]
     end
     
     A --> M
@@ -1146,6 +2381,101 @@ graph LR
     M --> N
     M --> O
     M --> P
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+    class A main;
+    class B decision;
+    class C revNode;
+    class D commNode;
+    class E refNode;
+    class F earnNode;
+    class G main;
+    class H decision;
+    class I revNode;
+    class J commNode;
+    class K refNode;
+    class L earnNode;
+    class M main;
+    class N decision;
+    class O revNode;
+    class P commNode;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class A primary;
+    class B error;
+    class C accent;
+    class D accent;
+    class E accent;
+    class F accent;
+    class G accent;
+    class H accent;
+    class I accent;
+    class J success;
+    class K accent;
+    class L accent;
+    class M accent;
+    class N accent;
+    class O warning;
+    class P accent;
 ```
 
 ### **Health Check Strategy**
@@ -1187,4 +2517,3 @@ export class HealthController {
 ---
 
 This comprehensive architecture documentation provides the technical foundation for understanding, maintaining, and scaling the Sikka Transportation Platform.
-

@@ -53,6 +53,22 @@ export const databaseConfig: TypeOrmModuleOptions = {
 ### **Complete Database Schema**
 
 ```mermaid
+
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#e9d5ff",
+    "primaryBorderColor": "#8b5cf6",
+    "lineColor": "#8b5cf6",
+    "secondaryColor": "#1e1b4b",
+    "tertiaryColor": "#c4b5fd",
+    "mainBkg": "#0d1117",
+    "nodeBorder": "#8b5cf6",
+    "clusterBkg": "#1e1b4b",
+    "titleColor": "#a78bfa"
+  }
+}}%%
 erDiagram
     USER {
         uuid id PK
@@ -259,7 +275,6 @@ erDiagram
         timestamp updatedAt
     }
 
-    %% Relationships
     USER ||--|| WALLET : "owns"
     USER ||--o{ TRIP : "passenger_trips"
     USER ||--o{ TRIP : "driver_trips"
@@ -285,6 +300,8 @@ erDiagram
 
     LOCATION }o--|| USER : "location_user"
     LOCATION }o--|| TRIP : "location_trip"
+
+
 ```
 
 ---

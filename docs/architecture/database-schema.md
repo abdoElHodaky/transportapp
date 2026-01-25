@@ -32,8 +32,43 @@ The Sikka Transportation Platform uses **PostgreSQL** as the primary database wi
 ## 📊 Entity Relationship Diagram
 
 ```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 erDiagram
-    %% Core Entities
+    %%  Core Entities
     USER {
         uuid id PK
         string firstName
@@ -192,22 +227,85 @@ erDiagram
         timestamp updatedAt
     }
     
-    %% Relationships
+    %%  Relationships
     USER ||--|| WALLET : "has one"
-    USER ||--o{ TRIP : "passenger trips"
-    USER ||--o{ TRIP : "driver trips"
+    USER ||--o { TRIP : "passenger trips"
+    USER ||--o { TRIP : "driver trips"
     USER ||--|| DRIVER_PROFILE : "driver profile"
-    USER ||--o{ RATING : "ratings given"
-    USER ||--o{ RATING : "ratings received"
-    USER ||--o{ TRANSACTION : "transactions"
+    USER ||--o { RATING : "ratings given"
+    USER ||--o { RATING : "ratings received"
+    USER ||--o { TRANSACTION : "transactions"
     
-    WALLET ||--o{ TRANSACTION : "wallet transactions"
+    WALLET ||--o { TRANSACTION : "wallet transactions"
     
-    TRIP ||--o{ RATING : "trip ratings"
-    TRIP ||--o{ TRANSACTION : "trip payments"
+    TRIP ||--o { RATING : "trip ratings"
+    TRIP ||--o { TRANSACTION : "trip payments"
     
     TRANSACTION }o--|| USER : "from user"
     TRANSACTION }o--|| USER : "to user"
+
+    %%  --- DARK GRADIENT & GLOW STYLING ---
+    
+    %%  Main Dashboard (Neon Cyan/Blue)
+    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
+    
+    
+    %%  Decision Diamond (Gold Glow)
+    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
+    
+    
+    %%  Revenue (Emerald Gradient Style)
+    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
+    
+    
+    %%  Commission (Purple Gradient Style)
+    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
+    
+    
+    %%  Refund (Ruby Gradient Style)
+    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
+    
+    
+    %%  Earnings (Sapphire Gradient Style)
+    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
+    
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+
 ```
 
 ## 🏗️ Entity Specifications
@@ -431,38 +529,272 @@ export class Transaction {
 
 ### **🔄 One-to-One Relationships**
 ```mermaid
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph LR
-    USER[👤 User] ---|1:1| WALLET[💰 Wallet]
-    USER ---|1:1| DRIVER[🚗 Driver Profile]
+    USER["👤 User"] ---|1:1| WALLET["💰 Wallet"]
+    USER ---|1:1| DRIVER["🚗 Driver Profile"]
     
-    classDef entity fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    class USER,WALLET,DRIVER entity
+    classDef entity fill : #e3f2fd, stroke:#1976d2, stroke-width: 2px;
+    
+    class USER,WALLET,DRIVER entity;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class USER accent;
+    class WALLET success;
+    class DRIVER accent;
 ```
 
 ### **🔄 One-to-Many Relationships**
 ```mermaid
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph TB
-    USER[👤 User] ---|1:N| TRIP_P[🚗 Trips as Passenger]
-    USER ---|1:N| TRIP_D[🚗 Trips as Driver]
-    USER ---|1:N| RATING_G[⭐ Ratings Given]
-    USER ---|1:N| RATING_R[⭐ Ratings Received]
-    USER ---|1:N| TRANS[💳 Transactions]
+    USER["👤 User"] ---|1:N| TRIP_P["🚗 Trips as Passenger"]
+    USER ---|1:N| TRIP_D["🚗 Trips as Driver"]
+    USER ---|1:N| RATING_G["⭐ Ratings Given"]
+    USER ---|1:N| RATING_R["⭐ Ratings Received"]
+    USER ---|1:N| TRANS["💳 Transactions"]
     
-    WALLET[💰 Wallet] ---|1:N| TRANS
-    TRIP[🚗 Trip] ---|1:N| RATING[⭐ Ratings]
+    WALLET["💰 Wallet"] ---|1:N| TRANS
+    TRIP["🚗 Trip"] ---|1:N| RATING["⭐ Ratings"]
     TRIP ---|1:N| TRANS
     
-    classDef entity fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    class USER,WALLET,TRIP entity
+    classDef entity fill : #e8f5e8, stroke:#388e3c, stroke-width: 2px;
+    
+    class USER,WALLET,TRIP entity;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class USER accent;
+    class TRIP_P accent;
+    class TRIP_D accent;
+    class RATING_G accent;
+    class RATING_R accent;
+    class TRANS success;
+    class WALLET success;
+    class TRIP accent;
+    class RATING accent;
 ```
 
 ### **🔄 Many-to-Many Relationships**
 ```mermaid
+%% {init : {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b', 'primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%% 
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117",
+    "mainBkg": "#0d1117",
+    "secondBkg": "#30363d",
+    "tertiaryBkg": "#79c0ff"
+  },
+  "flowchart": {
+    "useMaxWidth": true,
+    "htmlLabels": true
+  },
+  "sequence": {
+    "useMaxWidth": true,
+    "wrap": true
+  },
+  "class": {
+    "useMaxWidth": true
+  },
+  "state": {
+    "useMaxWidth": true
+  },
+  "er": {
+    "useMaxWidth": true
+  },
+  "gantt": {
+    "useMaxWidth": true
+  }
+}%%
 graph LR
-    USER1[👤 User From] ---|M:N| TRANS[💳 Transfer Transaction] ---|M:N| USER2[👤 User To]
+    USER1["👤 User From"] ---|M:N| TRANS["💳 Transfer Transaction"] ---|M:N| USER2["👤 User To"]
     
-    classDef entity fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    class USER1,USER2,TRANS entity
+    classDef entity fill : #fff3e0, stroke:#f57c00, stroke-width: 2px;
+    
+    class USER1,USER2,TRANS entity;
+
+
+
+
+    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
+    
+    %% Primary nodes (main components)
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
+    
+    %% Secondary nodes (supporting components)
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
+    
+    %% Accent nodes (highlights)
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
+    
+    %% Success nodes (positive outcomes)
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
+    
+    %% Warning nodes (attention needed)
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
+    
+    %% Error nodes (problems/failures)
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
+    
+    %% Database nodes (data storage)
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
+    
+    %% Process nodes (operations)
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
+    
+    %% Decision nodes (branching points)
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
+    
+    %% External nodes (third-party services)
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+
+    class USER1 accent;
+    class TRANS success;
+    class USER2 accent;
 ```
 
 ## 📈 Indexing Strategy
