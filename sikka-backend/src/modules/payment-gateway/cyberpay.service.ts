@@ -37,20 +37,30 @@ export class CyberPayService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {
-    this.baseUrl = this.configService.get<string>('CYBERPAY_BASE_URL', 'https://api.cyberpay.sd');
-    this.merchantId = this.configService.get<string>('CYBERPAY_MERCHANT_ID', '');
+    this.baseUrl = this.configService.get<string>(
+      'CYBERPAY_BASE_URL',
+      'https://api.cyberpay.sd',
+    );
+    this.merchantId = this.configService.get<string>(
+      'CYBERPAY_MERCHANT_ID',
+      '',
+    );
     this.apiKey = this.configService.get<string>('CYBERPAY_API_KEY', '');
     this.secretKey = this.configService.get<string>('CYBERPAY_SECRET_KEY', '');
 
     if (!this.merchantId || !this.apiKey || !this.secretKey) {
-      this.logger.warn('CyberPay configuration is incomplete. Payment processing will be simulated.');
+      this.logger.warn(
+        'CyberPay configuration is incomplete. Payment processing will be simulated.',
+      );
     }
   }
 
   /**
    * Initiate payment with CyberPay
    */
-  async initiatePayment(paymentRequest: CyberPayPaymentRequest): Promise<CyberPayPaymentResponse> {
+  async initiatePayment(
+    paymentRequest: CyberPayPaymentRequest,
+  ): Promise<CyberPayPaymentResponse> {
     try {
       // If configuration is incomplete, simulate payment
       if (!this.merchantId || !this.apiKey || !this.secretKey) {
@@ -72,18 +82,24 @@ export class CyberPayService {
       // Generate signature
       const signature = this.generateSignature(requestData);
 
-      this.logger.log(`Initiating CyberPay payment for transaction: ${paymentRequest.transactionId}`);
+      this.logger.log(
+        `Initiating CyberPay payment for transaction: ${paymentRequest.transactionId}`,
+      );
 
       const response = await firstValueFrom(
-        this.httpService.post(`${this.baseUrl}/v1/payments/create`, requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${this.apiKey}`,
-            'X-Signature': signature,
+        this.httpService.post(
+          `${this.baseUrl}/v1/payments/create`,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: `Bearer ${this.apiKey}`,
+              'X-Signature': signature,
+            },
+            timeout: 30000,
           },
-          timeout: 30000,
-        }),
+        ),
       );
 
       if (response.data.status === 'success') {
@@ -104,10 +120,12 @@ export class CyberPayService {
           errorCode: response.data.error_code,
         };
       }
-
     } catch (error) {
-      this.logger.error(`CyberPay payment initiation failed: ${error.message}`, error.stack);
-      
+      this.logger.error(
+        `CyberPay payment initiation failed: ${error.message}`,
+        error.stack,
+      );
+
       return {
         success: false,
         transactionId: paymentRequest.transactionId,
@@ -121,7 +139,10 @@ export class CyberPayService {
   /**
    * Verify payment status
    */
-  async verifyPayment(transactionId: string, gatewayTransactionId: string): Promise<CyberPayPaymentResponse> {
+  async verifyPayment(
+    transactionId: string,
+    gatewayTransactionId: string,
+  ): Promise<CyberPayPaymentResponse> {
     try {
       // If configuration is incomplete, simulate verification
       if (!this.merchantId || !this.apiKey || !this.secretKey) {
@@ -131,13 +152,16 @@ export class CyberPayService {
       this.logger.log(`Verifying CyberPay payment: ${transactionId}`);
 
       const response = await firstValueFrom(
-        this.httpService.get(`${this.baseUrl}/v1/payments/${gatewayTransactionId}/status`, {
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${this.apiKey}`,
+        this.httpService.get(
+          `${this.baseUrl}/v1/payments/${gatewayTransactionId}/status`,
+          {
+            headers: {
+              Accept: 'application/json',
+              Authorization: `Bearer ${this.apiKey}`,
+            },
+            timeout: 30000,
           },
-          timeout: 30000,
-        }),
+        ),
       );
 
       const status = this.mapCyberPayStatus(response.data.status);
@@ -150,10 +174,12 @@ export class CyberPayService {
         message: response.data.message || 'Payment status retrieved',
         errorCode: response.data.error_code,
       };
-
     } catch (error) {
-      this.logger.error(`CyberPay payment verification failed: ${error.message}`, error.stack);
-      
+      this.logger.error(
+        `CyberPay payment verification failed: ${error.message}`,
+        error.stack,
+      );
+
       return {
         success: false,
         transactionId,
@@ -169,8 +195,8 @@ export class CyberPayService {
    * Process refund
    */
   async processRefund(
-    originalTransactionId: string, 
-    gatewayTransactionId: string, 
+    originalTransactionId: string,
+    gatewayTransactionId: string,
     refundAmount: number,
     reason: string,
   ): Promise<CyberPayPaymentResponse> {
@@ -189,18 +215,24 @@ export class CyberPayService {
 
       const signature = this.generateSignature(requestData);
 
-      this.logger.log(`Processing CyberPay refund for transaction: ${originalTransactionId}`);
+      this.logger.log(
+        `Processing CyberPay refund for transaction: ${originalTransactionId}`,
+      );
 
       const response = await firstValueFrom(
-        this.httpService.post(`${this.baseUrl}/v1/payments/refund`, requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${this.apiKey}`,
-            'X-Signature': signature,
+        this.httpService.post(
+          `${this.baseUrl}/v1/payments/refund`,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: `Bearer ${this.apiKey}`,
+              'X-Signature': signature,
+            },
+            timeout: 30000,
           },
-          timeout: 30000,
-        }),
+        ),
       );
 
       return {
@@ -211,10 +243,12 @@ export class CyberPayService {
         message: response.data.message,
         errorCode: response.data.error_code,
       };
-
     } catch (error) {
-      this.logger.error(`CyberPay refund processing failed: ${error.message}`, error.stack);
-      
+      this.logger.error(
+        `CyberPay refund processing failed: ${error.message}`,
+        error.stack,
+      );
+
       return {
         success: false,
         transactionId: originalTransactionId,
@@ -233,7 +267,9 @@ export class CyberPayService {
       const expectedSignature = this.generateSignature(payload);
       return expectedSignature === receivedSignature;
     } catch (error) {
-      this.logger.error(`Webhook signature validation failed: ${error.message}`);
+      this.logger.error(
+        `Webhook signature validation failed: ${error.message}`,
+      );
       return false;
     }
   }
@@ -245,7 +281,7 @@ export class CyberPayService {
     // Sort keys and create query string
     const sortedKeys = Object.keys(data).sort();
     const queryString = sortedKeys
-      .map(key => `${key}=${data[key]}`)
+      .map((key) => `${key}=${data[key]}`)
       .join('&');
 
     // Generate HMAC-SHA256 signature
@@ -258,7 +294,9 @@ export class CyberPayService {
   /**
    * Map CyberPay status to our standard status
    */
-  private mapCyberPayStatus(cyberPayStatus: string): 'pending' | 'completed' | 'failed' {
+  private mapCyberPayStatus(
+    cyberPayStatus: string,
+  ): 'pending' | 'completed' | 'failed' {
     switch (cyberPayStatus?.toLowerCase()) {
       case 'completed':
       case 'success':
@@ -278,11 +316,15 @@ export class CyberPayService {
   /**
    * Simulate payment for development/testing
    */
-  private async simulatePayment(paymentRequest: CyberPayPaymentRequest): Promise<CyberPayPaymentResponse> {
-    this.logger.log(`Simulating CyberPay payment for transaction: ${paymentRequest.transactionId}`);
-    
+  private async simulatePayment(
+    paymentRequest: CyberPayPaymentRequest,
+  ): Promise<CyberPayPaymentResponse> {
+    this.logger.log(
+      `Simulating CyberPay payment for transaction: ${paymentRequest.transactionId}`,
+    );
+
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1200));
+    await new Promise((resolve) => setTimeout(resolve, 1200));
 
     // Simulate 85% success rate
     const isSuccess = Math.random() > 0.15;
@@ -310,11 +352,16 @@ export class CyberPayService {
   /**
    * Simulate payment verification
    */
-  private async simulateVerification(transactionId: string, gatewayTransactionId: string): Promise<CyberPayPaymentResponse> {
-    this.logger.log(`Simulating CyberPay verification for transaction: ${transactionId}`);
-    
+  private async simulateVerification(
+    transactionId: string,
+    gatewayTransactionId: string,
+  ): Promise<CyberPayPaymentResponse> {
+    this.logger.log(
+      `Simulating CyberPay verification for transaction: ${transactionId}`,
+    );
+
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     return {
       success: true,
@@ -328,11 +375,16 @@ export class CyberPayService {
   /**
    * Simulate refund processing
    */
-  private async simulateRefund(originalTransactionId: string, refundAmount: number): Promise<CyberPayPaymentResponse> {
-    this.logger.log(`Simulating CyberPay refund for transaction: ${originalTransactionId}`);
-    
+  private async simulateRefund(
+    originalTransactionId: string,
+    refundAmount: number,
+  ): Promise<CyberPayPaymentResponse> {
+    this.logger.log(
+      `Simulating CyberPay refund for transaction: ${originalTransactionId}`,
+    );
+
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     return {
       success: true,
@@ -343,4 +395,3 @@ export class CyberPayService {
     };
   }
 }
-

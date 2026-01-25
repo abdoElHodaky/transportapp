@@ -1,4 +1,12 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  Index,
+  ForeignKey,
+  TableIndex,
+  TableForeignKey,
+} from 'typeorm';
 
 export class CreateTripsTable1640000000003 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -25,7 +33,14 @@ export class CreateTripsTable1640000000003 implements MigrationInterface {
           {
             name: 'status',
             type: 'enum',
-            enum: ['requested', 'accepted', 'driver_arrived', 'in_progress', 'completed', 'cancelled'],
+            enum: [
+              'requested',
+              'accepted',
+              'driver_arrived',
+              'in_progress',
+              'completed',
+              'cancelled',
+            ],
             default: "'requested'",
           },
           {

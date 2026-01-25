@@ -38,20 +38,27 @@ export class EBSService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {
-    this.baseUrl = this.configService.get<string>('EBS_BASE_URL', 'https://api.ebs.sd');
+    this.baseUrl = this.configService.get<string>(
+      'EBS_BASE_URL',
+      'https://api.ebs.sd',
+    );
     this.merchantId = this.configService.get<string>('EBS_MERCHANT_ID', '');
     this.terminalId = this.configService.get<string>('EBS_TERMINAL_ID', '');
     this.secretKey = this.configService.get<string>('EBS_SECRET_KEY', '');
 
     if (!this.merchantId || !this.terminalId || !this.secretKey) {
-      this.logger.warn('EBS configuration is incomplete. Payment processing will be simulated.');
+      this.logger.warn(
+        'EBS configuration is incomplete. Payment processing will be simulated.',
+      );
     }
   }
 
   /**
    * Initiate payment with EBS
    */
-  async initiatePayment(paymentRequest: EBSPaymentRequest): Promise<EBSPaymentResponse> {
+  async initiatePayment(
+    paymentRequest: EBSPaymentRequest,
+  ): Promise<EBSPaymentResponse> {
     try {
       // If configuration is incomplete, simulate payment
       if (!this.merchantId || !this.terminalId || !this.secretKey) {
@@ -75,16 +82,22 @@ export class EBSService {
       const signature = this.generateSignature(requestData);
       requestData['signature'] = signature;
 
-      this.logger.log(`Initiating EBS payment for transaction: ${paymentRequest.transactionId}`);
+      this.logger.log(
+        `Initiating EBS payment for transaction: ${paymentRequest.transactionId}`,
+      );
 
       const response = await firstValueFrom(
-        this.httpService.post(`${this.baseUrl}/api/v1/payments/initiate`, requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+        this.httpService.post(
+          `${this.baseUrl}/api/v1/payments/initiate`,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            timeout: 30000,
           },
-          timeout: 30000,
-        }),
+        ),
       );
 
       if (response.data.success) {
@@ -105,10 +118,12 @@ export class EBSService {
           errorCode: response.data.errorCode,
         };
       }
-
     } catch (error) {
-      this.logger.error(`EBS payment initiation failed: ${error.message}`, error.stack);
-      
+      this.logger.error(
+        `EBS payment initiation failed: ${error.message}`,
+        error.stack,
+      );
+
       return {
         success: false,
         transactionId: paymentRequest.transactionId,
@@ -122,7 +137,10 @@ export class EBSService {
   /**
    * Verify payment status
    */
-  async verifyPayment(transactionId: string, gatewayTransactionId: string): Promise<EBSPaymentResponse> {
+  async verifyPayment(
+    transactionId: string,
+    gatewayTransactionId: string,
+  ): Promise<EBSPaymentResponse> {
     try {
       // If configuration is incomplete, simulate verification
       if (!this.merchantId || !this.terminalId || !this.secretKey) {
@@ -143,13 +161,17 @@ export class EBSService {
       this.logger.log(`Verifying EBS payment: ${transactionId}`);
 
       const response = await firstValueFrom(
-        this.httpService.post(`${this.baseUrl}/api/v1/payments/verify`, requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+        this.httpService.post(
+          `${this.baseUrl}/api/v1/payments/verify`,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            timeout: 30000,
           },
-          timeout: 30000,
-        }),
+        ),
       );
 
       return {
@@ -160,10 +182,12 @@ export class EBSService {
         message: response.data.message,
         errorCode: response.data.errorCode,
       };
-
     } catch (error) {
-      this.logger.error(`EBS payment verification failed: ${error.message}`, error.stack);
-      
+      this.logger.error(
+        `EBS payment verification failed: ${error.message}`,
+        error.stack,
+      );
+
       return {
         success: false,
         transactionId,
@@ -179,8 +203,8 @@ export class EBSService {
    * Process refund
    */
   async processRefund(
-    originalTransactionId: string, 
-    gatewayTransactionId: string, 
+    originalTransactionId: string,
+    gatewayTransactionId: string,
     refundAmount: number,
     reason: string,
   ): Promise<EBSPaymentResponse> {
@@ -191,7 +215,7 @@ export class EBSService {
       }
 
       const refundTransactionId = `refund_${originalTransactionId}_${Date.now()}`;
-      
+
       const requestData = {
         merchantId: this.merchantId,
         terminalId: this.terminalId,
@@ -206,16 +230,22 @@ export class EBSService {
       const signature = this.generateSignature(requestData);
       requestData['signature'] = signature;
 
-      this.logger.log(`Processing EBS refund for transaction: ${originalTransactionId}`);
+      this.logger.log(
+        `Processing EBS refund for transaction: ${originalTransactionId}`,
+      );
 
       const response = await firstValueFrom(
-        this.httpService.post(`${this.baseUrl}/api/v1/payments/refund`, requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+        this.httpService.post(
+          `${this.baseUrl}/api/v1/payments/refund`,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            timeout: 30000,
           },
-          timeout: 30000,
-        }),
+        ),
       );
 
       return {
@@ -226,10 +256,12 @@ export class EBSService {
         message: response.data.message,
         errorCode: response.data.errorCode,
       };
-
     } catch (error) {
-      this.logger.error(`EBS refund processing failed: ${error.message}`, error.stack);
-      
+      this.logger.error(
+        `EBS refund processing failed: ${error.message}`,
+        error.stack,
+      );
+
       return {
         success: false,
         transactionId: originalTransactionId,
@@ -248,7 +280,9 @@ export class EBSService {
       const expectedSignature = this.generateSignature(payload);
       return expectedSignature === receivedSignature;
     } catch (error) {
-      this.logger.error(`Webhook signature validation failed: ${error.message}`);
+      this.logger.error(
+        `Webhook signature validation failed: ${error.message}`,
+      );
       return false;
     }
   }
@@ -260,7 +294,7 @@ export class EBSService {
     // Sort keys and create query string
     const sortedKeys = Object.keys(data).sort();
     const queryString = sortedKeys
-      .map(key => `${key}=${data[key]}`)
+      .map((key) => `${key}=${data[key]}`)
       .join('&');
 
     // Generate HMAC-SHA256 signature
@@ -273,11 +307,15 @@ export class EBSService {
   /**
    * Simulate payment for development/testing
    */
-  private async simulatePayment(paymentRequest: EBSPaymentRequest): Promise<EBSPaymentResponse> {
-    this.logger.log(`Simulating EBS payment for transaction: ${paymentRequest.transactionId}`);
-    
+  private async simulatePayment(
+    paymentRequest: EBSPaymentRequest,
+  ): Promise<EBSPaymentResponse> {
+    this.logger.log(
+      `Simulating EBS payment for transaction: ${paymentRequest.transactionId}`,
+    );
+
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Simulate 90% success rate
     const isSuccess = Math.random() > 0.1;
@@ -305,11 +343,16 @@ export class EBSService {
   /**
    * Simulate payment verification
    */
-  private async simulateVerification(transactionId: string, gatewayTransactionId: string): Promise<EBSPaymentResponse> {
-    this.logger.log(`Simulating EBS verification for transaction: ${transactionId}`);
-    
+  private async simulateVerification(
+    transactionId: string,
+    gatewayTransactionId: string,
+  ): Promise<EBSPaymentResponse> {
+    this.logger.log(
+      `Simulating EBS verification for transaction: ${transactionId}`,
+    );
+
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     return {
       success: true,
@@ -323,11 +366,16 @@ export class EBSService {
   /**
    * Simulate refund processing
    */
-  private async simulateRefund(originalTransactionId: string, refundAmount: number): Promise<EBSPaymentResponse> {
-    this.logger.log(`Simulating EBS refund for transaction: ${originalTransactionId}`);
-    
+  private async simulateRefund(
+    originalTransactionId: string,
+    refundAmount: number,
+  ): Promise<EBSPaymentResponse> {
+    this.logger.log(
+      `Simulating EBS refund for transaction: ${originalTransactionId}`,
+    );
+
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return {
       success: true,
@@ -338,4 +386,3 @@ export class EBSService {
     };
   }
 }
-

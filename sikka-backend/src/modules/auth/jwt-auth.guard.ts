@@ -12,7 +12,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-    
+
     if (!token) {
       throw new UnauthorizedException('No token provided');
     }
@@ -31,4 +31,3 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return type === 'Bearer' ? token : undefined;
   }
 }
-

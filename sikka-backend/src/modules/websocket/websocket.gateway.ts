@@ -55,7 +55,9 @@ interface ChatMessage {
   },
   namespace: '/realtime',
 })
-export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class RealtimeGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer()
   server: Server;
 
@@ -94,8 +96,10 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
   async handleConnection(client: AuthenticatedSocket) {
     try {
-      const token = client.handshake.auth?.token || client.handshake.headers?.authorization?.replace('Bearer ', '');
-      
+      const token =
+        client.handshake.auth?.token ||
+        client.handshake.headers?.authorization?.replace('Bearer ', '');
+
       if (!token) {
         this.logger.warn(`Client ${client.id} connected without token`);
         client.disconnect();
@@ -118,14 +122,14 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
       client.user = user;
 
       this.connectedUsers.set(client.userId, client);
-      
+
       // Join user to their personal room
       await client.join(`user:${user.id}`);
 
       // Join drivers to driver room for broadcast messages
       if (user.role === 'driver') {
         await client.join('drivers');
-        
+
         // Update driver online status
         await this.userRepository.update(user.id, {
           isOnline: true,
@@ -155,7 +159,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
       if (activeTrip) {
         await client.join(`trip:${activeTrip.id}`);
-        
+
         // Send current trip status
         client.emit('trip:status', {
           tripId: activeTrip.id,
@@ -164,15 +168,16 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
         });
       }
 
-      this.logger.log(`Client ${client.id} connected as ${user.role} (${user.firstName})`);
-      
+      this.logger.log(
+        `Client ${client.id} connected as ${user.role} (${user.firstName})`,
+      );
+
       // Send connection confirmation
       client.emit('connection:confirmed', {
         userId: user.id,
         role: user.role,
         timestamp: Date.now(),
       });
-
     } catch (error) {
       this.logger.error(`Connection error for client ${client.id}:`, error);
       client.disconnect();
@@ -182,7 +187,9 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   async handleDisconnect(client: AuthenticatedSocket) {
     if (client.userId) {
       this.connectedUsers.delete(client.userId);
-      this.logger.log(`Client ${client.id} disconnected (User: ${client.userId})`);
+      this.logger.log(
+        `Client ${client.id} disconnected (User: ${client.userId})`,
+      );
 
       // Update driver offline status
       if (client.userRole === 'driver') {
@@ -206,7 +213,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
     client.join(`trip:${data.tripId}`);
     this.logger.log(`User ${client.userId} joined trip room: ${data.tripId}`);
-    
+
     client.emit('joined_trip', {
       tripId: data.tripId,
       message: 'Joined trip room successfully',
@@ -222,7 +229,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
     client.leave(`trip:${data.tripId}`);
     this.logger.log(`User ${client.userId} left trip room: ${data.tripId}`);
-    
+
     client.emit('left_trip', {
       tripId: data.tripId,
       message: 'Left trip room successfully',
@@ -232,7 +239,8 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   @SubscribeMessage('driver_location_update')
   handleDriverLocationUpdate(
     @ConnectedSocket() client: AuthenticatedSocket,
-    @MessageBody() data: {
+    @MessageBody()
+    data: {
       tripId: string;
       latitude: number;
       longitude: number;
@@ -253,7 +261,9 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
       timestamp: new Date().toISOString(),
     });
 
-    this.logger.debug(`Driver ${client.userId} location updated for trip ${data.tripId}`);
+    this.logger.debug(
+      `Driver ${client.userId} location updated for trip ${data.tripId}`,
+    );
   }
 
   @SubscribeMessage('location:update')
@@ -280,11 +290,13 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
         if (activeTrip) {
           // Send location update to passenger
-          this.server.to(`user:${activeTrip.passengerId}`).emit('driver:location', {
-            tripId: activeTrip.id,
-            location: data,
-            timestamp: Date.now(),
-          });
+          this.server
+            .to(`user:${activeTrip.passengerId}`)
+            .emit('driver:location', {
+              tripId: activeTrip.id,
+              location: data,
+              timestamp: Date.now(),
+            });
         }
 
         // Update driver location in Redis for nearby searches
@@ -323,7 +335,10 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
       }
 
       // Verify user is part of this trip
-      if (trip.passengerId !== client.userId && trip.driverId !== client.userId) {
+      if (
+        trip.passengerId !== client.userId &&
+        trip.driverId !== client.userId
+      ) {
         return { error: 'Not authorized for this trip' };
       }
 
@@ -449,7 +464,10 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
       }
 
       // Verify user is part of this trip
-      if (trip.passengerId !== client.userId && trip.driverId !== client.userId) {
+      if (
+        trip.passengerId !== client.userId &&
+        trip.driverId !== client.userId
+      ) {
         return { error: 'Not authorized for this trip' };
       }
 
@@ -534,18 +552,23 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
       timestamp: new Date().toISOString(),
     });
 
-    this.logger.log(`Notified drivers about new trip request: ${tripData.tripId}`);
+    this.logger.log(
+      `Notified drivers about new trip request: ${tripData.tripId}`,
+    );
   }
 
   /**
    * Notify trip participants about status updates
    */
-  notifyTripStatusUpdate(tripId: string, statusData: {
-    status: string;
-    updatedBy: string;
-    message?: string;
-    estimatedArrival?: string;
-  }) {
+  notifyTripStatusUpdate(
+    tripId: string,
+    statusData: {
+      status: string;
+      updatedBy: string;
+      message?: string;
+      estimatedArrival?: string;
+    },
+  ) {
     this.server.to(`trip:${tripId}`).emit('trip_status_update', {
       type: 'trip_status_update',
       tripId,
@@ -559,17 +582,20 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   /**
    * Notify user about trip assignment
    */
-  notifyTripAssigned(passengerId: string, tripData: {
-    tripId: string;
-    driver: {
-      id: string;
-      name: string;
-      phone: string;
-      rating: number;
-      vehicleInfo: string;
-    };
-    estimatedArrival: string;
-  }) {
+  notifyTripAssigned(
+    passengerId: string,
+    tripData: {
+      tripId: string;
+      driver: {
+        id: string;
+        name: string;
+        phone: string;
+        rating: number;
+        vehicleInfo: string;
+      };
+      estimatedArrival: string;
+    },
+  ) {
     this.server.to(`user:${passengerId}`).emit('trip_assigned', {
       type: 'trip_assigned',
       data: tripData,
@@ -582,12 +608,15 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   /**
    * Notify about payment completion
    */
-  notifyPaymentCompleted(userId: string, paymentData: {
-    tripId: string;
-    amount: number;
-    method: string;
-    status: string;
-  }) {
+  notifyPaymentCompleted(
+    userId: string,
+    paymentData: {
+      tripId: string;
+      amount: number;
+      method: string;
+      status: string;
+    },
+  ) {
     this.server.to(`user:${userId}`).emit('payment_completed', {
       type: 'payment_completed',
       data: paymentData,
@@ -600,18 +629,23 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   /**
    * Send general notification to user
    */
-  sendNotificationToUser(userId: string, notification: {
-    type: string;
-    title: string;
-    message: string;
-    data?: any;
-  }) {
+  sendNotificationToUser(
+    userId: string,
+    notification: {
+      type: string;
+      title: string;
+      message: string;
+      data?: any;
+    },
+  ) {
     this.server.to(`user:${userId}`).emit('notification', {
       ...notification,
       timestamp: new Date().toISOString(),
     });
 
-    this.logger.log(`Sent notification to user ${userId}: ${notification.type}`);
+    this.logger.log(
+      `Sent notification to user ${userId}: ${notification.type}`,
+    );
   }
 
   /**
@@ -642,7 +676,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   // Admin methods for broadcasting system messages
   async broadcastSystemMessage(message: string, targetRole?: string) {
     const room = targetRole ? targetRole + 's' : undefined; // 'drivers' or 'passengers'
-    
+
     if (room) {
       this.server.to(room).emit('system:message', {
         message,
@@ -675,7 +709,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     this.redisSubscriber.on('message', (channel, message) => {
       try {
         const data = JSON.parse(message);
-        
+
         switch (channel) {
           case 'trip:requests':
             this.server.to('drivers').emit('trip:new_request', data);

@@ -97,4 +97,3 @@ export class Rating {
   @Column()
   ratedUserId: string;
 }
-

@@ -13,8 +13,8 @@ export class UsersService {
         email: 'john@example.com',
         role: 'passenger',
         status: 'active',
-        createdAt: new Date().toISOString()
-      }
+        createdAt: new Date().toISOString(),
+      },
     };
   }
 
@@ -25,8 +25,8 @@ export class UsersService {
       user: {
         id: 'user_id',
         ...updateDto,
-        updatedAt: new Date().toISOString()
-      }
+        updatedAt: new Date().toISOString(),
+      },
     };
   }
 
@@ -44,11 +44,10 @@ export class UsersService {
           vehicle: {
             type: 'sedan',
             model: 'Toyota Corolla',
-            plateNumber: 'ABC-123'
-          }
-        }
-      ]
+            plateNumber: 'ABC-123',
+          },
+        },
+      ],
     };
   }
 }
-

@@ -1,8 +1,21 @@
-import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { Payment, PaymentMethod, PaymentStatus } from '../../entities/payment.entity';
-import { Transaction, TransactionType, TransactionStatus } from '../../entities/transaction.entity';
+import {
+  Payment,
+  PaymentMethod,
+  PaymentStatus,
+} from '../../entities/payment.entity';
+import {
+  Transaction,
+  TransactionType,
+  TransactionStatus,
+} from '../../entities/transaction.entity';
 import { Wallet } from '../../entities/wallet.entity';
 import { Trip, TripStatus } from '../../entities/trip.entity';
 import { User } from '../../entities/user.entity';
@@ -44,11 +57,14 @@ export class PaymentsService {
     };
   }
 
-  async topupWallet(userId: string, topupDto: {
-    amount: number;
-    method: PaymentMethod;
-    gatewayTransactionId?: string;
-  }) {
+  async topupWallet(
+    userId: string,
+    topupDto: {
+      amount: number;
+      method: PaymentMethod;
+      gatewayTransactionId?: string;
+    },
+  ) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -66,10 +82,16 @@ export class PaymentsService {
       let topupResult;
       switch (topupDto.method) {
         case PaymentMethod.EBS:
-          topupResult = await this.processEBSTopup(topupDto.amount, topupDto.gatewayTransactionId);
+          topupResult = await this.processEBSTopup(
+            topupDto.amount,
+            topupDto.gatewayTransactionId,
+          );
           break;
         case PaymentMethod.CYBERPAY:
-          topupResult = await this.processCyberPayTopup(topupDto.amount, topupDto.gatewayTransactionId);
+          topupResult = await this.processCyberPayTopup(
+            topupDto.amount,
+            topupDto.gatewayTransactionId,
+          );
           break;
         default:
           throw new BadRequestException('Unsupported topup method');
@@ -106,7 +128,9 @@ export class PaymentsService {
         };
       } else {
         await queryRunner.rollbackTransaction();
-        throw new InternalServerErrorException(`Topup failed: ${topupResult.error}`);
+        throw new InternalServerErrorException(
+          `Topup failed: ${topupResult.error}`,
+        );
       }
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -125,16 +149,18 @@ export class PaymentsService {
       throw new NotFoundException('Wallet not found');
     }
 
-    const [transactions, total] = await this.transactionRepository.findAndCount({
-      where: { walletId: wallet.id },
-      order: { createdAt: 'DESC' },
-      skip: (page - 1) * limit,
-      take: limit,
-      relations: ['trip', 'payment'],
-    });
+    const [transactions, total] = await this.transactionRepository.findAndCount(
+      {
+        where: { walletId: wallet.id },
+        order: { createdAt: 'DESC' },
+        skip: (page - 1) * limit,
+        take: limit,
+        relations: ['trip', 'payment'],
+      },
+    );
 
     return {
-      transactions: transactions.map(transaction => ({
+      transactions: transactions.map((transaction) => ({
         id: transaction.id,
         type: transaction.type,
         amount: transaction.amount,
@@ -142,11 +168,13 @@ export class PaymentsService {
         status: transaction.status,
         balanceAfter: transaction.balanceAfter,
         createdAt: transaction.createdAt,
-        trip: transaction.trip ? {
-          id: transaction.trip.id,
-          pickupAddress: transaction.trip.pickupAddress,
-          dropoffAddress: transaction.trip.dropoffAddress,
-        } : null,
+        trip: transaction.trip
+          ? {
+              id: transaction.trip.id,
+              pickupAddress: transaction.trip.pickupAddress,
+              dropoffAddress: transaction.trip.dropoffAddress,
+            }
+          : null,
       })),
       pagination: {
         page,
@@ -157,10 +185,13 @@ export class PaymentsService {
     };
   }
 
-  async processRefund(paymentId: string, refundDto: {
-    amount?: number;
-    reason: string;
-  }) {
+  async processRefund(
+    paymentId: string,
+    refundDto: {
+      amount?: number;
+      reason: string;
+    },
+  ) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -172,32 +203,48 @@ export class PaymentsService {
       });
 
       if (!payment) {
-        throw new NotFoundException('Payment not found or not eligible for refund');
+        throw new NotFoundException(
+          'Payment not found or not eligible for refund',
+        );
       }
 
       const refundAmount = refundDto.amount || payment.amount;
 
       if (refundAmount > payment.amount) {
-        throw new BadRequestException('Refund amount cannot exceed payment amount');
+        throw new BadRequestException(
+          'Refund amount cannot exceed payment amount',
+        );
       }
 
       // Process refund based on original payment method
       let refundResult;
       switch (payment.method) {
         case PaymentMethod.WALLET:
-          refundResult = await this.processWalletRefund(queryRunner, payment, refundAmount);
+          refundResult = await this.processWalletRefund(
+            queryRunner,
+            payment,
+            refundAmount,
+          );
           break;
         case PaymentMethod.EBS:
           refundResult = await this.processEBSRefund(payment, refundAmount);
           break;
         case PaymentMethod.CYBERPAY:
-          refundResult = await this.processCyberPayRefund(payment, refundAmount);
+          refundResult = await this.processCyberPayRefund(
+            payment,
+            refundAmount,
+          );
           break;
         case PaymentMethod.CASH:
-          refundResult = { success: true, message: 'Cash refund to be processed manually' };
+          refundResult = {
+            success: true,
+            message: 'Cash refund to be processed manually',
+          };
           break;
         default:
-          throw new BadRequestException('Refund not supported for this payment method');
+          throw new BadRequestException(
+            'Refund not supported for this payment method',
+          );
       }
 
       if (refundResult.success) {
@@ -217,7 +264,9 @@ export class PaymentsService {
         };
       } else {
         await queryRunner.rollbackTransaction();
-        throw new InternalServerErrorException(`Refund failed: ${refundResult.error}`);
+        throw new InternalServerErrorException(
+          `Refund failed: ${refundResult.error}`,
+        );
       }
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -227,7 +276,11 @@ export class PaymentsService {
     }
   }
 
-  private async processWalletPayment(queryRunner: any, trip: Trip, payment: Payment) {
+  private async processWalletPayment(
+    queryRunner: any,
+    trip: Trip,
+    payment: Payment,
+  ) {
     const passengerWallet = trip.passenger.wallet;
 
     if (!passengerWallet) {
@@ -239,7 +292,10 @@ export class PaymentsService {
     }
 
     // Check spending limits
-    const limitCheck = await this.checkSpendingLimits(passengerWallet, payment.amount);
+    const limitCheck = await this.checkSpendingLimits(
+      passengerWallet,
+      payment.amount,
+    );
     if (!limitCheck.allowed) {
       return { success: false, error: limitCheck.reason };
     }
@@ -268,10 +324,17 @@ export class PaymentsService {
       status: TransactionStatus.COMPLETED,
     });
 
-    return { success: true, gatewayResponse: { method: 'wallet', balance: newBalance } };
+    return {
+      success: true,
+      gatewayResponse: { method: 'wallet', balance: newBalance },
+    };
   }
 
-  private async processEBSPayment(queryRunner: any, trip: Trip, payment: Payment) {
+  private async processEBSPayment(
+    queryRunner: any,
+    trip: Trip,
+    payment: Payment,
+  ) {
     try {
       // TODO: Implement actual EBS gateway integration
       // For now, simulate successful payment
@@ -289,7 +352,11 @@ export class PaymentsService {
     }
   }
 
-  private async processCyberPayPayment(queryRunner: any, trip: Trip, payment: Payment) {
+  private async processCyberPayPayment(
+    queryRunner: any,
+    trip: Trip,
+    payment: Payment,
+  ) {
     try {
       // TODO: Implement actual CyberPay gateway integration
       // For now, simulate successful payment
@@ -307,7 +374,11 @@ export class PaymentsService {
     }
   }
 
-  private async processCashPayment(queryRunner: any, trip: Trip, payment: Payment) {
+  private async processCashPayment(
+    queryRunner: any,
+    trip: Trip,
+    payment: Payment,
+  ) {
     // Cash payments are handled offline
     return {
       success: true,
@@ -320,9 +391,14 @@ export class PaymentsService {
     };
   }
 
-  private async creditDriverEarnings(queryRunner: any, driverWallet: Wallet, amount: number, tripId: string) {
+  private async creditDriverEarnings(
+    queryRunner: any,
+    driverWallet: Wallet,
+    amount: number,
+    tripId: string,
+  ) {
     const newBalance = driverWallet.balance + amount;
-    
+
     await queryRunner.manager.update(Wallet, driverWallet.id, {
       balance: newBalance,
       totalEarnings: driverWallet.totalEarnings + amount,
@@ -370,12 +446,19 @@ export class PaymentsService {
     return { success: true, transactionId: gatewayTransactionId };
   }
 
-  private async processCyberPayTopup(amount: number, gatewayTransactionId: string) {
+  private async processCyberPayTopup(
+    amount: number,
+    gatewayTransactionId: string,
+  ) {
     // TODO: Implement actual CyberPay topup integration
     return { success: true, transactionId: gatewayTransactionId };
   }
 
-  private async processWalletRefund(queryRunner: any, payment: Payment, refundAmount: number) {
+  private async processWalletRefund(
+    queryRunner: any,
+    payment: Payment,
+    refundAmount: number,
+  ) {
     const wallet = payment.payer.wallet;
     const newBalance = wallet.balance + refundAmount;
 
@@ -431,13 +514,17 @@ export class PaymentsService {
       });
 
       if (existingPayment) {
-        throw new BadRequestException('Payment already processed for this trip');
+        throw new BadRequestException(
+          'Payment already processed for this trip',
+        );
       }
 
       const amount = trip.actualFare || trip.estimatedFare;
       const commissionRate = 0.15; // 15% platform commission
-      const platformCommission = Math.round(amount * commissionRate * 100) / 100;
-      const driverEarnings = Math.round((amount - platformCommission) * 100) / 100;
+      const platformCommission =
+        Math.round(amount * commissionRate * 100) / 100;
+      const driverEarnings =
+        Math.round((amount - platformCommission) * 100) / 100;
 
       // Create payment record
       const payment = queryRunner.manager.create(Payment, {
@@ -465,8 +552,10 @@ export class PaymentsService {
         }
 
         // Deduct from passenger wallet
-        trip.passenger.wallet.balance = Math.round((trip.passenger.wallet.balance - amount) * 100) / 100;
-        trip.passenger.wallet.totalSpent = Math.round((trip.passenger.wallet.totalSpent + amount) * 100) / 100;
+        trip.passenger.wallet.balance =
+          Math.round((trip.passenger.wallet.balance - amount) * 100) / 100;
+        trip.passenger.wallet.totalSpent =
+          Math.round((trip.passenger.wallet.totalSpent + amount) * 100) / 100;
         await queryRunner.manager.save(trip.passenger.wallet);
 
         // Create passenger transaction
@@ -493,8 +582,12 @@ export class PaymentsService {
           trip.driver.wallet = await queryRunner.manager.save(driverWallet);
         }
 
-        trip.driver.wallet.balance = Math.round((trip.driver.wallet.balance + driverEarnings) * 100) / 100;
-        trip.driver.wallet.totalEarnings = Math.round((trip.driver.wallet.totalEarnings + driverEarnings) * 100) / 100;
+        trip.driver.wallet.balance =
+          Math.round((trip.driver.wallet.balance + driverEarnings) * 100) / 100;
+        trip.driver.wallet.totalEarnings =
+          Math.round(
+            (trip.driver.wallet.totalEarnings + driverEarnings) * 100,
+          ) / 100;
         await queryRunner.manager.save(trip.driver.wallet);
 
         // Create driver transaction
@@ -514,13 +607,12 @@ export class PaymentsService {
         savedPayment.status = PaymentStatus.COMPLETED;
         savedPayment.processedAt = new Date();
         savedPayment = await queryRunner.manager.save(savedPayment);
-
       } else {
         // For EBS/CyberPay, we would integrate with external gateway
         // For now, mark as pending and handle async callback
         savedPayment.status = PaymentStatus.PENDING;
         savedPayment = await queryRunner.manager.save(savedPayment);
-        
+
         // TODO: Integrate with EBS/CyberPay API
         // TODO: Handle webhook callbacks for payment confirmation
       }
@@ -541,7 +633,6 @@ export class PaymentsService {
           gatewayTransactionId: savedPayment.gatewayTransactionId,
         },
       };
-
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;
@@ -550,11 +641,14 @@ export class PaymentsService {
     }
   }
 
-  async topUpWallet(userId: string, topUpDto: {
-    amount: number;
-    method: PaymentMethod;
-    gatewayTransactionId?: string;
-  }) {
+  async topUpWallet(
+    userId: string,
+    topUpDto: {
+      amount: number;
+      method: PaymentMethod;
+      gatewayTransactionId?: string;
+    },
+  ) {
     if (topUpDto.amount <= 0) {
       throw new BadRequestException('Top-up amount must be greater than 0');
     }
@@ -585,9 +679,10 @@ export class PaymentsService {
     try {
       // For wallet top-up via EBS/CyberPay, we would process the payment first
       // For now, we'll simulate successful payment
-      
+
       const balanceBefore = user.wallet.balance;
-      user.wallet.balance = Math.round((user.wallet.balance + topUpDto.amount) * 100) / 100;
+      user.wallet.balance =
+        Math.round((user.wallet.balance + topUpDto.amount) * 100) / 100;
       await queryRunner.manager.save(user.wallet);
 
       // Create transaction record
@@ -621,7 +716,6 @@ export class PaymentsService {
           gatewayTransactionId: savedTransaction.externalTransactionId,
         },
       };
-
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new InternalServerErrorException('Failed to process wallet top-up');
@@ -640,16 +734,18 @@ export class PaymentsService {
       throw new NotFoundException('User or wallet not found');
     }
 
-    const [transactions, total] = await this.transactionRepository.findAndCount({
-      where: { walletId: user.wallet.id },
-      order: { createdAt: 'DESC' },
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+    const [transactions, total] = await this.transactionRepository.findAndCount(
+      {
+        where: { walletId: user.wallet.id },
+        order: { createdAt: 'DESC' },
+        skip: (page - 1) * limit,
+        take: limit,
+      },
+    );
 
     return {
       message: 'Transactions retrieved successfully',
-      transactions: transactions.map(transaction => ({
+      transactions: transactions.map((transaction) => ({
         id: transaction.id,
         type: transaction.type,
         amount: transaction.amount,
@@ -670,14 +766,20 @@ export class PaymentsService {
     };
   }
 
-  async getPaymentHistory(userId: string, page: number = 1, limit: number = 10) {
+  async getPaymentHistory(
+    userId: string,
+    page: number = 1,
+    limit: number = 10,
+  ) {
     // Get payments for trips where user was passenger or driver
     const [payments, total] = await this.paymentRepository
       .createQueryBuilder('payment')
       .leftJoinAndSelect('payment.trip', 'trip')
       .leftJoinAndSelect('trip.passenger', 'passenger')
       .leftJoinAndSelect('trip.driver', 'driver')
-      .where('trip.passengerId = :userId OR trip.driverId = :userId', { userId })
+      .where('trip.passengerId = :userId OR trip.driverId = :userId', {
+        userId,
+      })
       .orderBy('payment.createdAt', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
@@ -685,7 +787,7 @@ export class PaymentsService {
 
     return {
       message: 'Payment history retrieved successfully',
-      payments: payments.map(payment => ({
+      payments: payments.map((payment) => ({
         id: payment.id,
         tripId: payment.tripId,
         amount: payment.amount,
@@ -713,11 +815,19 @@ export class PaymentsService {
   async refundPayment(paymentId: string, refundReason: string) {
     const payment = await this.paymentRepository.findOne({
       where: { id: paymentId, status: PaymentStatus.COMPLETED },
-      relations: ['trip', 'trip.passenger', 'trip.driver', 'trip.passenger.wallet', 'trip.driver.wallet'],
+      relations: [
+        'trip',
+        'trip.passenger',
+        'trip.driver',
+        'trip.passenger.wallet',
+        'trip.driver.wallet',
+      ],
     });
 
     if (!payment) {
-      throw new NotFoundException('Payment not found or not eligible for refund');
+      throw new NotFoundException(
+        'Payment not found or not eligible for refund',
+      );
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -727,40 +837,59 @@ export class PaymentsService {
     try {
       // Refund to passenger wallet
       if (payment.trip.passenger.wallet) {
-        payment.trip.passenger.wallet.balance = Math.round((payment.trip.passenger.wallet.balance + payment.amount) * 100) / 100;
+        payment.trip.passenger.wallet.balance =
+          Math.round(
+            (payment.trip.passenger.wallet.balance + payment.amount) * 100,
+          ) / 100;
         await queryRunner.manager.save(payment.trip.passenger.wallet);
 
         // Create refund transaction for passenger
-        const passengerRefundTransaction = queryRunner.manager.create(Transaction, {
-          walletId: payment.trip.passenger.wallet.id,
-          type: TransactionType.REFUND,
-          amount: payment.amount,
-          balanceBefore: payment.trip.passenger.wallet.balance - payment.amount,
-          balanceAfter: payment.trip.passenger.wallet.balance,
-          status: TransactionStatus.COMPLETED,
-          description: `Refund for trip to ${payment.trip.dropoffAddress}`,
-          reference: payment.tripId,
-        });
+        const passengerRefundTransaction = queryRunner.manager.create(
+          Transaction,
+          {
+            walletId: payment.trip.passenger.wallet.id,
+            type: TransactionType.REFUND,
+            amount: payment.amount,
+            balanceBefore:
+              payment.trip.passenger.wallet.balance - payment.amount,
+            balanceAfter: payment.trip.passenger.wallet.balance,
+            status: TransactionStatus.COMPLETED,
+            description: `Refund for trip to ${payment.trip.dropoffAddress}`,
+            reference: payment.tripId,
+          },
+        );
         await queryRunner.manager.save(passengerRefundTransaction);
       }
 
       // Deduct from driver wallet
       if (payment.trip.driver && payment.trip.driver.wallet) {
-        payment.trip.driver.wallet.balance = Math.round((payment.trip.driver.wallet.balance - payment.driverEarnings) * 100) / 100;
-        payment.trip.driver.wallet.totalEarnings = Math.round((payment.trip.driver.wallet.totalEarnings - payment.driverEarnings) * 100) / 100;
+        payment.trip.driver.wallet.balance =
+          Math.round(
+            (payment.trip.driver.wallet.balance - payment.driverEarnings) * 100,
+          ) / 100;
+        payment.trip.driver.wallet.totalEarnings =
+          Math.round(
+            (payment.trip.driver.wallet.totalEarnings -
+              payment.driverEarnings) *
+              100,
+          ) / 100;
         await queryRunner.manager.save(payment.trip.driver.wallet);
 
         // Create deduction transaction for driver
-        const driverDeductionTransaction = queryRunner.manager.create(Transaction, {
-          walletId: payment.trip.driver.wallet.id,
-          type: TransactionType.REFUND,
-          amount: -payment.driverEarnings,
-          balanceBefore: payment.trip.driver.wallet.balance + payment.driverEarnings,
-          balanceAfter: payment.trip.driver.wallet.balance,
-          status: TransactionStatus.COMPLETED,
-          description: `Refund deduction for trip from ${payment.trip.pickupAddress}`,
-          reference: payment.tripId,
-        });
+        const driverDeductionTransaction = queryRunner.manager.create(
+          Transaction,
+          {
+            walletId: payment.trip.driver.wallet.id,
+            type: TransactionType.REFUND,
+            amount: -payment.driverEarnings,
+            balanceBefore:
+              payment.trip.driver.wallet.balance + payment.driverEarnings,
+            balanceAfter: payment.trip.driver.wallet.balance,
+            status: TransactionStatus.COMPLETED,
+            description: `Refund deduction for trip from ${payment.trip.pickupAddress}`,
+            reference: payment.tripId,
+          },
+        );
         await queryRunner.manager.save(driverDeductionTransaction);
       }
 
@@ -781,7 +910,6 @@ export class PaymentsService {
           refundedAt: payment.refundedAt,
         },
       };
-
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new InternalServerErrorException('Failed to process refund');

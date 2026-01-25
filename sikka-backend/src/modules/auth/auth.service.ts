@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException, BadRequestException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -88,10 +93,6 @@ export class AuthService {
     };
   }
 
-
-
-
-
   async logout(userId: string) {
     await this.userRepository.update(userId, {
       refreshToken: null,
@@ -99,8 +100,6 @@ export class AuthService {
 
     return { message: 'Logout successful' };
   }
-
-
 
   private async generateTokens(user: User) {
     const payload = {
@@ -133,12 +132,12 @@ export class AuthService {
     // TODO: Implement SMS service integration
     // For now, log the OTP (remove in production)
     console.log(`OTP for ${phone}: ${otpCode}`);
-    
+
     // In production, integrate with SMS service like:
     // - Twilio
     // - AWS SNS
     // - Local Sudanese SMS provider
-    
+
     return true;
   }
 
@@ -166,7 +165,10 @@ export class AuthService {
         throw new UnauthorizedException('Password not set for this account');
       }
 
-      const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+      const isPasswordValid = await bcrypt.compare(
+        credentials.password,
+        user.password,
+      );
       if (!isPasswordValid) {
         throw new UnauthorizedException('Invalid credentials');
       }

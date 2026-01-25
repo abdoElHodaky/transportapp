@@ -18,7 +18,10 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
       synchronize: this.configService.get('NODE_ENV') === 'development',
       logging: this.configService.get('NODE_ENV') === 'development',
-      ssl: this.configService.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : false,
+      ssl:
+        this.configService.get('NODE_ENV') === 'production'
+          ? { rejectUnauthorized: false }
+          : false,
       extra: {
         // Enable PostGIS extension
         charset: 'utf8mb4_unicode_ci',

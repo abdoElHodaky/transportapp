@@ -7,9 +7,7 @@ import { User } from '../../entities/user.entity';
 import { Trip } from '../../entities/trip.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Location, User, Trip]),
-  ],
+  imports: [TypeOrmModule.forFeature([Location, User, Trip])],
   controllers: [LocationController],
   providers: [LocationService],
   exports: [LocationService],

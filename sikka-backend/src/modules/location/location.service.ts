@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository, InjectDataSource } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { Location, LocationType } from '../../entities/location.entity';
@@ -76,7 +80,10 @@ export class LocationService {
     // Create location record
     const location = this.locationRepository.create({
       userId,
-      type: user.role === 'driver' ? LocationType.DRIVER_LOCATION : LocationType.USER_LOCATION,
+      type:
+        user.role === 'driver'
+          ? LocationType.DRIVER_LOCATION
+          : LocationType.USER_LOCATION,
       latitude: locationData.latitude,
       longitude: locationData.longitude,
       altitude: locationData.altitude,
@@ -236,7 +243,8 @@ export class LocationService {
     };
 
     const rates = fareRates[routeData.tripType || 'standard'];
-    const estimatedFare = rates.base + (distance * rates.perKm) + (duration * rates.perMinute);
+    const estimatedFare =
+      rates.base + distance * rates.perKm + duration * rates.perMinute;
 
     return {
       distance: Math.round(distance * 100) / 100, // round to 2 decimal places
@@ -254,7 +262,7 @@ export class LocationService {
     });
 
     return {
-      locations: locations.map(location => ({
+      locations: locations.map((location) => ({
         id: location.id,
         type: location.type,
         latitude: location.latitude,
@@ -318,7 +326,7 @@ export class LocationService {
           locationData.longitude,
         );
         routePoint.distanceFromPrevious = distance * 1000; // convert to meters
-        
+
         const timeDiff = Date.now() - previousPoint.recordedAt.getTime();
         routePoint.timeFromPrevious = Math.round(timeDiff / 1000); // in seconds
       }
@@ -345,7 +353,10 @@ export class LocationService {
     };
   }
 
-  async isWithinServiceArea(latitude: number, longitude: number): Promise<boolean> {
+  async isWithinServiceArea(
+    latitude: number,
+    longitude: number,
+  ): Promise<boolean> {
     // Define Khartoum service area boundaries (approximate)
     const khartoumBounds = {
       north: 15.7,
@@ -362,7 +373,10 @@ export class LocationService {
     );
   }
 
-  private async cacheDriverLocation(userId: string, location: LocationUpdateDto) {
+  private async cacheDriverLocation(
+    userId: string,
+    location: LocationUpdateDto,
+  ) {
     const key = `driver:location:${userId}`;
     const data = {
       userId,
@@ -375,7 +389,7 @@ export class LocationService {
     };
 
     await this.redis.setex(key, 30, JSON.stringify(data)); // 30 seconds TTL
-    
+
     // Add to geospatial index for nearby searches
     await this.redis.geoadd(
       'drivers:locations',
@@ -406,17 +420,26 @@ export class LocationService {
       );
 
       const drivers = [];
-      for (const [driverId, distance] of nearbyDriverIds as [string, string][]) {
+      for (const [driverId, distance] of nearbyDriverIds as [
+        string,
+        string,
+      ][]) {
         const cachedData = await this.redis.get(`driver:location:${driverId}`);
         if (cachedData) {
           const driverLocation = JSON.parse(cachedData);
-          
+
           // Get driver details from database
           const driver = await this.userRepository.findOne({
             where: { id: driverId, isOnline: true, isAvailable: true },
             select: [
-              'id', 'name', 'phone', 'rating',
-              'totalTrips', 'vehicleType', 'vehicleModel', 'vehiclePlateNumber'
+              'id',
+              'name',
+              'phone',
+              'rating',
+              'totalTrips',
+              'vehicleType',
+              'vehicleModel',
+              'vehiclePlateNumber',
             ],
           });
 
@@ -469,14 +492,14 @@ export class LocationService {
     const R = 6371; // Earth's radius in kilometers
     const dLat = this.toRadians(lat2 - lat1);
     const dLon = this.toRadians(lon2 - lon1);
-    
+
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(this.toRadians(lat1)) *
         Math.cos(this.toRadians(lat2)) *
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
-    
+
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   }

@@ -9,4 +9,3 @@ export class RefreshTokenDto {
   @IsString()
   token: string;
 }
-

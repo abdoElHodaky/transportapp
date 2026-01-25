@@ -1,22 +1,22 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Put, 
-  Param, 
-  Body, 
-  Query, 
-  UseGuards, 
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Param,
+  Body,
+  Query,
+  UseGuards,
   Request,
   HttpCode,
   HttpStatus,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { 
-  ApiTags, 
-  ApiOperation, 
-  ApiResponse, 
-  ApiBearerAuth, 
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
   ApiParam,
   ApiBadRequestResponse,
   ApiNotFoundResponse,
@@ -37,12 +37,13 @@ export class TripsController {
   constructor(private readonly tripsService: TripsService) {}
 
   @Post('request')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Request a new trip',
-    description: 'Create a new trip request with pickup and dropoff locations. The system will calculate fare and find nearby drivers.',
+    description:
+      'Create a new trip request with pickup and dropoff locations. The system will calculate fare and find nearby drivers.',
   })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiResponse({
+    status: 201,
     description: 'Trip requested successfully',
     schema: {
       example: {
@@ -57,10 +58,10 @@ export class TripsController {
           },
           dropoff: {
             address: 'Blue Nile Bridge',
-            latitude: 15.5880,
+            latitude: 15.588,
             longitude: 32.5355,
           },
-          estimatedFare: 25.50,
+          estimatedFare: 25.5,
           estimatedDistance: 5.2,
           estimatedDuration: 13,
           createdAt: '2024-01-24T12:00:00Z',
@@ -68,7 +69,7 @@ export class TripsController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Invalid trip request data',
   })
   async requestTrip(@Request() req, @Body() tripRequestDto: TripRequestDto) {
@@ -77,13 +78,14 @@ export class TripsController {
 
   @Post(':id/accept')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Accept a trip (Driver only)',
-    description: 'Driver accepts a trip request. Driver must be online and available.',
+    description:
+      'Driver accepts a trip request. Driver must be online and available.',
   })
   @ApiParam({ name: 'id', description: 'Trip ID' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Trip accepted successfully',
     schema: {
       example: {
@@ -96,7 +98,7 @@ export class TripsController {
       },
     },
   })
-  @ApiNotFoundResponse({ 
+  @ApiNotFoundResponse({
     description: 'Trip not found or already assigned',
   })
   async acceptTrip(@Request() req, @Param('id', ParseUUIDPipe) tripId: string) {
@@ -104,13 +106,14 @@ export class TripsController {
   }
 
   @Get(':id')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get trip details',
-    description: 'Get detailed information about a specific trip. Only accessible by passenger or driver of the trip.',
+    description:
+      'Get detailed information about a specific trip. Only accessible by passenger or driver of the trip.',
   })
   @ApiParam({ name: 'id', description: 'Trip ID' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Trip details retrieved successfully',
     schema: {
       example: {
@@ -142,17 +145,17 @@ export class TripsController {
           },
           dropoff: {
             address: 'Blue Nile Bridge',
-            latitude: 15.5880,
+            latitude: 15.588,
             longitude: 32.5355,
           },
           fare: {
-            estimated: 25.50,
-            actual: 27.00,
+            estimated: 25.5,
+            actual: 27.0,
             breakdown: {
-              baseFare: 5.00,
-              distanceFare: 10.40,
-              timeFare: 0.00,
-              surgeFare: 0.00,
+              baseFare: 5.0,
+              distanceFare: 10.4,
+              timeFare: 0.0,
+              surgeFare: 0.0,
               surgeMultiplier: 1.0,
             },
           },
@@ -176,25 +179,29 @@ export class TripsController {
       },
     },
   })
-  @ApiNotFoundResponse({ 
+  @ApiNotFoundResponse({
     description: 'Trip not found',
   })
-  @ApiForbiddenResponse({ 
+  @ApiForbiddenResponse({
     description: 'Not authorized to view this trip',
   })
-  async getTripDetails(@Request() req, @Param('id', ParseUUIDPipe) tripId: string) {
+  async getTripDetails(
+    @Request() req,
+    @Param('id', ParseUUIDPipe) tripId: string,
+  ) {
     return this.tripsService.getTripDetails(tripId, req.user.sub);
   }
 
   @Put(':id/status')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Update trip status',
-    description: 'Update the status of a trip. Only passenger or assigned driver can update status.',
+    description:
+      'Update the status of a trip. Only passenger or assigned driver can update status.',
   })
   @ApiParam({ name: 'id', description: 'Trip ID' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Trip status updated successfully',
     schema: {
       example: {
@@ -207,30 +214,31 @@ export class TripsController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Invalid status transition',
   })
-  @ApiNotFoundResponse({ 
+  @ApiNotFoundResponse({
     description: 'Trip not found',
   })
-  @ApiForbiddenResponse({ 
+  @ApiForbiddenResponse({
     description: 'Not authorized to update this trip',
   })
   async updateTripStatus(
-    @Request() req, 
-    @Param('id', ParseUUIDPipe) tripId: string, 
+    @Request() req,
+    @Param('id', ParseUUIDPipe) tripId: string,
     @Body() statusDto: UpdateTripStatusDto,
   ) {
     return this.tripsService.updateTripStatus(tripId, req.user.sub, statusDto);
   }
 
   @Get('user/history')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get user trip history',
-    description: 'Get paginated list of trips for the authenticated user (both as passenger and driver).',
+    description:
+      'Get paginated list of trips for the authenticated user (both as passenger and driver).',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Trip history retrieved successfully',
     schema: {
       example: {
@@ -242,7 +250,7 @@ export class TripsController {
             type: 'standard',
             pickup: 'Khartoum Airport',
             dropoff: 'Blue Nile Bridge',
-            fare: 27.00,
+            fare: 27.0,
             distance: 5.4,
             duration: 15,
             createdAt: '2024-01-24T12:00:00Z',
@@ -270,21 +278,22 @@ export class TripsController {
   })
   async getTripHistory(@Request() req, @Query() paginationDto: PaginationDto) {
     return this.tripsService.getTripHistory(
-      req.user.sub, 
-      paginationDto.page, 
+      req.user.sub,
+      paginationDto.page,
       paginationDto.limit,
     );
   }
 
   @Post(':id/rate')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Rate a completed trip',
-    description: 'Rate the other party (passenger rates driver, driver rates passenger) for a completed trip.',
+    description:
+      'Rate the other party (passenger rates driver, driver rates passenger) for a completed trip.',
   })
   @ApiParam({ name: 'id', description: 'Trip ID' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Trip rated successfully',
     schema: {
       example: {
@@ -299,21 +308,20 @@ export class TripsController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Trip not completed or already rated',
   })
-  @ApiNotFoundResponse({ 
+  @ApiNotFoundResponse({
     description: 'Trip not found',
   })
-  @ApiForbiddenResponse({ 
+  @ApiForbiddenResponse({
     description: 'Not authorized to rate this trip',
   })
   async rateTrip(
-    @Request() req, 
-    @Param('id', ParseUUIDPipe) tripId: string, 
+    @Request() req,
+    @Param('id', ParseUUIDPipe) tripId: string,
     @Body() ratingDto: RateTripDto,
   ) {
     return this.tripsService.rateTrip(tripId, req.user.sub, ratingDto);
   }
 }
-

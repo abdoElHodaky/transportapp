@@ -8,7 +8,10 @@ export class JwtConfig implements JwtOptionsFactory {
 
   createJwtOptions(): JwtModuleOptions {
     return {
-      secret: this.configService.get('JWT_SECRET', 'sikka-super-secret-key-change-in-production'),
+      secret: this.configService.get(
+        'JWT_SECRET',
+        'sikka-super-secret-key-change-in-production',
+      ),
       signOptions: {
         expiresIn: this.configService.get('JWT_EXPIRES_IN', '24h'),
         issuer: 'sikka-api',
@@ -17,4 +20,3 @@ export class JwtConfig implements JwtOptionsFactory {
     };
   }
 }
-

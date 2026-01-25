@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Trip, TripStatus, TripType } from '../../entities/trip.entity';
@@ -16,18 +21,25 @@ export class TripsService {
     private ratingRepository: Repository<Rating>,
   ) {}
 
-  async requestTrip(passengerId: string, tripRequestDto: {
-    pickupAddress: string;
-    pickupLatitude: number;
-    pickupLongitude: number;
-    dropoffAddress: string;
-    dropoffLatitude: number;
-    dropoffLongitude: number;
-    type?: TripType;
-  }) {
+  async requestTrip(
+    passengerId: string,
+    tripRequestDto: {
+      pickupAddress: string;
+      pickupLatitude: number;
+      pickupLongitude: number;
+      dropoffAddress: string;
+      dropoffLatitude: number;
+      dropoffLongitude: number;
+      type?: TripType;
+    },
+  ) {
     // Validate passenger
     const passenger = await this.userRepository.findOne({
-      where: { id: passengerId, role: UserRole.PASSENGER, status: UserStatus.ACTIVE },
+      where: {
+        id: passengerId,
+        role: UserRole.PASSENGER,
+        status: UserStatus.ACTIVE,
+      },
     });
 
     if (!passenger) {
@@ -42,7 +54,10 @@ export class TripsService {
       tripRequestDto.dropoffLongitude,
     );
 
-    const fareCalculation = this.calculateFare(distance, tripRequestDto.type || TripType.STANDARD);
+    const fareCalculation = this.calculateFare(
+      distance,
+      tripRequestDto.type || TripType.STANDARD,
+    );
 
     // Create trip
     const trip = this.tripRepository.create({
@@ -96,9 +111,9 @@ export class TripsService {
   async acceptTrip(tripId: string, driverId: string) {
     // Validate driver
     const driver = await this.userRepository.findOne({
-      where: { 
-        id: driverId, 
-        role: UserRole.DRIVER, 
+      where: {
+        id: driverId,
+        role: UserRole.DRIVER,
         status: UserStatus.ACTIVE,
         isOnline: true,
         isAvailable: true,
@@ -142,11 +157,15 @@ export class TripsService {
     };
   }
 
-  async updateTripStatus(tripId: string, userId: string, statusDto: {
-    status: TripStatus;
-    latitude?: number;
-    longitude?: number;
-  }) {
+  async updateTripStatus(
+    tripId: string,
+    userId: string,
+    statusDto: {
+      status: TripStatus;
+      latitude?: number;
+      longitude?: number;
+    },
+  ) {
     const trip = await this.tripRepository.findOne({
       where: { id: tripId },
       relations: ['passenger', 'driver'],
@@ -158,12 +177,16 @@ export class TripsService {
 
     // Validate user can update this trip
     if (trip.passengerId !== userId && trip.driverId !== userId) {
-      throw new ForbiddenException('You are not authorized to update this trip');
+      throw new ForbiddenException(
+        'You are not authorized to update this trip',
+      );
     }
 
     // Validate status transition
     if (!this.isValidStatusTransition(trip.status, statusDto.status)) {
-      throw new BadRequestException(`Invalid status transition from ${trip.status} to ${statusDto.status}`);
+      throw new BadRequestException(
+        `Invalid status transition from ${trip.status} to ${statusDto.status}`,
+      );
     }
 
     // Update trip status and timestamps
@@ -180,7 +203,10 @@ export class TripsService {
       case TripStatus.COMPLETED:
         trip.tripCompletedAt = new Date();
         if (trip.tripStartedAt) {
-          trip.actualDuration = Math.ceil((trip.tripCompletedAt.getTime() - trip.tripStartedAt.getTime()) / (1000 * 60));
+          trip.actualDuration = Math.ceil(
+            (trip.tripCompletedAt.getTime() - trip.tripStartedAt.getTime()) /
+              (1000 * 60),
+          );
         }
         // TODO: Process payment
         // TODO: Make driver available again
@@ -239,22 +265,26 @@ export class TripsService {
         id: trip.id,
         status: trip.status,
         type: trip.type,
-        passenger: trip.passenger ? {
-          id: trip.passenger.id,
-          name: trip.passenger.name,
-          phone: trip.passenger.phone,
-          rating: trip.passenger.rating,
-        } : null,
-        driver: trip.driver ? {
-          id: trip.driver.id,
-          name: trip.driver.name,
-          phone: trip.driver.phone,
-          rating: trip.driver.rating,
-          vehicleType: trip.driver.vehicleType,
-          vehicleModel: trip.driver.vehicleModel,
-          vehiclePlateNumber: trip.driver.vehiclePlateNumber,
-          vehicleColor: trip.driver.vehicleColor,
-        } : null,
+        passenger: trip.passenger
+          ? {
+              id: trip.passenger.id,
+              name: trip.passenger.name,
+              phone: trip.passenger.phone,
+              rating: trip.passenger.rating,
+            }
+          : null,
+        driver: trip.driver
+          ? {
+              id: trip.driver.id,
+              name: trip.driver.name,
+              phone: trip.driver.phone,
+              rating: trip.driver.rating,
+              vehicleType: trip.driver.vehicleType,
+              vehicleModel: trip.driver.vehicleModel,
+              vehiclePlateNumber: trip.driver.vehiclePlateNumber,
+              vehicleColor: trip.driver.vehicleColor,
+            }
+          : null,
         pickup: {
           address: trip.pickupAddress,
           latitude: trip.pickupLatitude,
@@ -299,10 +329,7 @@ export class TripsService {
 
   async getTripHistory(userId: string, page: number = 1, limit: number = 10) {
     const [trips, total] = await this.tripRepository.findAndCount({
-      where: [
-        { passengerId: userId },
-        { driverId: userId },
-      ],
+      where: [{ passengerId: userId }, { driverId: userId }],
       relations: ['passenger', 'driver'],
       order: { createdAt: 'DESC' },
       skip: (page - 1) * limit,
@@ -311,7 +338,7 @@ export class TripsService {
 
     return {
       message: 'Trip history retrieved successfully',
-      trips: trips.map(trip => ({
+      trips: trips.map((trip) => ({
         id: trip.id,
         status: trip.status,
         type: trip.type,
@@ -323,15 +350,19 @@ export class TripsService {
         createdAt: trip.createdAt,
         completedAt: trip.tripCompletedAt,
         cancelledAt: trip.cancelledAt,
-        passenger: trip.passenger ? {
-          id: trip.passenger.id,
-          name: trip.passenger.name,
-        } : null,
-        driver: trip.driver ? {
-          id: trip.driver.id,
-          name: trip.driver.name,
-          rating: trip.driver.rating,
-        } : null,
+        passenger: trip.passenger
+          ? {
+              id: trip.passenger.id,
+              name: trip.passenger.name,
+            }
+          : null,
+        driver: trip.driver
+          ? {
+              id: trip.driver.id,
+              name: trip.driver.name,
+              rating: trip.driver.rating,
+            }
+          : null,
       })),
       pagination: {
         page,
@@ -342,10 +373,14 @@ export class TripsService {
     };
   }
 
-  async rateTrip(tripId: string, userId: string, ratingDto: {
-    rating: number;
-    comment?: string;
-  }) {
+  async rateTrip(
+    tripId: string,
+    userId: string,
+    ratingDto: {
+      rating: number;
+      comment?: string;
+    },
+  ) {
     const trip = await this.tripRepository.findOne({
       where: { id: tripId, status: TripStatus.COMPLETED },
       relations: ['passenger', 'driver'],
@@ -361,8 +396,9 @@ export class TripsService {
     }
 
     // Determine who is being rated
-    const ratedUserId = trip.passengerId === userId ? trip.driverId : trip.passengerId;
-    
+    const ratedUserId =
+      trip.passengerId === userId ? trip.driverId : trip.passengerId;
+
     if (!ratedUserId) {
       throw new BadRequestException('Cannot determine who to rate');
     }
@@ -389,7 +425,7 @@ export class TripsService {
       comment: ratingDto.comment,
     });
 
-    const savedRating = await this.ratingRepository.save(rating) as Rating;
+    const savedRating = (await this.ratingRepository.save(rating)) as Rating;
 
     // Update user's average rating
     await this.updateUserRating(ratedUserId);
@@ -406,14 +442,21 @@ export class TripsService {
     };
   }
 
-  private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  private calculateDistance(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number,
+  ): number {
     const R = 6371; // Earth's radius in kilometers
     const dLat = this.deg2rad(lat2 - lat1);
     const dLon = this.deg2rad(lon2 - lon1);
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      Math.cos(this.deg2rad(lat1)) *
+        Math.cos(this.deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     return Math.round(distance * 100) / 100; // Round to 2 decimal places
@@ -443,11 +486,23 @@ export class TripsService {
     };
   }
 
-  private isValidStatusTransition(currentStatus: TripStatus, newStatus: TripStatus): boolean {
+  private isValidStatusTransition(
+    currentStatus: TripStatus,
+    newStatus: TripStatus,
+  ): boolean {
     const validTransitions = {
-      [TripStatus.SEARCHING_DRIVER]: [TripStatus.DRIVER_ASSIGNED, TripStatus.CANCELLED],
-      [TripStatus.DRIVER_ASSIGNED]: [TripStatus.DRIVER_ARRIVED, TripStatus.CANCELLED],
-      [TripStatus.DRIVER_ARRIVED]: [TripStatus.IN_PROGRESS, TripStatus.CANCELLED],
+      [TripStatus.SEARCHING_DRIVER]: [
+        TripStatus.DRIVER_ASSIGNED,
+        TripStatus.CANCELLED,
+      ],
+      [TripStatus.DRIVER_ASSIGNED]: [
+        TripStatus.DRIVER_ARRIVED,
+        TripStatus.CANCELLED,
+      ],
+      [TripStatus.DRIVER_ARRIVED]: [
+        TripStatus.IN_PROGRESS,
+        TripStatus.CANCELLED,
+      ],
       [TripStatus.IN_PROGRESS]: [TripStatus.COMPLETED, TripStatus.CANCELLED],
       [TripStatus.COMPLETED]: [],
       [TripStatus.CANCELLED]: [],

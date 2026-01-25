@@ -1,5 +1,11 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBadRequestResponse, ApiConflictResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterDto } from '../../dto/auth/register.dto';
 import { LoginDto } from '../../dto/auth/login.dto';
@@ -13,22 +19,24 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Register new user with phone number',
-    description: 'Register a new user account. An OTP will be sent to the provided phone number for verification.',
+    description:
+      'Register a new user account. An OTP will be sent to the provided phone number for verification.',
   })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiResponse({
+    status: 201,
     description: 'User registered successfully. OTP sent to phone number.',
     schema: {
       example: {
-        message: 'User registered successfully. Please verify your phone number.',
+        message:
+          'User registered successfully. Please verify your phone number.',
         userId: 'uuid-string',
         phone: '+249123456789',
       },
     },
   })
-  @ApiConflictResponse({ 
+  @ApiConflictResponse({
     description: 'User with this phone number already exists',
     schema: {
       example: {
@@ -38,7 +46,7 @@ export class AuthController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Invalid input data',
     schema: {
       example: {
@@ -54,12 +62,13 @@ export class AuthController {
 
   @Post('verify-otp')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Verify OTP and activate account',
-    description: 'Verify the OTP sent to the phone number and activate the user account.',
+    description:
+      'Verify the OTP sent to the phone number and activate the user account.',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'OTP verified successfully. User account activated.',
     schema: {
       example: {
@@ -75,7 +84,7 @@ export class AuthController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Invalid OTP or OTP expired',
     schema: {
       example: {
@@ -91,12 +100,12 @@ export class AuthController {
 
   @Post('resend-otp')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Resend OTP to phone number',
     description: 'Resend a new OTP to the phone number for verification.',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'OTP sent successfully',
     schema: {
       example: {
@@ -104,7 +113,7 @@ export class AuthController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'User not found or phone already verified',
     schema: {
       example: {
@@ -120,12 +129,13 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Login with phone number',
-    description: 'Login with phone number and optional password. Returns JWT token and user data.',
+    description:
+      'Login with phone number and optional password. Returns JWT token and user data.',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Login successful',
     schema: {
       example: {
@@ -147,7 +157,7 @@ export class AuthController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Invalid credentials or phone not verified',
     schema: {
       example: {
@@ -163,12 +173,12 @@ export class AuthController {
 
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Refresh access token',
     description: 'Refresh the JWT access token using a valid token.',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Token refreshed successfully',
     schema: {
       example: {
@@ -176,7 +186,7 @@ export class AuthController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Invalid or expired token',
     schema: {
       example: {
@@ -190,4 +200,3 @@ export class AuthController {
     return this.authService.refreshToken(refreshDto.token);
   }
 }
-

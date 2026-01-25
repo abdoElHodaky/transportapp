@@ -16,4 +16,3 @@ import { CyberPayService } from './cyberpay.service';
   exports: [EBSService, CyberPayService],
 })
 export class PaymentGatewayModule {}
-

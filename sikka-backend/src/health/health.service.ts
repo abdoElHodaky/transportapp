@@ -107,7 +107,7 @@ export class HealthService {
 
   async getDetailedHealthStatus(): Promise<DetailedHealthStatus> {
     const baseStatus = await this.getHealthStatus();
-    
+
     const [databaseCheck, redisCheck] = await Promise.allSettled([
       this.checkDatabaseWithMetrics(),
       this.checkRedisWithMetrics(),
@@ -119,16 +119,20 @@ export class HealthService {
     return {
       ...baseStatus,
       services: {
-        database: databaseCheck.status === 'fulfilled' 
-          ? databaseCheck.value 
-          : { status: 'disconnected', error: 'Connection failed' },
-        redis: redisCheck.status === 'fulfilled' 
-          ? redisCheck.value 
-          : { status: 'disconnected', error: 'Connection failed' },
+        database:
+          databaseCheck.status === 'fulfilled'
+            ? databaseCheck.value
+            : { status: 'disconnected', error: 'Connection failed' },
+        redis:
+          redisCheck.status === 'fulfilled'
+            ? redisCheck.value
+            : { status: 'disconnected', error: 'Connection failed' },
         memory: {
           used: memoryUsage.heapUsed,
           total: memoryUsage.heapTotal,
-          percentage: Math.round((memoryUsage.heapUsed / memoryUsage.heapTotal) * 100),
+          percentage: Math.round(
+            (memoryUsage.heapUsed / memoryUsage.heapTotal) * 100,
+          ),
         },
         cpu: {
           usage: Math.round((cpuUsage.user + cpuUsage.system) / 1000000), // Convert to milliseconds
@@ -142,7 +146,7 @@ export class HealthService {
       if (!this.dataSource.isInitialized) {
         return false;
       }
-      
+
       await this.dataSource.query('SELECT 1');
       return true;
     } catch (error) {
@@ -153,15 +157,15 @@ export class HealthService {
 
   private async checkDatabaseWithMetrics() {
     const startTime = Date.now();
-    
+
     try {
       if (!this.dataSource.isInitialized) {
         return { status: 'disconnected' as const, error: 'Not initialized' };
       }
-      
+
       await this.dataSource.query('SELECT 1');
       const responseTime = Date.now() - startTime;
-      
+
       return {
         status: 'connected' as const,
         responseTime,
@@ -186,11 +190,11 @@ export class HealthService {
 
   private async checkRedisWithMetrics() {
     const startTime = Date.now();
-    
+
     try {
       await this.redis.ping();
       const responseTime = Date.now() - startTime;
-      
+
       return {
         status: 'connected' as const,
         responseTime,
@@ -213,7 +217,9 @@ export class HealthService {
       ]);
 
       // Return true if at least one payment gateway is available
-      return checks.some(check => check.status === 'fulfilled' && check.value);
+      return checks.some(
+        (check) => check.status === 'fulfilled' && check.value,
+      );
     } catch (error) {
       console.error('External services health check failed:', error);
       return false;
@@ -234,7 +240,9 @@ export class HealthService {
     try {
       // TODO: Implement actual CyberPay gateway health check
       // For now, return true if configuration exists
-      return !!(process.env.CYBERPAY_BASE_URL && process.env.CYBERPAY_MERCHANT_ID);
+      return !!(
+        process.env.CYBERPAY_BASE_URL && process.env.CYBERPAY_MERCHANT_ID
+      );
     } catch (error) {
       return false;
     }

@@ -8,4 +8,3 @@ import { LocationsService } from './locations.service';
   exports: [LocationsService],
 })
 export class LocationsModule {}
-

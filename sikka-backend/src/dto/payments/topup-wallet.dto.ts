@@ -5,7 +5,7 @@ import { PaymentMethod } from '../../entities/payment.entity';
 export class TopUpWalletDto {
   @ApiProperty({
     description: 'Amount to top up in SDG',
-    example: 100.00,
+    example: 100.0,
     minimum: 1,
   })
   @IsNumber()
@@ -27,4 +27,3 @@ export class TopUpWalletDto {
   @IsString()
   gatewayTransactionId?: string;
 }
-

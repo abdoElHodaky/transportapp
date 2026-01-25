@@ -1,4 +1,12 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  Index,
+  ForeignKey,
+  TableIndex,
+  TableForeignKey,
+} from 'typeorm';
 
 export class CreateLocationsTable1640000000007 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -26,7 +34,13 @@ export class CreateLocationsTable1640000000007 implements MigrationInterface {
           {
             name: 'type',
             type: 'enum',
-            enum: ['user_location', 'trip_pickup', 'trip_dropoff', 'trip_route', 'driver_location'],
+            enum: [
+              'user_location',
+              'trip_pickup',
+              'trip_dropoff',
+              'trip_route',
+              'driver_location',
+            ],
           },
           // Geographic coordinates
           {

@@ -86,10 +86,10 @@ export class Location {
   timeFromPrevious: number; // Time from previous point in seconds
 
   // Location source and quality
-  @Column({ 
-    type: 'enum', 
+  @Column({
+    type: 'enum',
     enum: ['gps', 'network', 'manual', 'estimated'],
-    default: 'gps'
+    default: 'gps',
   })
   source: string;
 

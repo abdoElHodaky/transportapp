@@ -149,4 +149,3 @@ export class Transaction {
   @Column({ nullable: true })
   toUserId: string;
 }
-

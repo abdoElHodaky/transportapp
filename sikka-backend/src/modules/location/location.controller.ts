@@ -9,9 +9,19 @@ import {
   Request,
   BadRequestException,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { LocationService, LocationUpdateDto, NearbyDriversQuery, RouteCalculationDto } from './location.service';
+import {
+  LocationService,
+  LocationUpdateDto,
+  NearbyDriversQuery,
+  RouteCalculationDto,
+} from './location.service';
 
 @ApiTags('location')
 @Controller('location')
@@ -24,9 +34,12 @@ export class LocationController {
   @ApiOperation({ summary: 'Update user location' })
   @ApiResponse({ status: 200, description: 'Location updated successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async updateLocation(@Request() req, @Body() locationData: LocationUpdateDto) {
+  async updateLocation(
+    @Request() req,
+    @Body() locationData: LocationUpdateDto,
+  ) {
     const userId = req.user.sub;
-    
+
     // Validate coordinates
     if (
       !this.isValidLatitude(locationData.latitude) ||
@@ -104,7 +117,9 @@ export class LocationController {
     );
 
     if (!pickupInServiceArea || !dropoffInServiceArea) {
-      throw new BadRequestException('One or both locations are outside service area');
+      throw new BadRequestException(
+        'One or both locations are outside service area',
+      );
     }
 
     return this.locationService.calculateRoute(routeData);
@@ -172,10 +187,7 @@ export class LocationController {
       throw new BadRequestException('Latitude and longitude are required');
     }
 
-    if (
-      !this.isValidLatitude(latitude) ||
-      !this.isValidLongitude(longitude)
-    ) {
+    if (!this.isValidLatitude(latitude) || !this.isValidLongitude(longitude)) {
       throw new BadRequestException('Invalid coordinates provided');
     }
 

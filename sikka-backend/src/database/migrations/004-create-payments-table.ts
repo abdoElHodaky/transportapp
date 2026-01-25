@@ -1,4 +1,12 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  Index,
+  ForeignKey,
+  TableIndex,
+  TableForeignKey,
+} from 'typeorm';
 
 export class CreatePaymentsTable1640000000004 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -34,7 +42,14 @@ export class CreatePaymentsTable1640000000004 implements MigrationInterface {
           {
             name: 'status',
             type: 'enum',
-            enum: ['pending', 'processing', 'completed', 'failed', 'cancelled', 'refunded'],
+            enum: [
+              'pending',
+              'processing',
+              'completed',
+              'failed',
+              'cancelled',
+              'refunded',
+            ],
             default: "'pending'",
           },
           // Amount breakdown

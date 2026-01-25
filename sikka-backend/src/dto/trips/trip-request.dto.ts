@@ -1,4 +1,11 @@
-import { IsString, IsNumber, IsOptional, IsEnum, Min, Max } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsEnum,
+  Min,
+  Max,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { TripType } from '../../entities/trip.entity';
 
@@ -41,7 +48,7 @@ export class TripRequestDto {
 
   @ApiProperty({
     description: 'Dropoff location latitude',
-    example: 15.5880,
+    example: 15.588,
     minimum: -90,
     maximum: 90,
   })
@@ -70,4 +77,3 @@ export class TripRequestDto {
   @IsEnum(TripType)
   type?: TripType;
 }
-

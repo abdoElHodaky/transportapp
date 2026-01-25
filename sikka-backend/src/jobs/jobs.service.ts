@@ -167,13 +167,13 @@ export class JobsService {
     await this.scheduleReportGeneration('daily');
   }
 
-  @Cron(CronExpression.EVERY_MONDAY_AT_7AM)
+  @Cron(CronExpression.EVERY_DAY_AT_7AM)
   async handleWeeklyReports(): Promise<void> {
     this.logger.log('Generating weekly reports...');
     await this.scheduleReportGeneration('weekly');
   }
 
-  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_8AM)
+  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_NOON)
   async handleMonthlyReports(): Promise<void> {
     this.logger.log('Generating monthly reports...');
     await this.scheduleReportGeneration('monthly');
@@ -301,4 +301,3 @@ export class JobsService {
     }
   }
 }
-

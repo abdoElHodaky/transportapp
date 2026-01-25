@@ -1,4 +1,12 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  Index,
+  ForeignKey,
+  TableIndex,
+  TableForeignKey,
+} from 'typeorm';
 
 export class CreateTransactionsTable1640000000005 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -34,7 +42,15 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
           {
             name: 'type',
             type: 'enum',
-            enum: ['credit', 'debit', 'topup', 'withdrawal', 'refund', 'commission', 'earning'],
+            enum: [
+              'credit',
+              'debit',
+              'topup',
+              'withdrawal',
+              'refund',
+              'commission',
+              'earning',
+            ],
           },
           {
             name: 'status',

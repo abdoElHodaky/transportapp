@@ -22,4 +22,3 @@ import { Wallet } from '../../entities/wallet.entity';
   exports: [AdminService],
 })
 export class AdminModule {}
-

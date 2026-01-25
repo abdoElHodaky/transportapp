@@ -34,4 +34,3 @@ export class UpdateTripStatusDto {
   @Max(180)
   longitude?: number;
 }
-

@@ -7,7 +7,7 @@ export class AppService {
       message: 'Sikka Transportation API is running!',
       timestamp: new Date().toISOString(),
       version: '1.0.0',
-      status: 'healthy'
+      status: 'healthy',
     };
   }
 
@@ -37,4 +37,3 @@ export class AppService {
     };
   }
 }
-

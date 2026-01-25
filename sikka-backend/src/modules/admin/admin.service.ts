@@ -1,10 +1,17 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import { User, UserRole, UserStatus } from '../../entities/user.entity';
 import { Trip, TripStatus } from '../../entities/trip.entity';
 import { Payment, PaymentStatus } from '../../entities/payment.entity';
-import { Transaction, TransactionType } from '../../entities/transaction.entity';
+import {
+  Transaction,
+  TransactionType,
+} from '../../entities/transaction.entity';
 import { Wallet } from '../../entities/wallet.entity';
 
 @Injectable()
@@ -29,23 +36,37 @@ export class AdminService {
     await this.validateAdminUser(adminUserId);
 
     const today = new Date();
-    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const startOfDay = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+    );
     const startOfWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
     // User statistics
     const totalUsers = await this.userRepository.count();
-    const totalPassengers = await this.userRepository.count({ where: { role: UserRole.PASSENGER } });
-    const totalDrivers = await this.userRepository.count({ where: { role: UserRole.DRIVER } });
-    const activeUsers = await this.userRepository.count({ where: { status: UserStatus.ACTIVE } });
+    const totalPassengers = await this.userRepository.count({
+      where: { role: UserRole.PASSENGER },
+    });
+    const totalDrivers = await this.userRepository.count({
+      where: { role: UserRole.DRIVER },
+    });
+    const activeUsers = await this.userRepository.count({
+      where: { status: UserStatus.ACTIVE },
+    });
     const newUsersToday = await this.userRepository.count({
       where: { createdAt: Between(startOfDay, today) },
     });
 
     // Trip statistics
     const totalTrips = await this.tripRepository.count();
-    const completedTrips = await this.tripRepository.count({ where: { status: TripStatus.COMPLETED } });
-    const cancelledTrips = await this.tripRepository.count({ where: { status: TripStatus.CANCELLED } });
+    const completedTrips = await this.tripRepository.count({
+      where: { status: TripStatus.COMPLETED },
+    });
+    const cancelledTrips = await this.tripRepository.count({
+      where: { status: TripStatus.CANCELLED },
+    });
     const tripsToday = await this.tripRepository.count({
       where: { createdAt: Between(startOfDay, today) },
     });
@@ -105,7 +126,10 @@ export class AdminService {
           cancelled: cancelledTrips,
           today: tripsToday,
           thisWeek: tripsThisWeek,
-          completionRate: totalTrips > 0 ? Math.round((completedTrips / totalTrips) * 100) : 0,
+          completionRate:
+            totalTrips > 0
+              ? Math.round((completedTrips / totalTrips) * 100)
+              : 0,
         },
         revenue: {
           total: parseFloat(totalRevenue?.total || '0'),
@@ -113,7 +137,7 @@ export class AdminService {
           today: parseFloat(revenueToday?.total || '0'),
           thisMonth: parseFloat(revenueThisMonth?.total || '0'),
         },
-        topDrivers: topDrivers.map(driver => ({
+        topDrivers: topDrivers.map((driver) => ({
           id: driver.id,
           name: driver.name,
           phone: driver.phone,
@@ -165,7 +189,7 @@ export class AdminService {
 
     return {
       message: 'Users retrieved successfully',
-      users: users.map(user => ({
+      users: users.map((user) => ({
         id: user.id,
         phone: user.phone,
         name: user.name,
@@ -182,12 +206,15 @@ export class AdminService {
           totalEarnings: user.wallet?.totalEarnings || 0,
           totalSpent: user.wallet?.totalSpent || 0,
         },
-        vehicleInfo: user.role === UserRole.DRIVER ? {
-          type: user.vehicleType,
-          model: user.vehicleModel,
-          plateNumber: user.vehiclePlateNumber,
-          color: user.vehicleColor,
-        } : null,
+        vehicleInfo:
+          user.role === UserRole.DRIVER
+            ? {
+                type: user.vehicleType,
+                model: user.vehicleModel,
+                plateNumber: user.vehiclePlateNumber,
+                color: user.vehicleColor,
+              }
+            : null,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       })),
@@ -203,7 +230,12 @@ export class AdminService {
   /**
    * Update user status (suspend, activate, etc.)
    */
-  async updateUserStatus(adminUserId: string, userId: string, status: UserStatus, reason?: string) {
+  async updateUserStatus(
+    adminUserId: string,
+    userId: string,
+    status: UserStatus,
+    reason?: string,
+  ) {
     await this.validateAdminUser(adminUserId);
 
     const user = await this.userRepository.findOne({ where: { id: userId } });
@@ -270,7 +302,7 @@ export class AdminService {
 
     return {
       message: 'Trips retrieved successfully',
-      trips: trips.map(trip => ({
+      trips: trips.map((trip) => ({
         id: trip.id,
         status: trip.status,
         type: trip.type,
@@ -279,12 +311,14 @@ export class AdminService {
           name: trip.passenger.name,
           phone: trip.passenger.phone,
         },
-        driver: trip.driver ? {
-          id: trip.driver.id,
-          name: trip.driver.name,
-          phone: trip.driver.phone,
-          rating: trip.driver.rating,
-        } : null,
+        driver: trip.driver
+          ? {
+              id: trip.driver.id,
+              name: trip.driver.name,
+              phone: trip.driver.phone,
+              rating: trip.driver.rating,
+            }
+          : null,
         pickup: {
           address: trip.pickupAddress,
           coordinates: [trip.pickupLatitude, trip.pickupLongitude],
@@ -301,13 +335,15 @@ export class AdminService {
           estimated: trip.estimatedDistance,
           actual: trip.actualDistance,
         },
-        payment: trip.payment ? {
-          id: trip.payment.id,
-          amount: trip.payment.amount,
-          method: trip.payment.method,
-          status: trip.payment.status,
-          commission: trip.payment.platformCommission,
-        } : null,
+        payment: trip.payment
+          ? {
+              id: trip.payment.id,
+              amount: trip.payment.amount,
+              method: trip.payment.method,
+              status: trip.payment.status,
+              commission: trip.payment.platformCommission,
+            }
+          : null,
         timestamps: {
           createdAt: trip.createdAt,
           completedAt: trip.tripCompletedAt,
@@ -344,7 +380,10 @@ export class AdminService {
         'COUNT(*) as transactions',
       ])
       .where('payment.status = :status', { status: PaymentStatus.COMPLETED })
-      .andWhere('payment.createdAt BETWEEN :dateFrom AND :dateTo', { dateFrom, dateTo })
+      .andWhere('payment.createdAt BETWEEN :dateFrom AND :dateTo', {
+        dateFrom,
+        dateTo,
+      })
       .groupBy(`DATE_TRUNC('${groupBy}', payment.createdAt)`)
       .orderBy('period', 'ASC');
 
@@ -358,7 +397,10 @@ export class AdminService {
         'COUNT(*) as count',
         'SUM(ABS(transaction.amount)) as total_amount',
       ])
-      .where('transaction.createdAt BETWEEN :dateFrom AND :dateTo', { dateFrom, dateTo })
+      .where('transaction.createdAt BETWEEN :dateFrom AND :dateTo', {
+        dateFrom,
+        dateTo,
+      })
       .groupBy('transaction.type')
       .getRawMany();
 
@@ -374,18 +416,18 @@ export class AdminService {
     return {
       message: 'Financial reports retrieved successfully',
       reports: {
-        revenueByPeriod: revenueData.map(item => ({
+        revenueByPeriod: revenueData.map((item) => ({
           period: item.period,
           revenue: parseFloat(item.revenue || '0'),
           commission: parseFloat(item.commission || '0'),
           transactions: parseInt(item.transactions || '0'),
         })),
-        transactionTypes: transactionTypes.map(item => ({
+        transactionTypes: transactionTypes.map((item) => ({
           type: item.type,
           count: parseInt(item.count || '0'),
           totalAmount: parseFloat(item.total_amount || '0'),
         })),
-        topEarningDrivers: topEarningDrivers.map(driver => ({
+        topEarningDrivers: topEarningDrivers.map((driver) => ({
           id: driver.id,
           name: driver.name,
           phone: driver.phone,
@@ -394,9 +436,18 @@ export class AdminService {
           rating: driver.rating,
         })),
         summary: {
-          totalRevenue: revenueData.reduce((sum, item) => sum + parseFloat(item.revenue || '0'), 0),
-          totalCommission: revenueData.reduce((sum, item) => sum + parseFloat(item.commission || '0'), 0),
-          totalTransactions: revenueData.reduce((sum, item) => sum + parseInt(item.transactions || '0'), 0),
+          totalRevenue: revenueData.reduce(
+            (sum, item) => sum + parseFloat(item.revenue || '0'),
+            0,
+          ),
+          totalCommission: revenueData.reduce(
+            (sum, item) => sum + parseFloat(item.commission || '0'),
+            0,
+          ),
+          totalTransactions: revenueData.reduce(
+            (sum, item) => sum + parseInt(item.transactions || '0'),
+            0,
+          ),
         },
       },
     };
@@ -422,9 +473,20 @@ export class AdminService {
           relations: ['wallet'],
           order: { createdAt: 'DESC' },
         });
-        
-        headers = ['ID', 'Name', 'Phone', 'Email', 'Role', 'Status', 'Rating', 'Total Trips', 'Wallet Balance', 'Created At'];
-        data = users.map(user => [
+
+        headers = [
+          'ID',
+          'Name',
+          'Phone',
+          'Email',
+          'Role',
+          'Status',
+          'Rating',
+          'Total Trips',
+          'Wallet Balance',
+          'Created At',
+        ];
+        data = users.map((user) => [
           user.id,
           user.name || '',
           user.phone,
@@ -446,13 +508,29 @@ export class AdminService {
           .leftJoinAndSelect('trip.payment', 'payment');
 
         if (dateFrom && dateTo) {
-          queryBuilder.andWhere('trip.createdAt BETWEEN :dateFrom AND :dateTo', { dateFrom, dateTo });
+          queryBuilder.andWhere(
+            'trip.createdAt BETWEEN :dateFrom AND :dateTo',
+            { dateFrom, dateTo },
+          );
         }
 
-        const trips = await queryBuilder.orderBy('trip.createdAt', 'DESC').getMany();
-        
-        headers = ['Trip ID', 'Status', 'Passenger', 'Driver', 'Pickup', 'Dropoff', 'Fare', 'Distance', 'Created At', 'Completed At'];
-        data = trips.map(trip => [
+        const trips = await queryBuilder
+          .orderBy('trip.createdAt', 'DESC')
+          .getMany();
+
+        headers = [
+          'Trip ID',
+          'Status',
+          'Passenger',
+          'Driver',
+          'Pickup',
+          'Dropoff',
+          'Fare',
+          'Distance',
+          'Created At',
+          'Completed At',
+        ];
+        data = trips.map((trip) => [
           trip.id,
           trip.status,
           trip.passenger.name || trip.passenger.phone,
@@ -474,13 +552,29 @@ export class AdminService {
           .leftJoinAndSelect('trip.driver', 'driver');
 
         if (dateFrom && dateTo) {
-          paymentQueryBuilder.andWhere('payment.createdAt BETWEEN :dateFrom AND :dateTo', { dateFrom, dateTo });
+          paymentQueryBuilder.andWhere(
+            'payment.createdAt BETWEEN :dateFrom AND :dateTo',
+            { dateFrom, dateTo },
+          );
         }
 
-        const payments = await paymentQueryBuilder.orderBy('payment.createdAt', 'DESC').getMany();
-        
-        headers = ['Payment ID', 'Trip ID', 'Amount', 'Method', 'Status', 'Commission', 'Driver Earnings', 'Passenger', 'Driver', 'Created At'];
-        data = payments.map(payment => [
+        const payments = await paymentQueryBuilder
+          .orderBy('payment.createdAt', 'DESC')
+          .getMany();
+
+        headers = [
+          'Payment ID',
+          'Trip ID',
+          'Amount',
+          'Method',
+          'Status',
+          'Commission',
+          'Driver Earnings',
+          'Passenger',
+          'Driver',
+          'Created At',
+        ];
+        data = payments.map((payment) => [
           payment.id,
           payment.tripId,
           payment.amount,
@@ -498,7 +592,7 @@ export class AdminService {
     // Convert to CSV format
     const csvContent = [
       headers.join(','),
-      ...data.map(row => row.map(cell => `"${cell}"`).join(',')),
+      ...data.map((row) => row.map((cell) => `"${cell}"`).join(',')),
     ].join('\n');
 
     return {
@@ -527,4 +621,3 @@ export class AdminService {
     return user;
   }
 }
-

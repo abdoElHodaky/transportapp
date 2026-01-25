@@ -35,7 +35,8 @@ export class AdminController {
   @Get('dashboard')
   @ApiOperation({
     summary: 'Get dashboard analytics',
-    description: 'Get comprehensive platform analytics including users, trips, and revenue statistics.',
+    description:
+      'Get comprehensive platform analytics including users, trips, and revenue statistics.',
   })
   @ApiResponse({
     status: 200,
@@ -60,10 +61,10 @@ export class AdminController {
             completionRate: 90,
           },
           revenue: {
-            total: 125000.50,
+            total: 125000.5,
             commission: 18750.08,
-            today: 1250.00,
-            thisMonth: 35000.00,
+            today: 1250.0,
+            thisMonth: 35000.0,
           },
           topDrivers: [
             {
@@ -87,13 +88,39 @@ export class AdminController {
   @Get('users')
   @ApiOperation({
     summary: 'Get all users with filtering',
-    description: 'Get paginated list of all users with optional filtering by role, status, and search.',
+    description:
+      'Get paginated list of all users with optional filtering by role, status, and search.',
   })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page' })
-  @ApiQuery({ name: 'role', required: false, enum: UserRole, description: 'Filter by user role' })
-  @ApiQuery({ name: 'status', required: false, enum: UserStatus, description: 'Filter by user status' })
-  @ApiQuery({ name: 'search', required: false, type: String, description: 'Search by name, phone, or email' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page',
+  })
+  @ApiQuery({
+    name: 'role',
+    required: false,
+    enum: UserRole,
+    description: 'Filter by user role',
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: UserStatus,
+    description: 'Filter by user status',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search by name, phone, or email',
+  })
   @ApiResponse({
     status: 200,
     description: 'Users retrieved successfully',
@@ -140,7 +167,14 @@ export class AdminController {
     @Query('status') status?: UserStatus,
     @Query('search') search?: string,
   ) {
-    return this.adminService.getUsers(req.user.sub, page, limit, role, status, search);
+    return this.adminService.getUsers(
+      req.user.sub,
+      page,
+      limit,
+      role,
+      status,
+      search,
+    );
   }
 
   @Put('users/:userId/status')
@@ -172,19 +206,50 @@ export class AdminController {
     @Param('userId', ParseUUIDPipe) userId: string,
     @Body() body: { status: UserStatus; reason?: string },
   ) {
-    return this.adminService.updateUserStatus(req.user.sub, userId, body.status, body.reason);
+    return this.adminService.updateUserStatus(
+      req.user.sub,
+      userId,
+      body.status,
+      body.reason,
+    );
   }
 
   @Get('trips')
   @ApiOperation({
     summary: 'Get all trips with filtering',
-    description: 'Get paginated list of all trips with optional filtering by status and date range.',
+    description:
+      'Get paginated list of all trips with optional filtering by status and date range.',
   })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page' })
-  @ApiQuery({ name: 'status', required: false, enum: TripStatus, description: 'Filter by trip status' })
-  @ApiQuery({ name: 'dateFrom', required: false, type: String, description: 'Start date (ISO string)' })
-  @ApiQuery({ name: 'dateTo', required: false, type: String, description: 'End date (ISO string)' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page',
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: TripStatus,
+    description: 'Filter by trip status',
+  })
+  @ApiQuery({
+    name: 'dateFrom',
+    required: false,
+    type: String,
+    description: 'Start date (ISO string)',
+  })
+  @ApiQuery({
+    name: 'dateTo',
+    required: false,
+    type: String,
+    description: 'End date (ISO string)',
+  })
   @ApiResponse({
     status: 200,
     description: 'Trips retrieved successfully',
@@ -213,11 +278,11 @@ export class AdminController {
             },
             dropoff: {
               address: 'Blue Nile Bridge',
-              coordinates: [15.5880, 32.5355],
+              coordinates: [15.588, 32.5355],
             },
             fare: {
-              estimated: 25.50,
-              actual: 27.00,
+              estimated: 25.5,
+              actual: 27.0,
             },
             distance: {
               estimated: 5.2,
@@ -225,7 +290,7 @@ export class AdminController {
             },
             payment: {
               id: 'uuid-string',
-              amount: 27.00,
+              amount: 27.0,
               method: 'wallet',
               status: 'completed',
               commission: 4.05,
@@ -256,21 +321,39 @@ export class AdminController {
   ) {
     const dateFromObj = dateFrom ? new Date(dateFrom) : undefined;
     const dateToObj = dateTo ? new Date(dateTo) : undefined;
-    
-    return this.adminService.getTrips(req.user.sub, page, limit, status, dateFromObj, dateToObj);
+
+    return this.adminService.getTrips(
+      req.user.sub,
+      page,
+      limit,
+      status,
+      dateFromObj,
+      dateToObj,
+    );
   }
 
   @Get('reports/financial')
   @ApiOperation({
     summary: 'Get financial reports',
-    description: 'Get comprehensive financial reports with revenue breakdown and analytics.',
+    description:
+      'Get comprehensive financial reports with revenue breakdown and analytics.',
   })
-  @ApiQuery({ name: 'dateFrom', required: true, type: String, description: 'Start date (ISO string)' })
-  @ApiQuery({ name: 'dateTo', required: true, type: String, description: 'End date (ISO string)' })
-  @ApiQuery({ 
-    name: 'groupBy', 
-    required: false, 
-    enum: ['day', 'week', 'month'], 
+  @ApiQuery({
+    name: 'dateFrom',
+    required: true,
+    type: String,
+    description: 'Start date (ISO string)',
+  })
+  @ApiQuery({
+    name: 'dateTo',
+    required: true,
+    type: String,
+    description: 'End date (ISO string)',
+  })
+  @ApiQuery({
+    name: 'groupBy',
+    required: false,
+    enum: ['day', 'week', 'month'],
     description: 'Group results by time period',
   })
   @ApiResponse({
@@ -283,8 +366,8 @@ export class AdminController {
           revenueByPeriod: [
             {
               period: '2024-01-24T00:00:00Z',
-              revenue: 1250.00,
-              commission: 187.50,
+              revenue: 1250.0,
+              commission: 187.5,
               transactions: 45,
             },
           ],
@@ -292,12 +375,12 @@ export class AdminController {
             {
               type: 'trip_payment',
               count: 320,
-              totalAmount: 8500.00,
+              totalAmount: 8500.0,
             },
             {
               type: 'wallet_topup',
               count: 125,
-              totalAmount: 15000.00,
+              totalAmount: 15000.0,
             },
           ],
           topEarningDrivers: [
@@ -305,14 +388,14 @@ export class AdminController {
               id: 'uuid-string',
               name: 'Ahmed Hassan',
               phone: '+249123456789',
-              totalEarnings: 2500.00,
+              totalEarnings: 2500.0,
               totalTrips: 180,
               rating: 4.9,
             },
           ],
           summary: {
-            totalRevenue: 35000.00,
-            totalCommission: 5250.00,
+            totalRevenue: 35000.0,
+            totalCommission: 5250.0,
             totalTransactions: 1250,
           },
         },
@@ -336,7 +419,8 @@ export class AdminController {
   @Post('export')
   @ApiOperation({
     summary: 'Export data to CSV',
-    description: 'Export platform data (users, trips, or payments) to CSV format.',
+    description:
+      'Export platform data (users, trips, or payments) to CSV format.',
   })
   @ApiResponse({
     status: 200,
@@ -347,7 +431,8 @@ export class AdminController {
         export: {
           type: 'users',
           filename: 'users_export_2024-01-24.csv',
-          content: 'ID,Name,Phone,Email,Role,Status,Rating,Total Trips,Wallet Balance,Created At\n...',
+          content:
+            'ID,Name,Phone,Email,Role,Status,Rating,Total Trips,Wallet Balance,Created At\n...',
           recordCount: 1250,
         },
       },
@@ -355,7 +440,8 @@ export class AdminController {
   })
   async exportData(
     @Request() req,
-    @Body() body: {
+    @Body()
+    body: {
       type: 'users' | 'trips' | 'payments';
       dateFrom?: string;
       dateTo?: string;
@@ -363,8 +449,12 @@ export class AdminController {
   ) {
     const dateFromObj = body.dateFrom ? new Date(body.dateFrom) : undefined;
     const dateToObj = body.dateTo ? new Date(body.dateTo) : undefined;
-    
-    return this.adminService.exportData(req.user.sub, body.type, dateFromObj, dateToObj);
+
+    return this.adminService.exportData(
+      req.user.sub,
+      body.type,
+      dateFromObj,
+      dateToObj,
+    );
   }
 }
-

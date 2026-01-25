@@ -9,4 +9,3 @@ export class ResendOtpDto {
   @IsPhoneNumber('SD')
   phone: string;
 }
-

@@ -9,7 +9,9 @@ import { Trip } from '../../entities/trip.entity';
 import { User } from '../../entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment, Transaction, Wallet, Trip, User])],
+  imports: [
+    TypeOrmModule.forFeature([Payment, Transaction, Wallet, Trip, User]),
+  ],
   controllers: [PaymentsController],
   providers: [PaymentsService],
   exports: [PaymentsService],

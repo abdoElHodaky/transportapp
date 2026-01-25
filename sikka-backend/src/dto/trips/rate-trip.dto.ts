@@ -1,4 +1,11 @@
-import { IsNumber, IsOptional, IsString, Min, Max, MaxLength } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+  Max,
+  MaxLength,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RateTripDto {
@@ -23,4 +30,3 @@ export class RateTripDto {
   @MaxLength(500)
   comment?: string;
 }
-

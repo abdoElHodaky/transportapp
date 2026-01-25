@@ -1,21 +1,21 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Body, 
-  Param, 
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
   Query,
-  UseGuards, 
+  UseGuards,
   Request,
   HttpCode,
   HttpStatus,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { 
-  ApiTags, 
-  ApiOperation, 
-  ApiResponse, 
-  ApiBearerAuth, 
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
   ApiParam,
   ApiBadRequestResponse,
   ApiNotFoundResponse,
@@ -36,13 +36,14 @@ export class PaymentsController {
 
   @Post('trips/:tripId/process')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Process trip payment',
-    description: 'Process payment for a completed trip. Supports wallet, EBS, and CyberPay methods.',
+    description:
+      'Process payment for a completed trip. Supports wallet, EBS, and CyberPay methods.',
   })
   @ApiParam({ name: 'tripId', description: 'Trip ID to process payment for' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Payment processed successfully',
     schema: {
       example: {
@@ -50,7 +51,7 @@ export class PaymentsController {
         payment: {
           id: 'uuid-string',
           tripId: 'uuid-string',
-          amount: 27.00,
+          amount: 27.0,
           method: 'wallet',
           status: 'completed',
           platformCommission: 4.05,
@@ -61,26 +62,28 @@ export class PaymentsController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
-    description: 'Trip not completed, payment already processed, or insufficient wallet balance',
+  @ApiBadRequestResponse({
+    description:
+      'Trip not completed, payment already processed, or insufficient wallet balance',
   })
-  @ApiNotFoundResponse({ 
+  @ApiNotFoundResponse({
     description: 'Trip not found',
   })
   async processPayment(
-    @Param('tripId', ParseUUIDPipe) tripId: string, 
+    @Param('tripId', ParseUUIDPipe) tripId: string,
     @Body() paymentDto: ProcessPaymentDto,
   ) {
     return this.paymentsService.processPayment(tripId, paymentDto);
   }
 
   @Get('wallet')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get user wallet balance',
-    description: 'Get current wallet balance and transaction summary for the authenticated user.',
+    description:
+      'Get current wallet balance and transaction summary for the authenticated user.',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Wallet balance retrieved successfully',
     schema: {
       example: {
@@ -88,9 +91,9 @@ export class PaymentsController {
         wallet: {
           id: 'uuid-string',
           balance: 150.75,
-          totalEarnings: 500.00,
+          totalEarnings: 500.0,
           totalSpent: 349.25,
-          pendingAmount: 0.00,
+          pendingAmount: 0.0,
           currency: 'SDG',
           isActive: true,
           lastUpdated: '2024-01-24T12:35:00Z',
@@ -104,12 +107,13 @@ export class PaymentsController {
 
   @Post('wallet/topup')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Top up wallet balance',
-    description: 'Add funds to user wallet using EBS, CyberPay, or other payment methods.',
+    description:
+      'Add funds to user wallet using EBS, CyberPay, or other payment methods.',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Wallet topped up successfully',
     schema: {
       example: {
@@ -117,7 +121,7 @@ export class PaymentsController {
         transaction: {
           id: 'uuid-string',
           type: 'topup',
-          amount: 100.00,
+          amount: 100.0,
           method: 'ebs',
           status: 'completed',
           balanceBefore: 150.75,
@@ -129,7 +133,7 @@ export class PaymentsController {
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Invalid top-up amount or payment method',
   })
   async topUpWallet(@Request() req, @Body() topUpDto: TopUpWalletDto) {
@@ -137,12 +141,13 @@ export class PaymentsController {
   }
 
   @Get('transactions')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get user transaction history',
-    description: 'Get paginated list of all wallet transactions for the authenticated user.',
+    description:
+      'Get paginated list of all wallet transactions for the authenticated user.',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Transactions retrieved successfully',
     schema: {
       example: {
@@ -151,7 +156,7 @@ export class PaymentsController {
           {
             id: 'uuid-string',
             type: 'trip_payment',
-            amount: -27.00,
+            amount: -27.0,
             balanceBefore: 177.75,
             balanceAfter: 150.75,
             status: 'completed',
@@ -163,7 +168,7 @@ export class PaymentsController {
           {
             id: 'uuid-string',
             type: 'topup',
-            amount: 100.00,
+            amount: 100.0,
             balanceBefore: 77.75,
             balanceAfter: 177.75,
             status: 'completed',
@@ -184,19 +189,20 @@ export class PaymentsController {
   })
   async getTransactions(@Request() req, @Query() paginationDto: PaginationDto) {
     return this.paymentsService.getTransactions(
-      req.user.sub, 
-      paginationDto.page, 
+      req.user.sub,
+      paginationDto.page,
       paginationDto.limit,
     );
   }
 
   @Get('history')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get payment history',
-    description: 'Get paginated list of trip payments for the authenticated user.',
+    description:
+      'Get paginated list of trip payments for the authenticated user.',
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Payment history retrieved successfully',
     schema: {
       example: {
@@ -205,7 +211,7 @@ export class PaymentsController {
           {
             id: 'uuid-string',
             tripId: 'uuid-string',
-            amount: 27.00,
+            amount: 27.0,
             method: 'wallet',
             status: 'completed',
             platformCommission: 4.05,
@@ -228,46 +234,53 @@ export class PaymentsController {
       },
     },
   })
-  async getPaymentHistory(@Request() req, @Query() paginationDto: PaginationDto) {
+  async getPaymentHistory(
+    @Request() req,
+    @Query() paginationDto: PaginationDto,
+  ) {
     return this.paymentsService.getPaymentHistory(
-      req.user.sub, 
-      paginationDto.page, 
+      req.user.sub,
+      paginationDto.page,
       paginationDto.limit,
     );
   }
 
   @Post(':paymentId/refund')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Refund a payment (Admin only)',
-    description: 'Process a refund for a completed payment. This endpoint is typically used by admin users.',
+    description:
+      'Process a refund for a completed payment. This endpoint is typically used by admin users.',
   })
   @ApiParam({ name: 'paymentId', description: 'Payment ID to refund' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Payment refunded successfully',
     schema: {
       example: {
         message: 'Payment refunded successfully',
         refund: {
           paymentId: 'uuid-string',
-          amount: 27.00,
+          amount: 27.0,
           refundReason: 'Trip was cancelled by driver',
           refundedAt: '2024-01-24T13:00:00Z',
         },
       },
     },
   })
-  @ApiBadRequestResponse({ 
+  @ApiBadRequestResponse({
     description: 'Payment not eligible for refund',
   })
-  @ApiNotFoundResponse({ 
+  @ApiNotFoundResponse({
     description: 'Payment not found',
   })
   async refundPayment(
-    @Param('paymentId', ParseUUIDPipe) paymentId: string, 
+    @Param('paymentId', ParseUUIDPipe) paymentId: string,
     @Body() refundDto: RefundPaymentDto,
   ) {
-    return this.paymentsService.refundPayment(paymentId, refundDto.refundReason);
+    return this.paymentsService.refundPayment(
+      paymentId,
+      refundDto.refundReason,
+    );
   }
 }

@@ -9,8 +9,8 @@ export class AppController {
 
   @Get()
   @ApiOperation({ summary: 'Health check endpoint' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'API is running successfully',
     schema: {
       type: 'object',
@@ -18,9 +18,9 @@ export class AppController {
         message: { type: 'string' },
         timestamp: { type: 'string' },
         version: { type: 'string' },
-        status: { type: 'string' }
-      }
-    }
+        status: { type: 'string' },
+      },
+    },
   })
   getHealth() {
     return this.appService.getHealth();
@@ -28,12 +28,11 @@ export class AppController {
 
   @Get('status')
   @ApiOperation({ summary: 'Detailed system status' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'System status information',
   })
   getStatus() {
     return this.appService.getSystemStatus();
   }
 }
-

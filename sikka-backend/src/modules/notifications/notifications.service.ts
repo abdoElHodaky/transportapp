@@ -13,7 +13,7 @@ export class NotificationsService {
           title: 'Trip Completed',
           message: 'Your trip to Blue Nile Bridge has been completed',
           read: false,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         },
         {
           id: 'notif_2',
@@ -21,10 +21,10 @@ export class NotificationsService {
           title: 'Payment Received',
           message: 'You received 21.68 SDG for your last trip',
           read: true,
-          createdAt: new Date(Date.now() - 3600000).toISOString()
-        }
+          createdAt: new Date(Date.now() - 3600000).toISOString(),
+        },
       ],
-      unreadCount: 1
+      unreadCount: 1,
     };
   }
 
@@ -35,7 +35,7 @@ export class NotificationsService {
     // 3. Send SMS if critical
     // 4. Send email if configured
     // 5. Broadcast via WebSocket if user online
-    
+
     return {
       message: 'Notification sent successfully',
       notification: {
@@ -45,8 +45,8 @@ export class NotificationsService {
         title: notificationDto.title,
         message: notificationDto.message,
         channels: ['push', 'websocket'], // sent via these channels
-        sentAt: new Date().toISOString()
-      }
+        sentAt: new Date().toISOString(),
+      },
     };
   }
 
@@ -57,8 +57,8 @@ export class NotificationsService {
       notification: {
         id: notificationId,
         read: true,
-        readAt: new Date().toISOString()
-      }
+        readAt: new Date().toISOString(),
+      },
     };
   }
 
@@ -67,7 +67,7 @@ export class NotificationsService {
     // 1. Store device token for push notifications
     // 2. Associate with user account
     // 3. Update existing device if already registered
-    
+
     return {
       message: 'Device registered successfully',
       device: {
@@ -75,9 +75,8 @@ export class NotificationsService {
         userId: deviceDto.userId,
         token: deviceDto.token,
         platform: deviceDto.platform, // 'ios', 'android', 'web'
-        registeredAt: new Date().toISOString()
-      }
+        registeredAt: new Date().toISOString(),
+      },
     };
   }
 }
-

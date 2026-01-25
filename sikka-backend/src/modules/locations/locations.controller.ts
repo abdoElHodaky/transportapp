@@ -37,4 +37,3 @@ export class LocationsController {
     return this.locationsService.reverseGeocode(coords);
   }
 }
-

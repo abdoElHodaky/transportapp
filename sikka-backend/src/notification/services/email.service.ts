@@ -24,7 +24,7 @@ export class EmailService {
 
     switch (provider) {
       case 'smtp':
-        this.transporter = nodemailer.createTransporter({
+        this.transporter = nodemailer.createTransport({
           host: process.env.EMAIL_HOST,
           port: parseInt(process.env.EMAIL_PORT) || 587,
           secure: process.env.EMAIL_SECURE === 'true',
@@ -36,7 +36,7 @@ export class EmailService {
         break;
       case 'sendgrid':
         // SendGrid configuration
-        this.transporter = nodemailer.createTransporter({
+        this.transporter = nodemailer.createTransport({
           service: 'SendGrid',
           auth: {
             user: 'apikey',
@@ -46,7 +46,7 @@ export class EmailService {
         break;
       default:
         this.logger.warn('No email provider configured, using console output');
-        this.transporter = nodemailer.createTransporter({
+        this.transporter = nodemailer.createTransport({
           streamTransport: true,
           newline: 'unix',
           buffer: true,
@@ -209,4 +209,3 @@ export class EmailService {
     }
   }
 }
-
