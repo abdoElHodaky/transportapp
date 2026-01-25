@@ -27,6 +27,7 @@ The Sikka Transportation Platform uses **Socket.IO** for real-time bidirectional
 ### **🏗️ Architecture Overview**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     %% Client Applications
     PA[📱 Passenger App] --> WS[🌐 WebSocket Gateway]
@@ -71,6 +72,7 @@ graph TB
 ### **🤝 Connection Lifecycle**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant C as 📱 Client
     participant WS as 🌐 WebSocket Gateway
@@ -162,6 +164,7 @@ socket.emit('leave_room', {
 ### **🎯 Trip Request Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as 📱 Passenger
     participant WS as 🌐 WebSocket
@@ -361,6 +364,7 @@ socket.on('trip_completed', (data) => {
 ### **🗺️ Real-time Location Tracking**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant D as 🚗 Driver App
     participant WS as 🌐 WebSocket
@@ -466,6 +470,7 @@ socket.on('nearby_drivers', (data) => {
 ### **💰 Payment Processing Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as 📱 Passenger
     participant WS as 🌐 WebSocket

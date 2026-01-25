@@ -53,6 +53,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
 ### **Complete Database Schema**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 erDiagram
     USER {
         uuid id PK

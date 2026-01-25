@@ -37,6 +37,7 @@ The passenger journey in the Sikka Transportation Platform is designed for **sim
 ### **🎯 First-Time User Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[📱 Download Sikka App] --> B{🌍 Language Selection}
     B --> C[📞 Phone Number Entry]
@@ -60,6 +61,7 @@ flowchart TD
 
 #### **📞 Phone Number Verification**
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant U as 👤 User
     participant APP as 📱 Sikka App
@@ -102,6 +104,7 @@ interface PassengerProfile {
 ### **🎓 Onboarding Tutorial**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
     A[🎯 Welcome] --> B[🚗 How to Book]
     B --> C[📍 Track Your Ride]
@@ -118,6 +121,7 @@ graph LR
 ### **🎯 Main Booking Journey**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[🏠 Home Screen] --> B[📍 Set Pickup Location]
     B --> C{🗺️ Location Method}
@@ -152,6 +156,7 @@ flowchart TD
 ### **🚗 Vehicle Selection**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[🚗 Vehicle Types] --> B[🚙 Standard<br/>SDG 15-25]
     A --> C[🚗 Premium<br/>SDG 25-40]
@@ -208,6 +213,7 @@ const calculateFare = (distance: number, duration: number, vehicleType: string) 
 ### **💳 Payment Method Selection**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[💳 Payment Options] --> B[💰 Sikka Wallet<br/>Balance: SDG 125.50]
     A --> C[💵 Cash Payment<br/>Pay Driver Directly]
@@ -233,6 +239,7 @@ graph TB
 ### **🔍 Driver Matching Process**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as 📱 Passenger
     participant API as 🔌 API Server
@@ -270,6 +277,7 @@ sequenceDiagram
 ### **📱 Waiting Screen Experience**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 stateDiagram-v2
     [*] --> Searching
     Searching --> DriverFound : Driver accepts
@@ -324,6 +332,7 @@ interface WaitingScreenData {
 ### **🚗 Trip Progression**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[🚗 Driver Arrived] --> B[📱 Passenger Notified]
     B --> C[🚶 Passenger Enters Vehicle]
@@ -346,6 +355,7 @@ flowchart TD
 ### **📱 In-Trip Interface**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[📱 Trip Screen] --> B[🗺️ Live Map View]
     A --> C[👤 Driver Info Panel]
@@ -375,6 +385,7 @@ graph TB
 ### **🚨 Safety Features**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
     A[🛡️ Safety Features] --> B[🚨 Emergency Button]
     A --> C[📍 Live Location Sharing]
@@ -398,6 +409,7 @@ graph LR
 ### **💰 Payment Processing Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as 📱 Passenger
     participant APP as 📱 App
@@ -489,6 +501,7 @@ interface TripReceipt {
 ### **📊 Rating System Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[💳 Payment Completed] --> B[⭐ Rating Screen]
     B --> C[🌟 Overall Rating (1-5)]
@@ -507,6 +520,7 @@ flowchart TD
 ### **📊 Rating Categories**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[⭐ Rating Categories] --> B[🚗 Vehicle Condition<br/>Cleanliness, Comfort]
     A --> C[🚦 Driving Quality<br/>Safety, Route Knowledge]
@@ -549,6 +563,7 @@ interface FeedbackTags {
 ### **❌ Cancellation Scenarios**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[🚗 Active Trip] --> B{❌ Cancellation Request}
     B -->|Passenger| C[👤 Passenger Cancellation]
@@ -587,6 +602,7 @@ flowchart TD
 ### **🚫 No Driver Available**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[🔍 Searching for Driver] --> B{⏰ 2 Minutes Elapsed}
     B -->|No Response| C[📡 Expand Search Radius]
@@ -611,6 +627,7 @@ flowchart TD
 ### **⚠️ Emergency Situations**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[🚨 Emergency Button Pressed] --> B[📱 Emergency Alert Screen]
     B --> C[🚓 Contact Police]
@@ -651,6 +668,7 @@ flowchart TD
 ### **📱 Accessibility Features**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[♿ Accessibility] --> B[🔤 Large Text Support]
     A --> C[🎤 Voice Commands]
@@ -689,6 +707,7 @@ interface LocalizationSupport {
 ### **📊 User Satisfaction Tracking**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[📊 Satisfaction Metrics] --> B[⭐ Trip Ratings]
     A --> C[📱 App Store Reviews]

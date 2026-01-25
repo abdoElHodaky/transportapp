@@ -26,6 +26,7 @@ The Sikka Transportation Platform follows a **microservices-inspired modular arc
 ## 🏗️ High-Level System Design
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     %% External Clients
     PA[📱 Passenger App<br/>React Native/Flutter] --> LB[🔄 Load Balancer<br/>Nginx]
@@ -145,6 +146,7 @@ graph TB
 ### **🚗 Trip Booking Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as 📱 Passenger App
     participant AG as 🚪 API Gateway
@@ -181,6 +183,7 @@ sequenceDiagram
 ### **💳 Payment Processing Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant U as 👤 User
     participant PS as 💳 Payment Service
@@ -214,6 +217,7 @@ sequenceDiagram
 ### **🔄 Load Balancing & Scaling**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     %% Internet
     INT[🌐 Internet] --> CF[☁️ CloudFlare<br/>CDN + DDoS Protection]
@@ -264,6 +268,7 @@ graph TB
 ### **🛡️ Multi-Layer Security**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     %% External Layer
     EXT[🌐 External Requests] --> WAF[🛡️ Web Application Firewall<br/>Rate Limiting + DDoS Protection]
@@ -295,6 +300,7 @@ graph TB
 ### **🔐 Authentication Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant U as 👤 User
     participant APP as 📱 Mobile App
@@ -344,6 +350,7 @@ sequenceDiagram
 ### **📊 Performance Optimization**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
     %% Request Flow
     REQ[📱 Client Request] --> CACHE{⚡ Redis Cache?}

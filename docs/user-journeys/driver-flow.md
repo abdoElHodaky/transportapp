@@ -37,6 +37,7 @@ The driver journey in the Sikka Transportation Platform is designed for **maximu
 ### **🎯 Driver Onboarding Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[📱 Download Sikka Driver] --> B[📞 Phone Verification]
     B --> C[👤 Personal Information]
@@ -63,6 +64,7 @@ flowchart TD
 ### **📋 Required Documentation**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[📄 Driver Documents] --> B[🆔 National ID]
     A --> C[🚗 Driving License]
@@ -90,6 +92,7 @@ graph TB
 ### **🎓 Driver Training Program**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant D as 🚗 Driver
     participant APP as 📱 Training App
@@ -152,6 +155,7 @@ interface VehicleRequirements {
 ### **📊 Vehicle Categories**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[🚗 Vehicle Categories] --> B[🚙 Standard<br/>Sedan, Hatchback]
     A --> C[🚗 Premium<br/>Luxury Sedan, SUV]
@@ -175,6 +179,7 @@ graph TB
 ### **🔄 Daily Operations Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[📱 Open Driver App] --> B[🔐 Biometric Login]
     B --> C[📍 Location Permission]
@@ -205,6 +210,7 @@ flowchart TD
 ### **📍 Location & Availability Management**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[📍 Driver Location] --> B[🗺️ GPS Tracking]
     A --> C[🏠 Preferred Areas]
@@ -273,6 +279,7 @@ interface DriverPreferences {
 ### **📱 Trip Request Interface**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as 📱 Passenger
     participant SYS as 🔌 System
@@ -347,6 +354,7 @@ interface TripRequest {
 ### **⚡ Quick Decision Interface**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[🔔 Trip Request] --> B[📊 Trip Details Card]
     B --> C[💰 Earnings: SDG 21.25]
@@ -369,6 +377,7 @@ graph TB
 ### **🎯 Acceptance Strategy**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[🎯 Trip Evaluation] --> B{💰 Earnings Check}
     B -->|Good| C{📍 Distance Check}
@@ -395,6 +404,7 @@ graph TB
 ### **🗺️ Navigation & Route Management**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[✅ Trip Accepted] --> B[📍 Navigate to Pickup]
     B --> C[🚗 En Route to Passenger]
@@ -416,6 +426,7 @@ flowchart TD
 ### **📱 Driver Interface During Trip**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[📱 Active Trip Screen] --> B[🗺️ Navigation Map]
     A --> C[📊 Trip Information]
@@ -474,6 +485,7 @@ interface QuickMessages {
 ### **💵 Earnings Structure**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[💰 Trip Fare: SDG 25.00] --> B[📊 Commission Split]
     B --> C[🚗 Driver Share: SDG 21.25<br/>85% of fare]
@@ -531,6 +543,7 @@ interface DailyEarnings {
 ### **🎯 Earnings Optimization**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[📈 Maximize Earnings] --> B[⏰ Peak Hours]
     A --> C[📍 High-Demand Areas]
@@ -563,6 +576,7 @@ graph TB
 ### **💳 Payment & Withdrawal**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant D as 🚗 Driver
     participant W as 💰 Wallet
@@ -596,6 +610,7 @@ sequenceDiagram
 ### **📈 Driver Dashboard**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[📊 Driver Dashboard] --> B[💰 Earnings Overview]
     A --> C[📈 Performance Metrics]
@@ -660,6 +675,7 @@ interface DriverRating {
 ### **🏆 Achievement System**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     A[🏆 Driver Achievements] --> B[🚗 Trip Milestones]
     A --> C[⭐ Rating Excellence]
@@ -694,6 +710,7 @@ graph TB
 ### **❌ Trip Cancellation Handling**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[🚗 Active Trip] --> B{❌ Cancellation Event}
     B -->|Passenger Cancels| C[👤 Passenger Cancellation]
@@ -726,6 +743,7 @@ flowchart TD
 ### **🚫 No-Show Scenarios**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[📍 Arrived at Pickup] --> B[📞 Contact Passenger]
     B --> C{📱 Passenger Response}
@@ -756,6 +774,7 @@ flowchart TD
 ### **⚠️ Vehicle Breakdown**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[🚗 Vehicle Issue] --> B[🛑 Safe Stop]
     B --> C[🚨 Emergency Hazards]
@@ -790,6 +809,7 @@ flowchart TD
 ### **🚨 Safety Incidents**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[🚨 Safety Concern] --> B[🛑 Immediate Action]
     B --> C{🚨 Severity Level}

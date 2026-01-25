@@ -18,6 +18,7 @@ This document outlines the key business processes and user journeys in the Sikka
 ### **Complete Trip Journey**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[Passenger Opens App] --> B[Enter Destination]
     B --> C[Select Trip Type]
@@ -52,6 +53,7 @@ flowchart TD
 
 #### **1. Trip Request Phase**
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 stateDiagram-v2
     [*] --> Requested
     Requested --> Searching: Find drivers
@@ -63,6 +65,7 @@ stateDiagram-v2
 
 #### **2. Trip Execution Phase**
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 stateDiagram-v2
     DriverEnRoute --> DriverArrived: Driver at pickup
     DriverArrived --> InProgress: Passenger enters
@@ -76,6 +79,7 @@ stateDiagram-v2
 ### **Trip Cancellation Scenarios**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[Trip Active] --> B{Who Cancels?}
     
@@ -112,6 +116,7 @@ flowchart TD
 ### **Passenger Registration Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as Passenger
     participant A as Sikka API
@@ -138,6 +143,7 @@ sequenceDiagram
 ### **Driver Registration & Verification**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[Driver Applies] --> B[Submit Personal Info]
     B --> C[Upload Documents]
@@ -164,6 +170,7 @@ flowchart TD
 ### **Document Verification Process**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart LR
     A[Driver Uploads] --> B[Driving License]
     A --> C[Vehicle Registration]
@@ -196,6 +203,7 @@ flowchart LR
 ### **Multi-Gateway Payment Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A["Trip Completed"] --> B["Calculate Fare"]
     B --> C["Select Payment Method"]
@@ -243,6 +251,7 @@ flowchart TD
 ### **Wallet Management System**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 stateDiagram-v2
     [*] --> Active
     Active --> Suspended: Admin action
@@ -262,6 +271,7 @@ stateDiagram-v2
 ### **Refund Processing**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[Refund Request] --> B{Refund Type}
     
@@ -307,6 +317,7 @@ flowchart TD
 ### **Post-Trip Rating Flow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant P as Passenger
     participant D as Driver
@@ -335,6 +346,7 @@ sequenceDiagram
 ### **Rating Impact System**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[Rating Submitted] --> B[Update User Average]
     B --> C{Rating Below 3.0?}
@@ -367,6 +379,7 @@ flowchart TD
 ### **User Management Workflow**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[Admin Dashboard] --> B[User Management]
     B --> C{Action Type}
@@ -400,7 +413,8 @@ flowchart TD
 ### **Financial Management**
 
 ```mermaid
-  flowchart TD
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
+flowchart TD
     %% Node Definitions
     A["Financial Dashboard"] --> B{"Report Type"}
     
@@ -470,13 +484,12 @@ flowchart TD
     style CommissionFlow fill:#0d1117,stroke:#bc8cff,stroke-width:1px,stroke-dasharray: 2
     style RefundFlow fill:#0d1117,stroke:#ff7b72,stroke-width:1px,stroke-dasharray: 2
     style EarningsFlow fill:#0d1117,stroke:#388bfd,stroke-width:1px,stroke-dasharray: 2
-    
-    
 ```
 
 ### **System Monitoring**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart LR
     A[System Health] --> B[API Performance]
     A --> C[Database Status]
@@ -525,6 +538,7 @@ flowchart LR
 ### **Emergency Response System**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 flowchart TD
     A[Emergency Triggered] --> B{Emergency Type}
     
@@ -571,6 +585,7 @@ flowchart TD
 ### **Safety Verification Process**
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 sequenceDiagram
     participant S as System
     participant D as Driver

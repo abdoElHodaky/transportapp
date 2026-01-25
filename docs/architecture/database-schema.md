@@ -32,6 +32,7 @@ The Sikka Transportation Platform uses **PostgreSQL** as the primary database wi
 ## 📊 Entity Relationship Diagram
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 erDiagram
     %% Core Entities
     USER {
@@ -431,6 +432,7 @@ export class Transaction {
 
 ### **🔄 One-to-One Relationships**
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
     USER[👤 User] ---|1:1| WALLET[💰 Wallet]
     USER ---|1:1| DRIVER[🚗 Driver Profile]
@@ -441,6 +443,7 @@ graph LR
 
 ### **🔄 One-to-Many Relationships**
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph TB
     USER[👤 User] ---|1:N| TRIP_P[🚗 Trips as Passenger]
     USER ---|1:N| TRIP_D[🚗 Trips as Driver]
@@ -458,6 +461,7 @@ graph TB
 
 ### **🔄 Many-to-Many Relationships**
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 graph LR
     USER1[👤 User From] ---|M:N| TRANS[💳 Transfer Transaction] ---|M:N| USER2[👤 User To]
     

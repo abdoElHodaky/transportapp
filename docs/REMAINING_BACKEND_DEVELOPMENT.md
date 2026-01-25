@@ -167,6 +167,7 @@ GET    /admin/export/:type       # Data export
 
 ### **Phase 1: Foundation (Week 1-2)**
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#ff6b6b','lineColor':'#ffa726','sectionBkgColor':'#ff6b6b','altSectionBkgColor':'#fff','gridColor':'#fff','secondaryColor':'#006100','tertiaryColor':'#fff'}}}%%
 gantt
     title Backend Development Timeline
     dateFormat  YYYY-MM-DD
