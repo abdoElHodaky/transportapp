@@ -452,7 +452,7 @@ export class PaymentsService {
       walletId: driverWallet.id,
       userId: driverWallet.userId,
       tripId,
-      type: TransactionType.EARNING,
+      type: TransactionType.TRIP_EARNING,
       amount,
       balanceBefore: driverWallet.balance,
       balanceAfter: newBalance,
@@ -526,6 +526,26 @@ export class PaymentsService {
   private async processCyberPayRefund(payment: Payment, refundAmount: number) {
     // TODO: Implement actual CyberPay refund integration
     return { success: true, transactionId: `cyberpay_refund_${Date.now()}` };
+  }
+
+  async processPayment(tripId: string, paymentDto: any) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // Get trip with relations
+      const trip = await queryRunner.manager.findOne(Trip, {
+        where: { id: tripId },
+        relations: ['passenger', 'passenger.wallet', 'driver', 'driver.wallet'],
+      });
+
+      if (!trip) {
+        throw new NotFoundException('Trip not found');
+      }
+
+      // Check if payment already exists
+      const existingPayment = await queryRunner.manager.findOne(Payment, {
         where: { tripId },
       });
 
