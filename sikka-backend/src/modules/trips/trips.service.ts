@@ -371,7 +371,7 @@ export class TripsService {
     const existingRating = await this.ratingRepository.findOne({
       where: {
         tripId,
-        ratingUserId: userId,
+        ratedById: userId,
         ratedUserId,
       },
     });
@@ -383,13 +383,13 @@ export class TripsService {
     // Create rating
     const rating = this.ratingRepository.create({
       tripId,
-      ratingUserId: userId,
+      ratedById: userId,
       ratedUserId,
       rating: ratingDto.rating,
       comment: ratingDto.comment,
     });
 
-    const savedRating = await this.ratingRepository.save(rating);
+    const savedRating = await this.ratingRepository.save(rating) as Rating;
 
     // Update user's average rating
     await this.updateUserRating(ratedUserId);

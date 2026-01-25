@@ -406,7 +406,7 @@ export class LocationService {
       );
 
       const drivers = [];
-      for (const [driverId, distance] of nearbyDriverIds) {
+      for (const [driverId, distance] of nearbyDriverIds as [string, string][]) {
         const cachedData = await this.redis.get(`driver:location:${driverId}`);
         if (cachedData) {
           const driverLocation = JSON.parse(cachedData);

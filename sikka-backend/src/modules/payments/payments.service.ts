@@ -618,7 +618,7 @@ export class PaymentsService {
           balanceAfter: savedTransaction.balanceAfter,
           description: savedTransaction.description,
           processedAt: savedTransaction.createdAt,
-          gatewayTransactionId: savedTransaction.gatewayTransactionId,
+          gatewayTransactionId: savedTransaction.externalTransactionId,
         },
       };
 
@@ -658,7 +658,7 @@ export class PaymentsService {
         status: transaction.status,
         description: transaction.description,
         reference: transaction.reference,
-        gatewayTransactionId: transaction.gatewayTransactionId,
+        gatewayTransactionId: transaction.externalTransactionId,
         createdAt: transaction.createdAt,
       })),
       pagination: {

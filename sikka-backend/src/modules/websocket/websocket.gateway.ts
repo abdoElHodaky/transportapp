@@ -14,7 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../entities/user.entity';
-import { Trip } from '../../entities/trip.entity';
+import { Trip, TripStatus } from '../../entities/trip.entity';
 import Redis from 'ioredis';
 
 interface AuthenticatedSocket extends Socket {
@@ -144,12 +144,12 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
       // Join active trip room if user has an active trip
       const activeTrip = await this.tripRepository.findOne({
         where: [
-          { passengerId: user.id, status: 'in_progress' },
-          { passengerId: user.id, status: 'accepted' },
-          { passengerId: user.id, status: 'driver_arrived' },
-          { driverId: user.id, status: 'in_progress' },
-          { driverId: user.id, status: 'accepted' },
-          { driverId: user.id, status: 'driver_arrived' },
+          { passengerId: user.id, status: TripStatus.IN_PROGRESS },
+          { passengerId: user.id, status: TripStatus.ACCEPTED },
+          { passengerId: user.id, status: TripStatus.DRIVER_ARRIVED },
+          { driverId: user.id, status: TripStatus.IN_PROGRESS },
+          { driverId: user.id, status: TripStatus.ACCEPTED },
+          { driverId: user.id, status: TripStatus.DRIVER_ARRIVED },
         ],
       });
 
@@ -275,7 +275,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
       if (client.userRole === 'driver') {
         // Find active trip for this driver
         const activeTrip = await this.tripRepository.findOne({
-          where: { driverId: client.userId, status: 'in_progress' },
+          where: { driverId: client.userId, status: TripStatus.IN_PROGRESS },
         });
 
         if (activeTrip) {
@@ -363,7 +363,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
           // Driver arrived at pickup location
           this.server.to(`user:${trip.passengerId}`).emit('driver:arrived', {
             tripId: data.tripId,
-            driverName: `${trip.driver.firstName} ${trip.driver.lastName}`,
+            driverName: trip.driver.name || trip.driver.firstName,
             vehicleInfo: `${trip.driver.vehicleModel} (${trip.driver.vehiclePlateNumber})`,
             location: data.location,
             timestamp: Date.now(),
@@ -492,7 +492,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     try {
       await this.userRepository.update(client.userId, {
         isAvailable: data.available,
-        lastLocationUpdate: new Date(),
+        lastSeen: new Date(),
       });
 
       if (data.available) {
