@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User, UserRole, UserStatus } from '../../entities/user.entity';
 import { Wallet } from '../../entities/wallet.entity';
+import { LoginDto } from '../../dto/auth/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -87,55 +88,7 @@ export class AuthService {
     };
   }
 
-  async verifyOTP(phone: string, otpCode: string) {
-    const user = await this.userRepository.findOne({
-      where: { phone },
-    });
 
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    if (user.otpAttempts >= 3) {
-      throw new BadRequestException('Too many OTP attempts. Please request a new OTP.');
-    }
-
-    if (!user.otpCode || user.otpCode !== otpCode) {
-      await this.userRepository.update(user.id, {
-        otpAttempts: user.otpAttempts + 1,
-      });
-      throw new UnauthorizedException('Invalid OTP code');
-    }
-
-    if (user.otpExpiresAt < new Date()) {
-      throw new UnauthorizedException('OTP code has expired');
-    }
-
-    // Update user status
-    await this.userRepository.update(user.id, {
-      phoneVerified: true,
-      status: UserStatus.ACTIVE,
-      otpCode: null,
-      otpExpiresAt: null,
-      otpAttempts: 0,
-    });
-
-    // Generate JWT tokens
-    const tokens = await this.generateTokens(user);
-
-    return {
-      message: 'Phone verification successful',
-      user: {
-        id: user.id,
-        phone: user.phone,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        status: UserStatus.ACTIVE,
-      },
-      ...tokens,
-    };
-  }
 
   async login(phone: string, password?: string) {
     const user = await this.userRepository.findOne({
@@ -300,33 +253,8 @@ export class AuthService {
     
     return true;
   }
-      role: userData.role || UserRole.PASSENGER,
-      status: UserStatus.PENDING_VERIFICATION,
-      otpCode,
-      otpExpiresAt,
-    });
 
-    const savedUser = await this.userRepository.save(user);
-
-    // Create wallet for the user
-    const wallet = this.walletRepository.create({
-      user: savedUser,
-      balance: 0,
-      currency: 'SDG',
-    });
-    await this.walletRepository.save(wallet);
-
-    // TODO: Send OTP via SMS
-    console.log(`OTP for ${userData.phone}: ${otpCode}`);
-
-    return {
-      message: 'User registered successfully. Please verify your phone number.',
-      userId: savedUser.id,
-      phone: savedUser.phone,
-    };
-  }
-
-  async login(credentials: { phone: string; password?: string }) {
+  async login(credentials: LoginDto) {
     const user = await this.userRepository.findOne({
       where: { phone: credentials.phone },
       relations: ['wallet'],
