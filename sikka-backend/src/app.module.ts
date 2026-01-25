@@ -16,6 +16,7 @@ import { TripsModule } from './modules/trips/trips.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { LocationModule } from './modules/location/location.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { WebSocketModule } from './modules/websocket/websocket.module';
 
 // Controllers
 import { AppController } from './app.controller';
@@ -52,6 +53,7 @@ import { AppService } from './app.service';
     PaymentsModule,
     LocationModule,
     NotificationsModule,
+    WebSocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
