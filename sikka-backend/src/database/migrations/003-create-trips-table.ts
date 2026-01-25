@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
 
 export class CreateTripsTable1640000000003 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -238,7 +238,7 @@ export class CreateTripsTable1640000000003 implements MigrationInterface {
     // Create foreign key constraints
     await queryRunner.createForeignKey(
       'trips',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['passengerId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -249,7 +249,7 @@ export class CreateTripsTable1640000000003 implements MigrationInterface {
 
     await queryRunner.createForeignKey(
       'trips',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['driverId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -260,7 +260,7 @@ export class CreateTripsTable1640000000003 implements MigrationInterface {
 
     await queryRunner.createForeignKey(
       'trips',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['cancelledBy'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -272,42 +272,66 @@ export class CreateTripsTable1640000000003 implements MigrationInterface {
     // Create indexes
     await queryRunner.createIndex(
       'trips',
-      new Index('idx_trips_passenger_id', ['passengerId']),
+      new TableIndex({
+        name: 'idx_trips_passenger_id',
+        columnNames: ['passengerId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'trips',
-      new Index('idx_trips_driver_id', ['driverId']),
+      new TableIndex({
+        name: 'idx_trips_driver_id',
+        columnNames: ['driverId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'trips',
-      new Index('idx_trips_status', ['status']),
+      new TableIndex({
+        name: 'idx_trips_status',
+        columnNames: ['status'],
+      }),
     );
 
     await queryRunner.createIndex(
       'trips',
-      new Index('idx_trips_type', ['type']),
+      new TableIndex({
+        name: 'idx_trips_type',
+        columnNames: ['type'],
+      }),
     );
 
     await queryRunner.createIndex(
       'trips',
-      new Index('idx_trips_pickup_location', ['pickupLatitude', 'pickupLongitude']),
+      new TableIndex({
+        name: 'idx_trips_pickup_location',
+        columnNames: ['pickupLatitude', 'pickupLongitude'],
+      }),
     );
 
     await queryRunner.createIndex(
       'trips',
-      new Index('idx_trips_dropoff_location', ['dropoffLatitude', 'dropoffLongitude']),
+      new TableIndex({
+        name: 'idx_trips_dropoff_location',
+        columnNames: ['dropoffLatitude', 'dropoffLongitude'],
+      }),
     );
 
     await queryRunner.createIndex(
       'trips',
-      new Index('idx_trips_created_at', ['createdAt']),
+      new TableIndex({
+        name: 'idx_trips_created_at',
+        columnNames: ['createdAt'],
+      }),
     );
 
     await queryRunner.createIndex(
       'trips',
-      new Index('idx_trips_status_created', ['status', 'createdAt']),
+      new TableIndex({
+        name: 'idx_trips_status_created',
+        columnNames: ['status', 'createdAt'],
+      }),
     );
   }
 
@@ -315,4 +339,3 @@ export class CreateTripsTable1640000000003 implements MigrationInterface {
     await queryRunner.dropTable('trips');
   }
 }
-

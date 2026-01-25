@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
 
 export class CreatePaymentsTable1640000000004 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -168,7 +168,7 @@ export class CreatePaymentsTable1640000000004 implements MigrationInterface {
     // Create foreign key constraints
     await queryRunner.createForeignKey(
       'payments',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['tripId'],
         referencedTableName: 'trips',
         referencedColumnNames: ['id'],
@@ -179,7 +179,7 @@ export class CreatePaymentsTable1640000000004 implements MigrationInterface {
 
     await queryRunner.createForeignKey(
       'payments',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['payerId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -190,7 +190,7 @@ export class CreatePaymentsTable1640000000004 implements MigrationInterface {
 
     await queryRunner.createForeignKey(
       'payments',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['payeeId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -202,42 +202,66 @@ export class CreatePaymentsTable1640000000004 implements MigrationInterface {
     // Create indexes
     await queryRunner.createIndex(
       'payments',
-      new Index('idx_payments_trip_id', ['tripId']),
+      new TableIndex({
+        name: 'idx_payments_trip_id',
+        columnNames: ['tripId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'payments',
-      new Index('idx_payments_payer_id', ['payerId']),
+      new TableIndex({
+        name: 'idx_payments_payer_id',
+        columnNames: ['payerId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'payments',
-      new Index('idx_payments_payee_id', ['payeeId']),
+      new TableIndex({
+        name: 'idx_payments_payee_id',
+        columnNames: ['payeeId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'payments',
-      new Index('idx_payments_method', ['method']),
+      new TableIndex({
+        name: 'idx_payments_method',
+        columnNames: ['method'],
+      }),
     );
 
     await queryRunner.createIndex(
       'payments',
-      new Index('idx_payments_status', ['status']),
+      new TableIndex({
+        name: 'idx_payments_status',
+        columnNames: ['status'],
+      }),
     );
 
     await queryRunner.createIndex(
       'payments',
-      new Index('idx_payments_gateway_transaction', ['gatewayTransactionId']),
+      new TableIndex({
+        name: 'idx_payments_gateway_transaction',
+        columnNames: ['gatewayTransactionId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'payments',
-      new Index('idx_payments_created_at', ['createdAt']),
+      new TableIndex({
+        name: 'idx_payments_created_at',
+        columnNames: ['createdAt'],
+      }),
     );
 
     await queryRunner.createIndex(
       'payments',
-      new Index('idx_payments_status_created', ['status', 'createdAt']),
+      new TableIndex({
+        name: 'idx_payments_status_created',
+        columnNames: ['status', 'createdAt'],
+      }),
     );
   }
 
@@ -245,4 +269,3 @@ export class CreatePaymentsTable1640000000004 implements MigrationInterface {
     await queryRunner.dropTable('payments');
   }
 }
-

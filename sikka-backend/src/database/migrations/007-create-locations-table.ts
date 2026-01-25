@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
 
 export class CreateLocationsTable1640000000007 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -185,7 +185,7 @@ export class CreateLocationsTable1640000000007 implements MigrationInterface {
     // Create foreign key constraints
     await queryRunner.createForeignKey(
       'locations',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['userId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -196,7 +196,7 @@ export class CreateLocationsTable1640000000007 implements MigrationInterface {
 
     await queryRunner.createForeignKey(
       'locations',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['tripId'],
         referencedTableName: 'trips',
         referencedColumnNames: ['id'],
@@ -208,42 +208,66 @@ export class CreateLocationsTable1640000000007 implements MigrationInterface {
     // Create indexes
     await queryRunner.createIndex(
       'locations',
-      new Index('idx_locations_user_id', ['userId']),
+      new TableIndex({
+        name: 'idx_locations_user_id',
+        columnNames: ['userId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'locations',
-      new Index('idx_locations_trip_id', ['tripId']),
+      new TableIndex({
+        name: 'idx_locations_trip_id',
+        columnNames: ['tripId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'locations',
-      new Index('idx_locations_type', ['type']),
+      new TableIndex({
+        name: 'idx_locations_type',
+        columnNames: ['type'],
+      }),
     );
 
     await queryRunner.createIndex(
       'locations',
-      new Index('idx_locations_coordinates', ['latitude', 'longitude']),
+      new TableIndex({
+        name: 'idx_locations_coordinates',
+        columnNames: ['latitude', 'longitude'],
+      }),
     );
 
     await queryRunner.createIndex(
       'locations',
-      new Index('idx_locations_recorded_at', ['recordedAt']),
+      new TableIndex({
+        name: 'idx_locations_recorded_at',
+        columnNames: ['recordedAt'],
+      }),
     );
 
     await queryRunner.createIndex(
       'locations',
-      new Index('idx_locations_active', ['isActive']),
+      new TableIndex({
+        name: 'idx_locations_active',
+        columnNames: ['isActive'],
+      }),
     );
 
     await queryRunner.createIndex(
       'locations',
-      new Index('idx_locations_user_recorded', ['userId', 'recordedAt']),
+      new TableIndex({
+        name: 'idx_locations_user_recorded',
+        columnNames: ['userId', 'recordedAt'],
+      }),
     );
 
     await queryRunner.createIndex(
       'locations',
-      new Index('idx_locations_trip_route', ['tripId', 'routeIndex']),
+      new TableIndex({
+        name: 'idx_locations_trip_route',
+        columnNames: ['tripId', 'routeIndex'],
+      }),
     );
 
     // Geospatial index for location queries (if PostGIS is available)
@@ -259,4 +283,3 @@ export class CreateLocationsTable1640000000007 implements MigrationInterface {
     await queryRunner.dropTable('locations');
   }
 }
-

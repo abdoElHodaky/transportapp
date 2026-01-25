@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
 
 export class CreateRatingsTable1640000000006 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -147,7 +147,7 @@ export class CreateRatingsTable1640000000006 implements MigrationInterface {
     // Create foreign key constraints
     await queryRunner.createForeignKey(
       'ratings',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['tripId'],
         referencedTableName: 'trips',
         referencedColumnNames: ['id'],
@@ -158,7 +158,7 @@ export class CreateRatingsTable1640000000006 implements MigrationInterface {
 
     await queryRunner.createForeignKey(
       'ratings',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['ratingUserId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -169,7 +169,7 @@ export class CreateRatingsTable1640000000006 implements MigrationInterface {
 
     await queryRunner.createForeignKey(
       'ratings',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['ratedUserId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -181,43 +181,68 @@ export class CreateRatingsTable1640000000006 implements MigrationInterface {
     // Create indexes
     await queryRunner.createIndex(
       'ratings',
-      new Index('idx_ratings_trip_id', ['tripId']),
+      new TableIndex({
+        name: 'idx_ratings_trip_id',
+        columnNames: ['tripId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'ratings',
-      new Index('idx_ratings_rating_user_id', ['ratingUserId']),
+      new TableIndex({
+        name: 'idx_ratings_rating_user_id',
+        columnNames: ['ratingUserId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'ratings',
-      new Index('idx_ratings_rated_user_id', ['ratedUserId']),
+      new TableIndex({
+        name: 'idx_ratings_rated_user_id',
+        columnNames: ['ratedUserId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'ratings',
-      new Index('idx_ratings_rating', ['rating']),
+      new TableIndex({
+        name: 'idx_ratings_rating',
+        columnNames: ['rating'],
+      }),
     );
 
     await queryRunner.createIndex(
       'ratings',
-      new Index('idx_ratings_created_at', ['createdAt']),
+      new TableIndex({
+        name: 'idx_ratings_created_at',
+        columnNames: ['createdAt'],
+      }),
     );
 
     await queryRunner.createIndex(
       'ratings',
-      new Index('idx_ratings_public_verified', ['isPublic', 'isVerified']),
+      new TableIndex({
+        name: 'idx_ratings_public_verified',
+        columnNames: ['isPublic', 'isVerified'],
+      }),
     );
 
     await queryRunner.createIndex(
       'ratings',
-      new Index('idx_ratings_rated_user_rating', ['ratedUserId', 'rating']),
+      new TableIndex({
+        name: 'idx_ratings_rated_user_rating',
+        columnNames: ['ratedUserId', 'rating'],
+      }),
     );
 
     // Unique constraint to prevent duplicate ratings for the same trip
     await queryRunner.createIndex(
       'ratings',
-      new Index('idx_ratings_unique_trip_rating', ['tripId', 'ratingUserId'], { isUnique: true }),
+      new TableIndex({
+        name: 'idx_ratings_unique_trip_rating',
+        columnNames: ['tripId', 'ratingUserId'],
+        isUnique: true,
+      }),
     );
   }
 
@@ -225,4 +250,3 @@ export class CreateRatingsTable1640000000006 implements MigrationInterface {
     await queryRunner.dropTable('ratings');
   }
 }
-

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
 
 export class CreateWalletsTable1640000000002 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -154,7 +154,7 @@ export class CreateWalletsTable1640000000002 implements MigrationInterface {
     // Create foreign key constraint
     await queryRunner.createForeignKey(
       'wallets',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['userId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -166,12 +166,18 @@ export class CreateWalletsTable1640000000002 implements MigrationInterface {
     // Create indexes
     await queryRunner.createIndex(
       'wallets',
-      new Index('idx_wallets_user_id', ['userId']),
+      new TableIndex({
+        name: 'idx_wallets_user_id',
+        columnNames: ['userId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'wallets',
-      new Index('idx_wallets_status', ['status']),
+      new TableIndex({
+        name: 'idx_wallets_status',
+        columnNames: ['status'],
+      }),
     );
   }
 
@@ -179,4 +185,3 @@ export class CreateWalletsTable1640000000002 implements MigrationInterface {
     await queryRunner.dropTable('wallets');
   }
 }
-

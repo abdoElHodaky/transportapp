@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, Index, ForeignKey, TableIndex, TableForeignKey } from 'typeorm';
 
 export class CreateTransactionsTable1640000000005 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -158,7 +158,7 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
     // Create foreign key constraints
     await queryRunner.createForeignKey(
       'transactions',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['walletId'],
         referencedTableName: 'wallets',
         referencedColumnNames: ['id'],
@@ -169,7 +169,7 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
 
     await queryRunner.createForeignKey(
       'transactions',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['userId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -180,7 +180,7 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
 
     await queryRunner.createForeignKey(
       'transactions',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['tripId'],
         referencedTableName: 'trips',
         referencedColumnNames: ['id'],
@@ -191,7 +191,7 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
 
     await queryRunner.createForeignKey(
       'transactions',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['paymentId'],
         referencedTableName: 'payments',
         referencedColumnNames: ['id'],
@@ -202,7 +202,7 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
 
     await queryRunner.createForeignKey(
       'transactions',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['relatedUserId'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
@@ -213,7 +213,7 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
 
     await queryRunner.createForeignKey(
       'transactions',
-      new ForeignKey({
+      new TableForeignKey({
         columnNames: ['relatedWalletId'],
         referencedTableName: 'wallets',
         referencedColumnNames: ['id'],
@@ -225,57 +225,90 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
     // Create indexes
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_wallet_id', ['walletId']),
+      new TableIndex({
+        name: 'idx_transactions_wallet_id',
+        columnNames: ['walletId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_user_id', ['userId']),
+      new TableIndex({
+        name: 'idx_transactions_user_id',
+        columnNames: ['userId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_trip_id', ['tripId']),
+      new TableIndex({
+        name: 'idx_transactions_trip_id',
+        columnNames: ['tripId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_payment_id', ['paymentId']),
+      new TableIndex({
+        name: 'idx_transactions_payment_id',
+        columnNames: ['paymentId'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_type', ['type']),
+      new TableIndex({
+        name: 'idx_transactions_type',
+        columnNames: ['type'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_status', ['status']),
+      new TableIndex({
+        name: 'idx_transactions_status',
+        columnNames: ['status'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_reference', ['reference']),
+      new TableIndex({
+        name: 'idx_transactions_reference',
+        columnNames: ['reference'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_external_reference', ['externalReference']),
+      new TableIndex({
+        name: 'idx_transactions_external_reference',
+        columnNames: ['externalReference'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_created_at', ['createdAt']),
+      new TableIndex({
+        name: 'idx_transactions_created_at',
+        columnNames: ['createdAt'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_user_created', ['userId', 'createdAt']),
+      new TableIndex({
+        name: 'idx_transactions_user_created',
+        columnNames: ['userId', 'createdAt'],
+      }),
     );
 
     await queryRunner.createIndex(
       'transactions',
-      new Index('idx_transactions_wallet_created', ['walletId', 'createdAt']),
+      new TableIndex({
+        name: 'idx_transactions_wallet_created',
+        columnNames: ['walletId', 'createdAt'],
+      }),
     );
   }
 
@@ -283,4 +316,3 @@ export class CreateTransactionsTable1640000000005 implements MigrationInterface 
     await queryRunner.dropTable('transactions');
   }
 }
-
