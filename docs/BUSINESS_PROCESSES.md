@@ -401,28 +401,36 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Financial Dashboard] --> B{Report Type}
+    A["Financial Dashboard"] --> B{"Report Type"}
     
-    B -->|Revenue| C[Revenue Analysis]
-    B -->|Commissions| D[Commission Tracking]
-    B -->|Refunds| E[Refund Management]
-    B -->|Driver Earnings| F[Earnings Reports]
+    B -->|Revenue| C["Revenue Analysis"]
+    B -->|Commissions| D["Commission Tracking"]
+    B -->|Refunds| E["Refund Management"]
+    B -->|Driver Earnings| F["Earnings Reports"]
     
-    C --> G[Daily/Weekly/Monthly]
-    G --> H[Generate Charts]
-    H --> I[Export Data]
+    subgraph RevenueFlow["Revenue Analysis Flow"]
+        C --> G["Select Period: Daily/Weekly/Monthly"]
+        G --> H["Generate Charts & Visualizations"]
+        H --> I["Export Data"]
+    end
     
-    D --> J[Platform Commission (15%)]
-    J --> K[Driver Earnings (85%)]
-    K --> L[Payment Processing Fees]
+    subgraph CommissionFlow["Commission Tracking Flow"]
+        D --> J["Platform Commission (15%)"]
+        J --> K["Driver Earnings (85%)"]
+        K --> L["Apply Payment Processing Fees"]
+    end
     
-    E --> M[Pending Refunds]
-    M --> N[Process Refunds]
-    N --> O[Update Records]
+    subgraph RefundFlow["Refund Management Flow"]
+        E --> M["Review Pending Refunds"]
+        M --> N["Process Approved Refunds"]
+        N --> O["Update Financial Records"]
+    end
     
-    F --> P[Top Earners]
-    P --> Q[Performance Metrics]
-    Q --> R[Incentive Programs]
+    subgraph EarningsFlow["Earnings Reports Flow"]
+        F --> P["Identify Top Earners"]
+        P --> Q["Calculate Performance Metrics"]
+        Q --> R["Design Incentive Programs"]
+    end
 ```
 
 ### **System Monitoring**
