@@ -1051,7 +1051,7 @@ services:
     build: .
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://username:password@postgres:5432/sikka_dev
+      - DATABASE_URL=postgresql://[USERNAME]:[PASSWORD]@postgres:5432/sikka_dev
       - REDIS_URL=redis://redis:6379
     ports:
       - "3000:3000"
