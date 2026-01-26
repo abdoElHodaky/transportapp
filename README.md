@@ -162,6 +162,75 @@ Sikka is a **comprehensive transportation platform** designed specifically for t
 - k6 for developer-friendly testing
 - Grafana + Prometheus for real-time monitoring
 
+### **📈 Scaling Phases Visualization**
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#90EE90',
+    'primaryTextColor': '#2d5016',
+    'primaryBorderColor': '#228B22',
+    'lineColor': '#32CD32',
+    'secondaryColor': '#FFD700',
+    'tertiaryColor': '#FF8C00',
+    'background': '#ffffff',
+    'mainBkg': '#90EE90',
+    'secondBkg': '#FFD700',
+    'tertiaryBkg': '#FF8C00'
+  }
+}}%%
+flowchart LR
+    %% Phase 1: Launch
+    subgraph "🚀 Phase 1: Launch"
+        direction TB
+        P1_Users["👥 1,000-2,000 Users"]
+        P1_DB["🗄️ DB: 30 connections"]
+        P1_Redis["⚡ Redis: 1GB memory"]
+        P1_WS["💬 WebSocket: 5,000 connections"]
+        P1_Focus["🎯 Focus: Stability & Monitoring"]
+    end
+    
+    %% Phase 2: Growth
+    subgraph "📈 Phase 2: Growth"
+        direction TB
+        P2_Users["👥 3,000-5,000 Users"]
+        P2_DB["🗄️ DB: 75 connections + Read Replicas"]
+        P2_Redis["⚡ Redis: 4GB + Sentinel"]
+        P2_WS["💬 WebSocket: 8,000 connections"]
+        P2_Focus["🎯 Focus: Database Scaling"]
+    end
+    
+    %% Phase 3: Scale
+    subgraph "🔥 Phase 3: Scale"
+        direction TB
+        P3_Users["👥 10,000+ Users"]
+        P3_DB["🗄️ DB: 150 connections + Sharding"]
+        P3_Redis["⚡ Redis: 8GB + Clustering"]
+        P3_WS["💬 WebSocket: 15,000 + Load Balancing"]
+        P3_Focus["🎯 Focus: Horizontal Scaling"]
+    end
+    
+    %% Timeline arrows
+    P1_Users -.->|"2-3 months"| P2_Users
+    P2_Users -.->|"4-6 months"| P3_Users
+    
+    %% Capacity indicators
+    P1_Users -.->|"~1,700 concurrent trips"| P1_Focus
+    P2_Users -.->|"~3,500 concurrent trips"| P2_Focus  
+    P3_Users -.->|"~7,000+ concurrent trips"| P3_Focus
+
+    %% Enhanced Styling
+    classDef phase1 fill:#90EE90,stroke:#228B22,stroke-width:3px,color:#2d5016,font-weight:bold
+    classDef phase2 fill:#FFD700,stroke:#FFA500,stroke-width:3px,color:#8B4513,font-weight:bold
+    classDef phase3 fill:#FF8C00,stroke:#FF4500,stroke-width:3px,color:#8B0000,font-weight:bold
+    classDef timeline fill:#f0f8ff,stroke:#4682B4,stroke-width:2px,color:#4682B4,font-style:italic
+
+    class P1_Users,P1_DB,P1_Redis,P1_WS,P1_Focus phase1
+    class P2_Users,P2_DB,P2_Redis,P2_WS,P2_Focus phase2
+    class P3_Users,P3_DB,P3_Redis,P3_WS,P3_Focus phase3
+```
+
 ---
 
 ## 🏗️ System Architecture
@@ -170,58 +239,90 @@ Our platform is built on a **microservices architecture** with clear separation 
 
 ```mermaid
 %%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#58a6ff",
-    "primaryBorderColor": "#58a6ff",
-    "lineColor": "#58a6ff",
-    "secondaryColor": "#388bfd",
-    "tertiaryColor": "#79c0ff"
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#0066cc',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#004499',
+    'lineColor': '#0066cc',
+    'secondaryColor': '#00ccaa',
+    'tertiaryColor': '#e6f3ff',
+    'background': '#ffffff',
+    'mainBkg': '#0066cc',
+    'secondBkg': '#00ccaa',
+    'tertiaryBkg': '#e6f3ff'
   },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
+  'flowchart': {
+    'useMaxWidth': true,
+    'htmlLabels': true
   }
 }}%%
-graph TB
-    %% Client Applications
-    MA["📱 Mobile Apps<br/><small>Driver & Passenger</small>"] --> AG["🌐 API Gateway<br/><small>Load Balancer</small>"]
-    AD["💻 Admin Dashboard<br/><small>Management Portal</small>"] --> AG
+flowchart TB
+    %% Client Applications Layer
+    subgraph "📱 Client Applications"
+        MA["📱 Mobile Apps<br/><small>Driver & Passenger</small>"]
+        AD["💻 Admin Dashboard<br/><small>Management Portal</small>"]
+    end
     
-    %% Core Services
-    AG --> AS["🔐 Auth Service<br/><small>JWT & Sessions</small>"]
-    AG --> TS["🚗 Trip Service<br/><small>Matching & Routing</small>"]
-    AG --> PS["💳 Payment Service<br/><small>Multi-Gateway</small>"]
-    AG --> US["👤 User Service<br/><small>Profiles & KYC</small>"]
-    AG --> WS["⚡ WebSocket Gateway<br/><small>Real-time Events</small>"]
+    %% API Gateway Layer
+    subgraph "🌐 Gateway Layer"
+        AG["🌐 API Gateway<br/><small>Load Balancer & Routing</small>"]
+    end
+    
+    %% Core Services Layer
+    subgraph "🔧 Core Services"
+        AS["🔐 Auth Service<br/><small>JWT & Sessions</small>"]
+        TS["🚗 Trip Service<br/><small>Matching & Routing</small>"]
+        PS["💳 Payment Service<br/><small>Multi-Gateway</small>"]
+        US["👤 User Service<br/><small>Profiles & KYC</small>"]
+        WS["⚡ WebSocket Gateway<br/><small>Real-time Events</small>"]
+    end
     
     %% Data Layer
-    AS --> DB[("🗄️ PostgreSQL<br/><small>Primary Database</small>")]
+    subgraph "🗄️ Data Layer"
+        DB[("🗄️ PostgreSQL<br/><small>Primary Database</small>")]
+        RD[("⚡ Redis<br/><small>Cache & Sessions</small>")]
+    end
+    
+    %% External Services
+    subgraph "🏦 External Services"
+        EBS["🏦 EBS Gateway<br/><small>Bank Integration</small>"]
+        CP["💰 CyberPay<br/><small>Digital Wallet</small>"]
+    end
+    
+    %% Connections
+    MA --> AG
+    AD --> AG
+    
+    AG --> AS
+    AG --> TS
+    AG --> PS
+    AG --> US
+    AG --> WS
+    
+    AS --> DB
     TS --> DB
     PS --> DB
     US --> DB
     
-    %% External Services
-    PS --> EBS["🏦 EBS Gateway<br/><small>Bank Integration</small>"]
-    PS --> CP["💰 CyberPay<br/><small>Digital Wallet</small>"]
-    
-    %% Cache & Real-time
-    WS --> RD[("⚡ Redis<br/><small>Cache & Sessions</small>")]
+    WS --> RD
     AG --> RD
+    
+    PS --> EBS
+    PS --> CP
 
-    %% Styling
-    classDef mobile fill:#0d1117,stroke:#58a6ff,stroke-width:3px,color:#58a6ff,font-weight:bold;
-    classDef service fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#c9d1d9,font-weight:normal;
-    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
-    classDef external fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:normal,stroke-dasharray: 3 3;
-    classDef gateway fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold;
+    %% Enhanced Styling
+    classDef clientApp fill:#e6f3ff,stroke:#0066cc,stroke-width:3px,color:#0066cc,font-weight:bold
+    classDef gateway fill:#0066cc,stroke:#004499,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef coreService fill:#00ccaa,stroke:#008877,stroke-width:2px,color:#ffffff,font-weight:normal
+    classDef dataStore fill:#004499,stroke:#002266,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef external fill:#f0f8ff,stroke:#0066cc,stroke-width:2px,color:#0066cc,font-weight:normal,stroke-dasharray: 5 5
 
-    class MA,AD mobile;
-    class AS,TS,PS,US,WS service;
-    class DB,RD database;
-    class EBS,CP external;
-    class AG gateway;
+    class MA,AD clientApp
+    class AG gateway
+    class AS,TS,PS,US,WS coreService
+    class DB,RD dataStore
+    class EBS,CP external
 ```
 
 ### 🔍 Architecture Analysis
@@ -243,73 +344,81 @@ graph TB
 Sikka supports multiple payment methods with automatic commission handling:
 
 ```mermaid
----
-config:
-  theme: base
-  themeVariables:
-    primaryColor: "#050505"
-    primaryTextColor: "#ffffff"
-    primaryBorderColor: "#00ff88"
-    lineColor: "#00ff88"
-    secondaryColor: "#00ff88"
-    tertiaryColor: "#111111"
-    mainBkg: "#050505"
-    nodeBorder: "#00ff88"
-    actorBkg: "#111111"
-    actorBorder: "#00ff88"
-    actorTextColor: "#ffffff"
-    actorFontSize: "22px"
-    noteBkgColor: "#111111"
-    noteBorderColor: "#00ff88"
-    noteFontSize: "20px"
-    messageFontSize: "19px"
-    sequenceNumberColor: "#050505"
-    labelBoxBkgColor: "#050505"
-    labelBoxBorderColor: "#00ff88"
----
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#6A4C93',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#4a3269',
+    'lineColor': '#9D7FFF',
+    'secondaryColor': '#E6CCFF',
+    'tertiaryColor': '#C8A2C8',
+    'background': '#ffffff',
+    'actorBkg': '#6A4C93',
+    'actorBorder': '#4a3269',
+    'actorTextColor': '#ffffff',
+    'actorLineColor': '#9D7FFF',
+    'signalColor': '#9D7FFF',
+    'signalTextColor': '#4a3269',
+    'labelBoxBkgColor': '#E6CCFF',
+    'labelBoxBorderColor': '#6A4C93',
+    'labelTextColor': '#4a3269',
+    'loopTextColor': '#4a3269',
+    'noteBkgColor': '#E6CCFF',
+    'noteBorderColor': '#6A4C93',
+    'noteTextColor': '#4a3269'
+  }
+}}%%
 sequenceDiagram
     autonumber
     
     participant P as 📱 Passenger
     participant S as 🌐 Sikka API
-    participant G as 💳 Gateway@{"type": "database"}
+    participant G as 💳 Payment Gateway
     participant D as 🚗 Driver
     participant A as 👨‍💼 Admin
 
-    %% PHASE 1
-    rect rgb(10, 15, 12)
-        Note over P, S: 🟢 STEP 1: CALCULATION
-        P->>S: Signal "End Trip"
-        S->>S: Core Logic: Fare Generation
+    %% PHASE 1: Trip Completion & Fare Calculation
+    rect rgba(106, 76, 147, 0.1)
+        Note over P, S: 🟢 STEP 1: FARE CALCULATION
+        P->>+S: Signal "End Trip"
+        S->>S: Calculate fare based on distance & time
+        S->>S: Apply surge pricing (if applicable)
+        S->>-P: Display fare breakdown
     end
 
-    %% PHASE 2
-    rect rgb(5, 5, 5)
-        Note over S, G: 💳 STEP 2: PAYMENT CAPTURE
-        S->>G: Request Charge ($Total)
-        G-->>P: 3D Secure Verification
-        G->>S: Payment Confirmed ✅
+    %% PHASE 2: Payment Processing
+    rect rgba(157, 127, 255, 0.1)
+        Note over S, G: 💳 STEP 2: PAYMENT PROCESSING
+        S->>+G: Initiate payment request
+        G->>P: Request payment authorization
+        P->>G: Provide payment details
+        G->>G: Process payment (EBS/CyberPay)
+        G->>-S: Payment confirmation ✅
     end
 
-    %% PHASE 3
-    rect rgb(0, 40, 25)
-        Note over S, A: 💰 STEP 3: REVENUE SPLIT
+    %% PHASE 3: Revenue Distribution
+    rect rgba(230, 204, 255, 0.1)
+        Note over S, A: 💰 STEP 3: REVENUE DISTRIBUTION
         critical Secure Settlement
-            S->>S: Platform Fee (15%)
-            S->>A: Update Revenue Dashboard
-            S->>D: Driver Payout (85%)
+            S->>S: Calculate platform commission (15%)
+            S->>A: Update revenue dashboard
+            S->>D: Process driver payout (85%)
+            S->>S: Record transaction in database
         end
     end
 
-    %% PHASE 4
-    rect rgb(10, 15, 12)
-        Note over S, P: 📧 STEP 4: CLOSURE
-        par System Updates
-            S->>P: Dispatch Receipt
+    %% PHASE 4: Post-Payment Actions
+    rect rgba(200, 162, 200, 0.1)
+        Note over S, P: 📧 STEP 4: COMPLETION NOTIFICATIONS
+        par Parallel Notifications
+            S->>P: Send payment receipt
         and
-            S->>D: Push Earnings Alert
+            S->>D: Send earnings notification
         and
-            S->>P: Request Performance Rating
+            S->>P: Request trip rating
+        and
+            S->>A: Update analytics dashboard
         end
     end
 ```
