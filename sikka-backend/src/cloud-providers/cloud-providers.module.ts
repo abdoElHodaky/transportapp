@@ -5,11 +5,13 @@ import { CostCalculatorService } from './cost-calculator.service';
 import { CostComparisonService } from './cost-comparison.service';
 import { AwsProviderService } from './aws/aws-provider.service';
 import { LinodeProviderService } from './linode/linode-provider.service';
+import { CloudProvidersController } from './cloud-providers.controller';
 import { CloudProvidersConfig } from '../config/cloud-providers.config';
 import { AwsProviderConfig } from '../config/aws-provider.config';
 import { LinodeProviderConfig } from '../config/linode-provider.config';
 
 @Module({
+  controllers: [CloudProvidersController],
   providers: [
     // Configuration services
     CloudProvidersConfig,
@@ -44,4 +46,3 @@ import { LinodeProviderConfig } from '../config/linode-provider.config';
   ],
 })
 export class CloudProvidersModule {}
-

@@ -6,11 +6,13 @@ import { ScalingPhasesConfig } from '../config/scaling-phases.config';
 import { DatabaseScalingConfig } from '../config/database-scaling.config';
 import { RedisScalingConfig } from '../config/redis-scaling.config';
 import { PerformanceModule } from '../performance/performance.module';
+import { CloudProvidersModule } from '../cloud-providers/cloud-providers.module';
 
 @Module({
   imports: [
     ConfigModule,
     PerformanceModule,
+    CloudProvidersModule,
   ],
   controllers: [ScalingController],
   providers: [
@@ -27,4 +29,3 @@ import { PerformanceModule } from '../performance/performance.module';
   ],
 })
 export class ScalingModule {}
-
