@@ -314,46 +314,39 @@ graph TB
 %%{init: {
   'theme': 'base',
   'themeVariables': {
+    'background': 'transparent',
     'primaryColor': '#4A90E2',
     'primaryTextColor': '#ffffff',
     'primaryBorderColor': '#2E5C8A',
     'lineColor': '#32CD32',
     'secondaryColor': '#50C878',
-    'tertiaryColor': '#FF6B35',
-    'background': '#ffffff',
-    'mainBkg': '#4A90E2',
-    'secondBkg': '#50C878',
-    'tertiaryBkg': '#FF6B35'
+    'tertiaryColor': '#FF6B35'
   }
 }}%%
 graph TB
-    subgraph "🌟 Multi-Cloud Intelligence Layer"
-        direction LR
-        CPA[🧠 Cloud Provider<br/>Analysis Engine]
-        COS[💰 Cost Optimization<br/>Service]
-        MIG[🔄 Migration<br/>Planner]
+    subgraph Intelligence["🌟 Multi-Cloud Intelligence Layer"]
+        CPA["🧠 Cloud Provider<br/>Analysis Engine"]
+        COS["💰 Cost Optimization<br/>Service"]
+        MIG["🔄 Migration<br/>Planner"]
     end
     
-    subgraph "☁️ AWS Infrastructure"
-        direction TB
-        AWS_L[🚀 Launch: $104/mo<br/>t3.micro + RDS]
-        AWS_G[📈 Growth: $461/mo<br/>c5.large + Multi-AZ]
-        AWS_S[🔥 Scale: $2,903/mo<br/>c5.xlarge + Clustering]
+    subgraph AWS["☁️ AWS Infrastructure"]
+        AWS_L["🚀 Launch: $104/mo<br/>t3.micro + RDS"]
+        AWS_G["📈 Growth: $461/mo<br/>c5.large + Multi-AZ"]
+        AWS_S["🔥 Scale: $2,903/mo<br/>c5.xlarge + Clustering"]
     end
     
-    subgraph "🌊 Linode Infrastructure"
-        direction TB
-        LIN_L[🚀 Launch: $83/mo<br/>g6-nanode + Managed DB<br/>💰 20% Savings]
-        LIN_G[📈 Growth: $344/mo<br/>Dedicated CPU + HA<br/>💰 25% Savings]
-        LIN_S[🔥 Scale: $2,050/mo<br/>High Memory + Clustering<br/>💰 29% Savings]
+    subgraph Linode["🌊 Linode Infrastructure"]
+        LIN_L["🚀 Launch: $83/mo<br/>g6-nanode + Managed DB<br/>💰 20% Savings"]
+        LIN_G["📈 Growth: $344/mo<br/>Dedicated CPU + HA<br/>💰 25% Savings"]
+        LIN_S["🔥 Scale: $2,050/mo<br/>High Memory + Clustering<br/>💰 29% Savings"]
     end
     
-    subgraph "📊 Cost Comparison Results"
-        direction TB
-        SAV_L[💵 Launch Savings<br/>$21/month]
-        SAV_G[💵 Growth Savings<br/>$117/month]
-        SAV_S[💵 Scale Savings<br/>$853/month]
-        TCO[🏆 3-Year TCO<br/>$12,852 Total Savings]
+    subgraph Savings["📊 Cost Comparison Results"]
+        SAV_L["💵 Launch Savings<br/>$21/month"]
+        SAV_G["💵 Growth Savings<br/>$117/month"]
+        SAV_S["💵 Scale Savings<br/>$853/month"]
+        TCO["🏆 3-Year TCO<br/>$12,852 Total Savings"]
     end
     
     %% Intelligence connections
@@ -377,12 +370,11 @@ graph TB
     LIN_G --> SAV_G
     LIN_S --> SAV_S
     
-    %% Enhanced Styling
-    classDef intelligence fill:#4A90E2,stroke:#2E5C8A,stroke-width:3px,color:#ffffff,font-weight:bold
-    classDef aws fill:#FF9500,stroke:#E67E00,stroke-width:3px,color:#ffffff,font-weight:bold
-    classDef linode fill:#00B04F,stroke:#008F3F,stroke-width:3px,color:#ffffff,font-weight:bold
-    classDef savings fill:#32CD32,stroke:#228B22,stroke-width:3px,color:#ffffff,font-weight:bold
-    classDef migration fill:#9B59B6,stroke:#8E44AD,stroke-width:2px,color:#ffffff,font-style:italic
+    %% Professional Styling with Transparency
+    classDef intelligence fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef aws fill:#FF9500,stroke:#E67E00,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef linode fill:#00B04F,stroke:#008F3F,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef savings fill:#32CD32,stroke:#228B22,stroke-width:4px,color:#ffffff,font-weight:bold
     
     class CPA,COS,MIG intelligence
     class AWS_L,AWS_G,AWS_S aws
@@ -396,22 +388,18 @@ graph TB
 %%{init: {
   'theme': 'base',
   'themeVariables': {
+    'background': 'transparent',
     'primaryColor': '#90EE90',
     'primaryTextColor': '#2d5016',
     'primaryBorderColor': '#228B22',
     'lineColor': '#32CD32',
     'secondaryColor': '#FFD700',
-    'tertiaryColor': '#FF8C00',
-    'background': '#ffffff',
-    'mainBkg': '#90EE90',
-    'secondBkg': '#FFD700',
-    'tertiaryBkg': '#FF8C00'
+    'tertiaryColor': '#FF8C00'
   }
 }}%%
 flowchart LR
     %% Phase 1: Launch
-    subgraph "🚀 Phase 1: Launch"
-        direction TB
+    subgraph Launch["🚀 Phase 1: Launch"]
         P1_Users["👥 1,000-2,000 Users"]
         P1_DB["🗄️ DB: 30 connections"]
         P1_Redis["⚡ Redis: 1GB memory"]
@@ -421,8 +409,7 @@ flowchart LR
     end
     
     %% Phase 2: Growth
-    subgraph "📈 Phase 2: Growth"
-        direction TB
+    subgraph Growth["📈 Phase 2: Growth"]
         P2_Users["👥 3,000-5,000 Users"]
         P2_DB["🗄️ DB: 75 connections + Read Replicas"]
         P2_Redis["⚡ Redis: 4GB + Sentinel"]
@@ -432,8 +419,7 @@ flowchart LR
     end
     
     %% Phase 3: Scale
-    subgraph "🔥 Phase 3: Scale"
-        direction TB
+    subgraph Scale["🔥 Phase 3: Scale"]
         P3_Users["👥 10,000+ Users"]
         P3_DB["🗄️ DB: 150 connections + Sharding"]
         P3_Redis["⚡ Redis: 8GB + Clustering"]
@@ -456,11 +442,10 @@ flowchart LR
     P2_Cloud -.->|"25% savings"| P2_Focus
     P3_Cloud -.->|"29% savings"| P3_Focus
 
-    %% Enhanced Styling
-    classDef phase1 fill:#90EE90,stroke:#228B22,stroke-width:3px,color:#2d5016,font-weight:bold
-    classDef phase2 fill:#FFD700,stroke:#FFA500,stroke-width:3px,color:#8B4513,font-weight:bold
-    classDef phase3 fill:#FF8C00,stroke:#FF4500,stroke-width:3px,color:#8B0000,font-weight:bold
-    classDef timeline fill:#f0f8ff,stroke:#4682B4,stroke-width:2px,color:#4682B4,font-style:italic
+    %% Professional Styling with Distinguished Colors
+    classDef phase1 fill:#90EE90,stroke:#228B22,stroke-width:4px,color:#2d5016,font-weight:bold
+    classDef phase2 fill:#FFD700,stroke:#FFA500,stroke-width:4px,color:#8B4513,font-weight:bold
+    classDef phase3 fill:#FF8C00,stroke:#FF4500,stroke-width:4px,color:#8B0000,font-weight:bold
 
     class P1_Users,P1_DB,P1_Redis,P1_WS,P1_Cloud,P1_Focus phase1
     class P2_Users,P2_DB,P2_Redis,P2_WS,P2_Cloud,P2_Focus phase2
@@ -477,53 +462,46 @@ Our platform is built on a **microservices architecture** with clear separation 
 %%{init: {
   'theme': 'base',
   'themeVariables': {
+    'background': 'transparent',
     'primaryColor': '#0066cc',
     'primaryTextColor': '#ffffff',
     'primaryBorderColor': '#004499',
     'lineColor': '#0066cc',
     'secondaryColor': '#00ccaa',
-    'tertiaryColor': '#e6f3ff',
-    'background': '#ffffff',
-    'mainBkg': '#0066cc',
-    'secondBkg': '#00ccaa',
-    'tertiaryBkg': '#e6f3ff'
-  },
-  'flowchart': {
-    'useMaxWidth': true,
-    'htmlLabels': true
+    'tertiaryColor': '#e6f3ff'
   }
 }}%%
 flowchart TB
     %% Client Applications Layer
-    subgraph "📱 Client Applications"
-        MA["📱 Mobile Apps<br/><small>Driver & Passenger</small>"]
-        AD["💻 Admin Dashboard<br/><small>Management Portal</small>"]
+    subgraph ClientApps["📱 Client Applications"]
+        MA["📱 Mobile Apps<br/>Driver & Passenger"]
+        AD["💻 Admin Dashboard<br/>Management Portal"]
     end
     
     %% API Gateway Layer
-    subgraph "🌐 Gateway Layer"
-        AG["🌐 API Gateway<br/><small>Load Balancer & Routing</small>"]
+    subgraph Gateway["🌐 Gateway Layer"]
+        AG["🌐 API Gateway<br/>Load Balancer & Routing"]
     end
     
     %% Core Services Layer
-    subgraph "🔧 Core Services"
-        AS["🔐 Auth Service<br/><small>JWT & Sessions</small>"]
-        TS["🚗 Trip Service<br/><small>Matching & Routing</small>"]
-        PS["💳 Payment Service<br/><small>Multi-Gateway</small>"]
-        US["👤 User Service<br/><small>Profiles & KYC</small>"]
-        WS["⚡ WebSocket Gateway<br/><small>Real-time Events</small>"]
+    subgraph CoreServices["🔧 Core Services"]
+        AS["🔐 Auth Service<br/>JWT & Sessions"]
+        TS["🚗 Trip Service<br/>Matching & Routing"]
+        PS["💳 Payment Service<br/>Multi-Gateway"]
+        US["👤 User Service<br/>Profiles & KYC"]
+        WS["⚡ WebSocket Gateway<br/>Real-time Events"]
     end
     
     %% Data Layer
-    subgraph "🗄️ Data Layer"
-        DB[("🗄️ PostgreSQL<br/><small>Primary Database</small>")]
-        RD[("⚡ Redis<br/><small>Cache & Sessions</small>")]
+    subgraph DataLayer["🗄️ Data Layer"]
+        DB[("🗄️ PostgreSQL<br/>Primary Database")]
+        RD[("⚡ Redis<br/>Cache & Sessions")]
     end
     
     %% External Services
-    subgraph "🏦 External Services"
-        EBS["🏦 EBS Gateway<br/><small>Bank Integration</small>"]
-        CP["💰 CyberPay<br/><small>Digital Wallet</small>"]
+    subgraph ExternalServices["🏦 External Services"]
+        EBS["🏦 EBS Gateway<br/>Bank Integration"]
+        CP["💰 CyberPay<br/>Digital Wallet"]
     end
     
     %% Connections
@@ -547,12 +525,12 @@ flowchart TB
     PS --> EBS
     PS --> CP
 
-    %% Enhanced Styling
-    classDef clientApp fill:#e6f3ff,stroke:#0066cc,stroke-width:3px,color:#0066cc,font-weight:bold
-    classDef gateway fill:#0066cc,stroke:#004499,stroke-width:4px,color:#ffffff,font-weight:bold
-    classDef coreService fill:#00ccaa,stroke:#008877,stroke-width:2px,color:#ffffff,font-weight:normal
-    classDef dataStore fill:#004499,stroke:#002266,stroke-width:4px,color:#ffffff,font-weight:bold
-    classDef external fill:#f0f8ff,stroke:#0066cc,stroke-width:2px,color:#0066cc,font-weight:normal,stroke-dasharray: 5 5
+    %% Professional Styling with Distinguished Colors
+    classDef clientApp fill:#e6f3ff,stroke:#0066cc,stroke-width:4px,color:#0066cc,font-weight:bold
+    classDef gateway fill:#0066cc,stroke:#004499,stroke-width:5px,color:#ffffff,font-weight:bold
+    classDef coreService fill:#00ccaa,stroke:#008877,stroke-width:3px,color:#ffffff,font-weight:bold
+    classDef dataStore fill:#004499,stroke:#002266,stroke-width:5px,color:#ffffff,font-weight:bold
+    classDef external fill:#f0f8ff,stroke:#0066cc,stroke-width:3px,color:#0066cc,font-weight:bold,stroke-dasharray:8 4
 
     class MA,AD clientApp
     class AG gateway
@@ -583,13 +561,13 @@ Sikka supports multiple payment methods with automatic commission handling:
 %%{init: {
   'theme': 'base',
   'themeVariables': {
+    'background': 'transparent',
     'primaryColor': '#6A4C93',
     'primaryTextColor': '#ffffff',
     'primaryBorderColor': '#4a3269',
     'lineColor': '#9D7FFF',
     'secondaryColor': '#E6CCFF',
     'tertiaryColor': '#C8A2C8',
-    'background': '#ffffff',
     'actorBkg': '#6A4C93',
     'actorBorder': '#4a3269',
     'actorTextColor': '#ffffff',

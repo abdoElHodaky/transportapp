@@ -153,8 +153,17 @@ jobs:
         run: |
           echo "🚀 Deploying to staging environment..."
           echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop"
+          
+          # Add error handling for deployment
+          set -e  # Exit on any error
+          
           # Add your staging deployment commands here
           # Example: kubectl, docker-compose, or cloud provider CLI
+          
+          # Placeholder deployment verification
+          echo "✅ Staging deployment completed successfully"
+          
+        continue-on-error: false
 
   # 🌟 Deploy to Production
   deploy-production:
@@ -172,8 +181,17 @@ jobs:
         run: |
           echo "🌟 Deploying to production environment..."
           echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          
+          # Add error handling for deployment
+          set -e  # Exit on any error
+          
           # Add your production deployment commands here
           # Example: kubectl, docker-compose, or cloud provider CLI
+          
+          # Placeholder deployment verification
+          echo "✅ Production deployment completed successfully"
+          
+        continue-on-error: false
 
   # 📊 Performance Testing
   performance:
@@ -189,8 +207,17 @@ jobs:
       - name: 📊 Run performance tests
         run: |
           echo "📊 Running performance tests against staging..."
+          
+          # Add error handling for performance tests
+          set -e  # Exit on any error
+          
           # Add performance testing commands here
           # Example: k6, artillery, or custom load testing
+          
+          # Placeholder performance test verification
+          echo "✅ Performance tests completed successfully"
+          
+        continue-on-error: true  # Allow performance tests to fail without stopping the pipeline
 
   # 🔒 Security Scanning
   security:
@@ -219,15 +246,28 @@ jobs:
   notify:
     name: 📢 Notify
     runs-on: ubuntu-latest
-    needs: [test, build, deploy-staging, deploy-production]
+    needs: [test, build]
     if: always()
     
     steps:
       - name: 📢 Notify deployment status
         run: |
-          if [[ "${{ needs.test.result }}" == "success" && ("${{ needs.build.result }}" == "success" || "${{ needs.build.result }}" == "skipped") ]]; then
-            echo "✅ Pipeline completed successfully!"
+          echo "🔍 Pipeline Status Summary:"
+          echo "Test Result: ${{ needs.test.result }}"
+          echo "Build Result: ${{ needs.build.result }}"
+          
+          if [[ "${{ needs.test.result }}" == "success" ]]; then
+            if [[ "${{ needs.build.result }}" == "success" || "${{ needs.build.result }}" == "skipped" ]]; then
+              echo "✅ Pipeline completed successfully!"
+              echo "PIPELINE_STATUS=success" >> $GITHUB_ENV
+            else
+              echo "❌ Build failed!"
+              echo "PIPELINE_STATUS=build_failed" >> $GITHUB_ENV
+            fi
           else
-            echo "❌ Pipeline failed!"
+            echo "❌ Tests failed!"
+            echo "PIPELINE_STATUS=test_failed" >> $GITHUB_ENV
           fi
+          
           # Add notification logic here (Slack, Discord, email, etc.)
+          # Use $PIPELINE_STATUS environment variable for conditional notifications

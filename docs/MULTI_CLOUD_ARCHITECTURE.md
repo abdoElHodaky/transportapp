@@ -9,28 +9,40 @@ The Sikka Transportation Platform implements a sophisticated multi-cloud scaling
 ### Core Components
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'background': 'transparent',
+    'primaryColor': '#4A90E2',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#2E5C8A',
+    'lineColor': '#32CD32',
+    'secondaryColor': '#50C878',
+    'tertiaryColor': '#FF6B35'
+  }
+}}%%
 graph TB
-    subgraph "API Layer"
-        SC[Scaling Controller]
-        CPC[Cloud Providers Controller]
+    subgraph APILayer["🌐 API Layer"]
+        SC["🎛️ Scaling Controller"]
+        CPC["☁️ Cloud Providers Controller"]
     end
     
-    subgraph "Service Layer"
-        SS[Scaling Service]
-        CPMS[Cloud Provider Manager]
-        CCS[Cost Comparison Service]
-        CCS2[Cost Calculator Service]
+    subgraph ServiceLayer["⚙️ Service Layer"]
+        SS["📈 Scaling Service"]
+        CPMS["🔧 Cloud Provider Manager"]
+        CCS["💰 Cost Comparison Service"]
+        CCS2["🧮 Cost Calculator Service"]
     end
     
-    subgraph "Provider Layer"
-        CPF[Cloud Provider Factory]
-        AWS[AWS Provider Service]
-        LIN[Linode Provider Service]
+    subgraph ProviderLayer["🏭 Provider Layer"]
+        CPF["🏗️ Cloud Provider Factory"]
+        AWS["🟠 AWS Provider Service"]
+        LIN["🟢 Linode Provider Service"]
     end
     
-    subgraph "Infrastructure Layer"
-        AWST[AWS Terraform Templates]
-        LINT[Linode Terraform Templates]
+    subgraph InfrastructureLayer["🏗️ Infrastructure Layer"]
+        AWST["📋 AWS Terraform Templates"]
+        LINT["📋 Linode Terraform Templates"]
     end
     
     SC --> SS
@@ -44,6 +56,17 @@ graph TB
     CPF --> LIN
     AWS --> AWST
     LIN --> LINT
+
+    %% Professional Styling
+    classDef apiLayer fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef serviceLayer fill:#50C878,stroke:#228B22,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef providerLayer fill:#FF6B35,stroke:#E55100,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef infrastructureLayer fill:#9C27B0,stroke:#7B1FA2,stroke-width:4px,color:#ffffff,font-weight:bold
+
+    class SC,CPC apiLayer
+    class SS,CPMS,CCS,CCS2 serviceLayer
+    class CPF,AWS,LIN providerLayer
+    class AWST,LINT infrastructureLayer
 ```
 
 ## 🎯 Key Features
