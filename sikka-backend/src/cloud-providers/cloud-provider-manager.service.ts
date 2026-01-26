@@ -14,6 +14,7 @@ import {
   CostEstimate,
   CostCalculationOptions,
   ServiceRequirements,
+  InfrastructureOptions,
 } from './interfaces/cloud-provider.interface';
 import { CloudProvidersConfig } from '../config/cloud-providers.config';
 import { ScalingPhasesConfig, ScalingPhaseConfig } from '../config/scaling-phases.config';
@@ -80,6 +81,20 @@ export class CloudProviderManagerService {
       dataResidency: config.metadata?.region,
       complianceRequirements: [],
       budgetConstraint: undefined,
+    };
+  }
+
+  /**
+   * Convert InfrastructureConfig to InfrastructureOptions
+   */
+  private toInfrastructureOptions(config: InfrastructureConfig, region: string): InfrastructureOptions {
+    return {
+      region,
+      environment: config.metadata?.environment || 'development',
+      highAvailability: config.metadata?.scalingPhase === 'scale',
+      backupRetention: config.database?.backup?.retentionPeriod || 7,
+      monitoringLevel: config.monitoring ? 'standard' : 'basic',
+      securityLevel: config.security ? 'standard' : 'basic',
     };
   }
 
@@ -228,10 +243,11 @@ export class CloudProviderManagerService {
 
     for (const [providerType, provider] of providers) {
       try {
+        const phaseConfig = this.getPhaseConfig(scalingPhase);
+        const options = this.toInfrastructureOptions(config, region);
         const template = await provider.generateInfrastructureTemplate(
-          scalingPhase,
-          region,
-          config,
+          phaseConfig,
+          options,
         );
         templates.set(providerType, template);
       } catch (error) {
