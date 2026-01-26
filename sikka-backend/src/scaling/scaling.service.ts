@@ -793,7 +793,12 @@ spec:
   private getCurrentCloudProvider(): CloudProviderType {
     const cloudConfig =
       this.scalingConfig.getCurrentPhaseConfig().cloudProvider;
-    return cloudConfig?.preferred || 'aws'; // Default to AWS if not specified
+    const preferred = cloudConfig?.preferred;
+    // Handle 'auto' case by defaulting to 'aws'
+    if (preferred === 'auto' || !preferred) {
+      return 'aws';
+    }
+    return preferred as CloudProviderType;
   }
 
   /**
