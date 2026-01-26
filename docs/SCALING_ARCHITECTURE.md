@@ -26,40 +26,52 @@ The Sikka Transportation Platform implements a **three-phase scaling architectur
 
 ## 🏗️ Three-Phase Architecture
 
-### **Phase Overview Diagram**
+### **🚀 Scaling Evolution - Eye-Catching Journey**
 
 ```mermaid
 %%{init: {
   'theme': 'base',
   'themeVariables': {
-    'primaryColor': '#22c55e',
+    'background': 'transparent',
+    'primaryColor': '#FF6B6B',
     'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#16a34a',
-    'lineColor': '#22c55e',
-    'secondaryColor': '#f59e0b',
-    'tertiaryColor': '#ef4444',
-    'background': '#ffffff',
-    'mainBkg': '#22c55e',
-    'secondBkg': '#f59e0b',
-    'tertiaryBkg': '#ef4444'
+    'primaryBorderColor': '#E55555',
+    'lineColor': '#4ECDC4',
+    'secondaryColor': '#45B7D1',
+    'tertiaryColor': '#96CEB4'
   }
 }}%%
 graph LR
-    A["🚀 Phase 1: Launch<br/>1,000-2,000 Users<br/>Basic Infrastructure"] --> B["📈 Phase 2: Growth<br/>3,000-5,000 Users<br/>High Availability"] --> C["⚡ Phase 3: Scale<br/>10,000+ Users<br/>Horizontal Scaling"]
+    %% Eye-catching phase progression
+    LAUNCH["🌱 LAUNCH<br/>👥 2K Users<br/>🎯 Simple & Stable"]
     
-    A --> A1["Single PostgreSQL<br/>Standard Redis<br/>Direct WebSocket"]
-    B --> B1["Read Replicas<br/>Redis Sentinel<br/>Load Balancing"]
-    C --> C1["Sharded Database<br/>Redis Cluster<br/>Auto-scaling"]
+    GROWTH["🌿 GROWTH<br/>👥 5K Users<br/>🎯 High Availability"]
     
-    classDef phase1 fill:#dcfce7,stroke:#22c55e,stroke-width:3px,color:#166534
-    classDef phase2 fill:#fef3c7,stroke:#f59e0b,stroke-width:3px,color:#92400e
-    classDef phase3 fill:#fee2e2,stroke:#ef4444,stroke-width:3px,color:#991b1b
-    classDef config fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#334155
+    SCALE["🌳 ENTERPRISE<br/>👥 10K+ Users<br/>🎯 Auto-Scaling"]
     
-    class A phase1
-    class B phase2
-    class C phase3
-    class A1,B1,C1 config
+    %% Infrastructure details
+    LAUNCH_TECH["💾 Single DB<br/>⚡ Basic Redis<br/>🔗 Direct Connect"]
+    GROWTH_TECH["📊 Read Replicas<br/>🛡️ Redis Sentinel<br/>⚖️ Load Balancer"]
+    SCALE_TECH["🔀 Sharded DB<br/>🌐 Redis Cluster<br/>🚀 Auto-Scale"]
+    
+    %% Eye-catching connections
+    LAUNCH ==>|"🚀 Evolve"| GROWTH
+    GROWTH ==>|"⚡ Transform"| SCALE
+    
+    LAUNCH -.-> LAUNCH_TECH
+    GROWTH -.-> GROWTH_TECH
+    SCALE -.-> SCALE_TECH
+    
+    %% Distinguished Eye-catching Styling
+    classDef launch fill:#96CEB4,stroke:#7FB069,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
+    classDef growth fill:#45B7D1,stroke:#3A9BC1,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
+    classDef scale fill:#FF6B6B,stroke:#E55555,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
+    classDef tech fill:#9B59B6,stroke:#8E44AD,stroke-width:6px,color:#ffffff,font-weight:bold,font-size:14px
+    
+    class LAUNCH launch
+    class GROWTH growth
+    class SCALE scale
+    class LAUNCH_TECH,GROWTH_TECH,SCALE_TECH tech
 ```
 
 ### **Phase 1: Launch (1,000-2,000 Users)**
@@ -105,62 +117,68 @@ graph LR
 
 ## 📊 Phase Transition Flow
 
-### **Transition Decision Matrix**
+### **🎯 Smart Transition Flow - Auto-Scaling Intelligence**
 
 ```mermaid
 %%{init: {
   'theme': 'base',
   'themeVariables': {
-    'primaryColor': '#3b82f6',
+    'background': 'transparent',
+    'primaryColor': '#FF6B6B',
     'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#2563eb',
-    'lineColor': '#3b82f6',
-    'secondaryColor': '#10b981',
-    'tertiaryColor': '#f59e0b',
-    'background': '#ffffff',
-    'mainBkg': '#3b82f6',
-    'secondBkg': '#10b981',
-    'tertiaryBkg': '#f59e0b'
+    'primaryBorderColor': '#E55555',
+    'lineColor': '#4ECDC4',
+    'secondaryColor': '#45B7D1',
+    'tertiaryColor': '#96CEB4'
   }
 }}%%
 flowchart TD
-    A["🔍 Monitor System Metrics"] --> B{"CPU > 60%<br/>Memory > 70%<br/>Connections > 80%"}
+    MONITOR["🔍 Smart Monitor<br/>⚡ Real-time Metrics"]
     
-    B -->|Yes| C{"Current Phase?"}
-    B -->|No| A
+    THRESHOLD{"🚨 Scale Needed?<br/>📊 CPU/Memory/Load"}
     
-    C -->|Launch| D["📈 Prepare Growth Phase"]
-    C -->|Growth| E["⚡ Prepare Scale Phase"]
-    C -->|Scale| F["🔧 Optimize Current Phase"]
+    PHASE{"🎯 Current Phase?"}
     
-    D --> D1["✅ Deploy Read Replicas<br/>✅ Setup PgBouncer<br/>✅ Configure Redis Sentinel"]
-    E --> E1["✅ Deploy Redis Cluster<br/>✅ Setup Horizontal Scaling<br/>✅ Configure Auto-scaling"]
-    F --> F1["✅ Optimize Queries<br/>✅ Tune Configuration<br/>✅ Add More Resources"]
+    LAUNCH_PREP["🌱 → 🌿<br/>🚀 Growth Ready"]
+    GROWTH_PREP["🌿 → 🌳<br/>⚡ Enterprise Ready"]
+    OPTIMIZE["🔧 Optimize<br/>🎯 Current Phase"]
     
-    D1 --> G["🚀 Execute Phase Transition"]
-    E1 --> G
-    F1 --> G
+    EXECUTE["🚀 Auto-Deploy<br/>⚡ Zero Downtime"]
     
-    G --> H["📊 Validate New Phase"]
-    H --> I{"Transition Successful?"}
+    SUCCESS["✅ Success<br/>🎉 Phase Complete"]
+    ROLLBACK["🔄 Auto-Rollback<br/>🛡️ Safe Recovery"]
     
-    I -->|Yes| J["✅ Update Phase Status<br/>📝 Log Transition<br/>🔔 Notify Team"]
-    I -->|No| K["❌ Rollback Changes<br/>📝 Log Error<br/>🚨 Alert Team"]
+    %% Eye-catching flow
+    MONITOR ==> THRESHOLD
+    THRESHOLD ==>|"🚨 Yes"| PHASE
+    THRESHOLD -.->|"✅ No"| MONITOR
     
-    J --> A
-    K --> A
+    PHASE ==>|"🌱"| LAUNCH_PREP
+    PHASE ==>|"🌿"| GROWTH_PREP
+    PHASE ==>|"🌳"| OPTIMIZE
     
-    classDef monitor fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e40af
-    classDef decision fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#92400e
-    classDef action fill:#dcfce7,stroke:#10b981,stroke-width:2px,color:#065f46
-    classDef success fill:#d1fae5,stroke:#10b981,stroke-width:3px,color:#065f46
-    classDef error fill:#fee2e2,stroke:#ef4444,stroke-width:3px,color:#991b1b
+    LAUNCH_PREP ==> EXECUTE
+    GROWTH_PREP ==> EXECUTE
+    OPTIMIZE ==> EXECUTE
     
-    class A monitor
-    class B,C,I decision
-    class D,E,F,D1,E1,F1,G,H action
-    class J success
-    class K error
+    EXECUTE ==>|"✅"| SUCCESS
+    EXECUTE ==>|"❌"| ROLLBACK
+    
+    SUCCESS -.-> MONITOR
+    ROLLBACK -.-> MONITOR
+    
+    %% Distinguished Eye-catching Styling
+    classDef monitor fill:#96CEB4,stroke:#7FB069,stroke-width:6px,color:#ffffff,font-weight:bold,font-size:14px
+    classDef decision fill:#F39C12,stroke:#E67E22,stroke-width:6px,color:#ffffff,font-weight:bold,font-size:14px
+    classDef action fill:#45B7D1,stroke:#3A9BC1,stroke-width:6px,color:#ffffff,font-weight:bold,font-size:14px
+    classDef success fill:#96CEB4,stroke:#7FB069,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
+    classDef error fill:#FF6B6B,stroke:#E55555,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
+    
+    class MONITOR monitor
+    class THRESHOLD,PHASE decision
+    class LAUNCH_PREP,GROWTH_PREP,OPTIMIZE,EXECUTE action
+    class SUCCESS success
+    class ROLLBACK error
 ```
 
 ### **Transition Timeline**
@@ -494,4 +512,3 @@ The ConcurrencyAnalysisService provides real-time monitoring of:
 ---
 
 *This documentation is automatically maintained and updated as the scaling infrastructure evolves.*
-
