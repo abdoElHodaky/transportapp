@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 /**
  * AWS Provider Specific Configuration
- * 
+ *
  * Contains AWS-specific settings, service mappings, and optimizations
  * for the Sikka Transportation Platform scaling strategy.
  */
@@ -414,7 +414,7 @@ export class AwsProviderConfig {
             storage: 40,
             networkPerformance: 'Up to 10 Gbps',
             costPerHour: 0.17,
-            costPerMonth: 124.10,
+            costPerMonth: 124.1,
             ebsOptimized: true,
             enhancedNetworking: true,
             suitable: ['api', 'worker'],
@@ -426,7 +426,7 @@ export class AwsProviderConfig {
             storage: 80,
             networkPerformance: 'Up to 10 Gbps',
             costPerHour: 0.34,
-            costPerMonth: 248.20,
+            costPerMonth: 248.2,
             ebsOptimized: true,
             enhancedNetworking: true,
             suitable: ['api', 'worker', 'database'],
@@ -443,7 +443,7 @@ export class AwsProviderConfig {
       },
       spotInstances: {
         enabled: false, // Disabled for production stability
-        maxSpotPrice: 0.10,
+        maxSpotPrice: 0.1,
         spotFleetRequestType: 'maintain',
       },
       reservedInstances: {

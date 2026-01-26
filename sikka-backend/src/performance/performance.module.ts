@@ -5,13 +5,9 @@ import { ConcurrencyAnalysisService } from './concurrency-analysis.service';
 import { ConcurrencyAnalysisController } from './concurrency-analysis.controller';
 
 @Module({
-  imports: [
-    ConfigModule,
-    TypeOrmModule,
-  ],
+  imports: [ConfigModule, TypeOrmModule],
   controllers: [ConcurrencyAnalysisController],
   providers: [ConcurrencyAnalysisService],
   exports: [ConcurrencyAnalysisService],
 })
 export class PerformanceModule {}
-

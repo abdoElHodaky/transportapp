@@ -94,7 +94,14 @@ export class ScalingPhasesConfig {
       | 'growth'
       | 'scale';
 
-    switch (currentPhase) {
+    return this.getPhaseConfig(currentPhase);
+  }
+
+  /**
+   * Get configuration for specific scaling phase
+   */
+  getPhaseConfig(phase: 'launch' | 'growth' | 'scale'): ScalingPhaseConfig {
+    switch (phase) {
       case 'launch':
         return this.getLaunchPhaseConfig();
       case 'growth':

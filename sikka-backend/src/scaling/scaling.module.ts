@@ -9,11 +9,7 @@ import { PerformanceModule } from '../performance/performance.module';
 import { CloudProvidersModule } from '../cloud-providers/cloud-providers.module';
 
 @Module({
-  imports: [
-    ConfigModule,
-    PerformanceModule,
-    CloudProvidersModule,
-  ],
+  imports: [ConfigModule, PerformanceModule, CloudProvidersModule],
   controllers: [ScalingController],
   providers: [
     ScalingService,

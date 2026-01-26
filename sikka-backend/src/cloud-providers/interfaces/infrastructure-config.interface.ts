@@ -1,6 +1,6 @@
 /**
  * Infrastructure Configuration Interfaces
- * 
+ *
  * Defines the structure for infrastructure configurations that can be
  * translated into provider-specific templates and deployments.
  */
@@ -451,7 +451,12 @@ export interface FileStorageConfig {
  * File Lifecycle Policy
  */
 export interface FileLifecyclePolicy {
-  transitionToIA: 'AFTER_7_DAYS' | 'AFTER_14_DAYS' | 'AFTER_30_DAYS' | 'AFTER_60_DAYS' | 'AFTER_90_DAYS';
+  transitionToIA:
+    | 'AFTER_7_DAYS'
+    | 'AFTER_14_DAYS'
+    | 'AFTER_30_DAYS'
+    | 'AFTER_60_DAYS'
+    | 'AFTER_90_DAYS';
   transitionToPrimaryStorageClass: 'AFTER_1_ACCESS';
 }
 
@@ -631,7 +636,11 @@ export interface MetricConfig {
   period: number; // seconds
   evaluationPeriods: number;
   threshold: number;
-  comparisonOperator: 'GreaterThanThreshold' | 'LessThanThreshold' | 'GreaterThanOrEqualToThreshold' | 'LessThanOrEqualToThreshold';
+  comparisonOperator:
+    | 'GreaterThanThreshold'
+    | 'LessThanThreshold'
+    | 'GreaterThanOrEqualToThreshold'
+    | 'LessThanOrEqualToThreshold';
 }
 
 /**
