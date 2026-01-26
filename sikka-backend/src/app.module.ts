@@ -20,6 +20,8 @@ import { WebSocketModule } from './modules/websocket/websocket.module';
 
 // Operational Modules
 import { NotificationModule } from './notification/notification.module';
+import { ScalingModule } from './scaling/scaling.module';
+import { PerformanceModule } from './performance/performance.module';
 // import { AnalyticsModule } from './analytics/analytics.module';
 // import { JobsModule } from './jobs/jobs.module';
 // import { I18nModule } from './i18n/i18n.module';
@@ -74,6 +76,8 @@ import { AppService } from './app.service';
 
     // Operational Modules
     NotificationModule,
+    ScalingModule,
+    PerformanceModule,
     // AnalyticsModule,
     // JobsModule,
     // I18nModule,
