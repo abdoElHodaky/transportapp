@@ -21,62 +21,62 @@ This document outlines the key business processes and user journeys in the Sikka
 %%{init: {
   'theme': 'base',
   'themeVariables': {
-    'primaryColor': '#ff6b6b',
+    'primaryColor': '#FF6F00',
     'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#ff4757',
-    'lineColor': '#3742fa',
-    'secondaryColor': '#2ed573',
-    'tertiaryColor': '#ffa502',
-    'background': '#1e1e1e',
-    'mainBkg': '#2f3542',
-    'secondBkg': '#57606f',
-    'tertiaryBkg': '#747d8c'
+    'primaryBorderColor': '#E65100',
+    'lineColor': '#FF8F00',
+    'secondaryColor': '#FFA726',
+    'tertiaryColor': '#FFE0B2',
+    'background': '#ffffff',
+    'mainBkg': '#FF6F00',
+    'secondBkg': '#FFA726',
+    'tertiaryBkg': '#FFE0B2'
   }
 }}%%
 
 flowchart TD
     %% Phase 1: Setup
     subgraph "📱 Trip Setup"
-        A[📱 Passenger Opens App<br/>Location Permission]
-        B[📍 Enter Destination<br/>Address/Map Selection]
-        C[🚗 Select Trip Type<br/>Standard/Premium/Shared]
+        A[📱 Passenger Opens App<br/>🔐 Location Permission]
+        B[📍 Enter Destination<br/>🗺️ Address/Map Selection]
+        C[🚗 Select Trip Type<br/>⭐ Standard/Premium/Shared]
     end
 
     %% Phase 2: Booking
     subgraph "💰 Booking & Pricing"
-        D[💵 View Fare Estimate<br/>Distance + Time Calculation]
-        E[✅ Confirm Booking<br/>Payment Method Selection]
-        F[🔍 Find Available Drivers<br/>Radius-based Search]
-        G{🚗 Driver Available?<br/>Within 5km Radius}
+        D[💵 View Fare Estimate<br/>📏 Distance + Time Calculation]
+        E[✅ Confirm Booking<br/>💳 Payment Method Selection]
+        F[🔍 Find Available Drivers<br/>📡 Radius-based Search]
+        G{🚗 Driver Available?<br/>📍 Within 5km Radius}
     end
 
     %% Phase 3: Matching
     subgraph "🎯 Driver Matching"
-        I[📤 Send Trip Request<br/>Push Notification to Driver]
-        J{✋ Driver Accepts?<br/>30 Second Timeout}
-        K[⏭️ Try Next Driver<br/>Closest Available]
-        L[🎉 Trip Assigned<br/>Driver Details Shared]
+        I[📤 Send Trip Request<br/>🔔 Push Notification to Driver]
+        J{✋ Driver Accepts?<br/>⏰ 30 Second Timeout}
+        K[⏭️ Try Next Driver<br/>🔄 Closest Available]
+        L[🎉 Trip Assigned<br/>👤 Driver Details Shared]
     end
 
     %% Phase 4: Transit
     subgraph "🚗 Trip Execution"
-        M[🧭 Driver Navigates to Pickup<br/>GPS Navigation Active]
-        N[📍 Driver Arrives<br/>Passenger Notification]
-        O[🚪 Passenger Enters Vehicle<br/>Trip Verification]
-        P[🚀 Trip Starts<br/>Real-time Tracking]
-        Q[🗺️ Navigate to Destination<br/>Optimal Route]
+        M[🧭 Driver Navigates to Pickup<br/>🛣️ GPS Navigation Active]
+        N[📍 Driver Arrives<br/>📱 Passenger Notification]
+        O[🚪 Passenger Enters Vehicle<br/>✅ Trip Verification]
+        P[🚀 Trip Starts<br/>📊 Real-time Tracking]
+        Q[🗺️ Navigate to Destination<br/>⚡ Optimal Route]
     end
 
     %% Phase 5: Conclusion
     subgraph "✅ Trip Completion"
-        R[🏁 Trip Completed<br/>Arrival Confirmation]
-        S[💳 Process Payment<br/>Automatic Deduction]
-        T[⭐ Rate & Review<br/>5-Star Rating System]
-        U[🎊 Trip Finished<br/>Receipt Generated]
+        R[🏁 Trip Completed<br/>📍 Arrival Confirmation]
+        S[💳 Process Payment<br/>🔄 Automatic Deduction]
+        T[⭐ Rate & Review<br/>📝 5-Star Rating System]
+        U[🎊 Trip Finished<br/>📧 Receipt Generated]
     end
 
     %% Error Handling
-    H[❌ Notify: No Drivers<br/>Suggest Alternative Times]
+    H[❌ Notify: No Drivers<br/>💡 Suggest Alternative Times]
 
     %% Connections
     A --> B --> C --> D --> E --> F --> G
@@ -86,22 +86,22 @@ flowchart TD
     J -->|❌ No| K --> J
     J -->|✅ Yes| L --> M --> N --> O --> P --> Q --> R --> S --> T --> U
 
-    %% Styling
-    classDef setupStyle fill:#3742fa,stroke:#2f3542,stroke-width:3px,color:#fff
-    classDef bookingStyle fill:#ffa502,stroke:#ff6348,stroke-width:3px,color:#fff
-    classDef matchingStyle fill:#a55eea,stroke:#8854d0,stroke-width:3px,color:#fff
-    classDef transitStyle fill:#2ed573,stroke:#20bf6b,stroke-width:3px,color:#fff
-    classDef finishStyle fill:#ff6b6b,stroke:#ff4757,stroke-width:3px,color:#fff
-    classDef decisionStyle fill:#26de81,stroke:#20bf6b,stroke-width:4px,color:#fff,stroke-dasharray: 5 5
-    classDef errorStyle fill:#fd79a8,stroke:#e84393,stroke-width:2px,color:#fff
+    %% Eye-catching Business Process Styling
+    classDef setupPhase fill:#FF6F00,stroke:#E65100,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef bookingPhase fill:#FFA726,stroke:#FF8F00,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef matchingPhase fill:#FFB74D,stroke:#FF9800,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef transitPhase fill:#FFCC02,stroke:#FFC107,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef completionPhase fill:#4CAF50,stroke:#388E3C,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef decisionNode fill:#2196F3,stroke:#1976D2,stroke-width:5px,color:#ffffff,font-weight:bold,stroke-dasharray: 8 4
+    classDef errorNode fill:#F44336,stroke:#D32F2F,stroke-width:3px,color:#ffffff,font-weight:bold
 
-    class A,B,C setupStyle
-    class D,E,F bookingStyle
-    class I,K,L matchingStyle
-    class M,N,O,P,Q transitStyle
-    class R,S,T,U finishStyle
-    class G,J decisionStyle
-    class H errorStyle
+    class A,B,C setupPhase
+    class D,E,F bookingPhase
+    class I,K,L matchingPhase
+    class M,N,O,P,Q transitPhase
+    class R,S,T,U completionPhase
+    class G,J decisionNode
+    class H errorNode
 ```
 
 ### **Detailed Trip States**
@@ -111,16 +111,16 @@ flowchart TD
 %%{init: {
   'theme': 'base',
   'themeVariables': {
-    'primaryColor': '#2ed573',
+    'primaryColor': '#FF6F00',
     'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#20bf6b',
-    'lineColor': '#3742fa',
-    'secondaryColor': '#ff6b6b',
-    'tertiaryColor': '#ffa502',
-    'background': '#1e1e1e',
-    'mainBkg': '#2f3542',
-    'secondBkg': '#57606f',
-    'tertiaryBkg': '#747d8c'
+    'primaryBorderColor': '#E65100',
+    'lineColor': '#FF8F00',
+    'secondaryColor': '#FFA726',
+    'tertiaryColor': '#FFE0B2',
+    'background': '#ffffff',
+    'mainBkg': '#FF6F00',
+    'secondBkg': '#FFA726',
+    'tertiaryBkg': '#FFE0B2'
   }
 }}%%
 
@@ -136,11 +136,11 @@ stateDiagram-v2
     TripStarted --> TripCompleted : 🏁 Arrived at Destination
     TripCompleted --> [*] : ✅ Trip Successfully Completed
 
-    %% Styling
-    classDef activeState fill:#2ed573,stroke:#20bf6b,stroke-width:3px,color:#fff
-    classDef waitingState fill:#ffa502,stroke:#ff6348,stroke-width:2px,color:#fff
-    classDef errorState fill:#ff6b6b,stroke:#ff4757,stroke-width:2px,color:#fff
-    classDef finalState fill:#a55eea,stroke:#8854d0,stroke-width:3px,color:#fff
+    %% Eye-catching Business Process State Styling
+    classDef activeState fill:#FF6F00,stroke:#E65100,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef waitingState fill:#FFA726,stroke:#FF8F00,stroke-width:3px,color:#ffffff,font-weight:bold
+    classDef errorState fill:#F44336,stroke:#D32F2F,stroke-width:3px,color:#ffffff,font-weight:bold
+    classDef finalState fill:#4CAF50,stroke:#388E3C,stroke-width:4px,color:#ffffff,font-weight:bold
 
     class Requested,Accepted,TripStarted activeState
     class Searching,DriverEnRoute,DriverArrived waitingState
@@ -374,16 +374,16 @@ flowchart TD
 %%{init: {
   'theme': 'base',
   'themeVariables': {
-    'primaryColor': '#a55eea',
+    'primaryColor': '#FF6F00',
     'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#8854d0',
-    'lineColor': '#ff6b6b',
-    'secondaryColor': '#26de81',
-    'tertiaryColor': '#ffa502',
-    'background': '#1e1e1e',
-    'mainBkg': '#2f3542',
-    'secondBkg': '#57606f',
-    'tertiaryBkg': '#747d8c'
+    'primaryBorderColor': '#E65100',
+    'lineColor': '#FF8F00',
+    'secondaryColor': '#FFA726',
+    'tertiaryColor': '#FFE0B2',
+    'background': '#ffffff',
+    'mainBkg': '#FF6F00',
+    'secondBkg': '#FFA726',
+    'tertiaryBkg': '#FFE0B2'
   }
 }}%%
 
@@ -449,46 +449,46 @@ sequenceDiagram
 
 ```mermaid
 %%{init: {
-  'theme': 'dark',
+  'theme': 'base',
   'themeVariables': {
-    'primaryColor': '#26de81',
+    'primaryColor': '#FF6F00',
     'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#20bf6b',
-    'lineColor': '#3742fa',
-    'secondaryColor': '#ff6b6b',
-    'tertiaryColor': '#ffa502',
-    'background': '#1e1e1e',
-    'mainBkg': '#2f3542',
-    'secondBkg': '#57606f',
-    'tertiaryBkg': '#747d8c'
+    'primaryBorderColor': '#E65100',
+    'lineColor': '#FF8F00',
+    'secondaryColor': '#FFA726',
+    'tertiaryColor': '#FFE0B2',
+    'background': '#ffffff',
+    'mainBkg': '#FF6F00',
+    'secondBkg': '#FFA726',
+    'tertiaryBkg': '#FFE0B2'
   }
 }}%%
 
 flowchart TD
     subgraph "📋 Document Submission"
-        A[📄 Upload Driving License<br/>Clear Photo Required]
-        B[🚗 Upload Vehicle Registration<br/>Valid Registration Certificate]
-        C[🛡️ Upload Insurance Certificate<br/>Valid Insurance Policy]
-        D[📸 Upload Profile Photo<br/>Clear Face Visible]
+        A[📄 Upload Driving License<br/>📷 Clear Photo Required]
+        B[🚗 Upload Vehicle Registration<br/>📋 Valid Registration Certificate]
+        C[🛡️ Upload Insurance Certificate<br/>📜 Valid Insurance Policy]
+        D[📸 Upload Profile Photo<br/>👤 Clear Face Visible]
     end
     
     subgraph "🔍 Verification Process"
-        E[🤖 Automated Document Check<br/>OCR & AI Validation]
-        F{📋 Documents Valid?<br/>Automated Verification}
-        G[👨‍💼 Manual Review<br/>Admin Verification]
-        H{✅ Admin Approval?<br/>Final Decision}
+        E[🤖 Automated Document Check<br/>🔍 OCR & AI Validation]
+        F{📋 Documents Valid?<br/>⚡ Automated Verification}
+        G[👨‍💼 Manual Review<br/>🔎 Admin Verification]
+        H{✅ Admin Approval?<br/>🎯 Final Decision}
     end
     
     subgraph "🎯 Account Activation"
-        I[🎉 Driver Account Activated<br/>Ready to Accept Trips]
-        J[📧 Welcome Email Sent<br/>Driver Guidelines]
-        K[📱 Push Notification<br/>Account Approved]
+        I[🎉 Driver Account Activated<br/>🚗 Ready to Accept Trips]
+        J[📧 Welcome Email Sent<br/>📖 Driver Guidelines]
+        K[📱 Push Notification<br/>✅ Account Approved]
     end
     
     subgraph "❌ Rejection Process"
-        L[❌ Documents Rejected<br/>Reason Provided]
-        M[📧 Rejection Email<br/>Resubmission Instructions]
-        N[🔄 Resubmission Allowed<br/>Up to 3 Attempts]
+        L[❌ Documents Rejected<br/>📝 Reason Provided]
+        M[📧 Rejection Email<br/>🔄 Resubmission Instructions]
+        N[🔄 Resubmission Allowed<br/>🔢 Up to 3 Attempts]
     end
 
     %% Flow Connections
@@ -512,18 +512,18 @@ flowchart TD
     M --> N
     N --> A
 
-    %% Styling
-    classDef docStyle fill:#3742fa,stroke:#2f3542,stroke-width:2px,color:#fff
-    classDef verifyStyle fill:#ffa502,stroke:#ff6348,stroke-width:2px,color:#fff
-    classDef approveStyle fill:#26de81,stroke:#20bf6b,stroke-width:3px,color:#fff
-    classDef rejectStyle fill:#ff6b6b,stroke:#ff4757,stroke-width:2px,color:#fff
-    classDef decisionStyle fill:#a55eea,stroke:#8854d0,stroke-width:3px,color:#fff,stroke-dasharray: 5 5
+    %% Eye-catching Business Process Styling
+    classDef docSubmission fill:#FF6F00,stroke:#E65100,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef verificationProcess fill:#FFA726,stroke:#FF8F00,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef accountActivation fill:#4CAF50,stroke:#388E3C,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef rejectionProcess fill:#F44336,stroke:#D32F2F,stroke-width:3px,color:#ffffff,font-weight:bold
+    classDef decisionNode fill:#2196F3,stroke:#1976D2,stroke-width:5px,color:#ffffff,font-weight:bold,stroke-dasharray: 8 4
 
-    class A,B,C,D docStyle
-    class E,G verifyStyle
-    class I,J,K approveStyle
-    class L,M,N rejectStyle
-    class F,H decisionStyle
+    class A,B,C,D docSubmission
+    class E,G verificationProcess
+    class I,J,K accountActivation
+    class L,M,N rejectionProcess
+    class F,H decisionNode
 ```
 
 ### **Passenger Registration Flow**
