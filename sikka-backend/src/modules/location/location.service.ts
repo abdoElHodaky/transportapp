@@ -270,7 +270,10 @@ export class LocationService {
         return mappingRoute;
       }
     } catch (error) {
-      this.logger.warn('Mapping service unavailable, falling back to Haversine calculation', error);
+      this.logger.warn(
+        'Mapping service unavailable, falling back to Haversine calculation',
+        error,
+      );
     }
 
     // Fallback to Haversine calculation
@@ -308,9 +311,14 @@ export class LocationService {
   /**
    * Get route information from external mapping service (Google Maps, OpenStreetMap, etc.)
    */
-  private async getRouteFromMappingService(routeData: RouteCalculationDto): Promise<RouteResult | null> {
-    const mappingProvider = this.configService.get('MAPPING_PROVIDER', 'openstreetmap');
-    
+  private async getRouteFromMappingService(
+    routeData: RouteCalculationDto,
+  ): Promise<RouteResult | null> {
+    const mappingProvider = this.configService.get(
+      'MAPPING_PROVIDER',
+      'openstreetmap',
+    );
+
     switch (mappingProvider) {
       case 'google':
         return this.getGoogleMapsRoute(routeData);
@@ -326,7 +334,9 @@ export class LocationService {
   /**
    * Get route from Google Maps Directions API
    */
-  private async getGoogleMapsRoute(routeData: RouteCalculationDto): Promise<RouteResult | null> {
+  private async getGoogleMapsRoute(
+    routeData: RouteCalculationDto,
+  ): Promise<RouteResult | null> {
     const apiKey = this.configService.get('GOOGLE_MAPS_API_KEY');
     if (!apiKey) {
       this.logger.warn('Google Maps API key not configured');
@@ -334,25 +344,30 @@ export class LocationService {
     }
 
     try {
-      const response = await axios.get('https://maps.googleapis.com/maps/api/directions/json', {
-        params: {
-          origin: `${routeData.pickupLatitude},${routeData.pickupLongitude}`,
-          destination: `${routeData.dropoffLatitude},${routeData.dropoffLongitude}`,
-          key: apiKey,
-          departure_time: 'now',
-          traffic_model: 'best_guess',
-          alternatives: true,
+      const response = await axios.get(
+        'https://maps.googleapis.com/maps/api/directions/json',
+        {
+          params: {
+            origin: `${routeData.pickupLatitude},${routeData.pickupLongitude}`,
+            destination: `${routeData.dropoffLatitude},${routeData.dropoffLongitude}`,
+            key: apiKey,
+            departure_time: 'now',
+            traffic_model: 'best_guess',
+            alternatives: true,
+          },
+          timeout: 5000,
         },
-        timeout: 5000,
-      });
+      );
 
       if (response.data.status === 'OK' && response.data.routes.length > 0) {
         const route = response.data.routes[0];
         const leg = route.legs[0];
-        
+
         const distance = leg.distance.value / 1000; // Convert to km
-        const duration = Math.round(leg.duration_in_traffic?.value / 60) || Math.round(leg.duration.value / 60); // Convert to minutes
-        
+        const duration =
+          Math.round(leg.duration_in_traffic?.value / 60) ||
+          Math.round(leg.duration.value / 60); // Convert to minutes
+
         // Calculate fare
         const fareRates = {
           standard: { base: 5.0, perKm: 2.5, perMinute: 0.3 },
@@ -360,28 +375,48 @@ export class LocationService {
           shared: { base: 3.0, perKm: 1.8, perMinute: 0.2 },
           delivery: { base: 4.0, perKm: 2.0, perMinute: 0.25 },
         };
-        
+
         const rates = fareRates[routeData.tripType || 'standard'];
-        const estimatedFare = rates.base + distance * rates.perKm + duration * rates.perMinute;
+        const estimatedFare =
+          rates.base + distance * rates.perKm + duration * rates.perMinute;
 
         // Extract waypoints
-        const waypoints = route.overview_polyline ? this.decodePolyline(route.overview_polyline.points) : [];
+        const waypoints = route.overview_polyline
+          ? this.decodePolyline(route.overview_polyline.points)
+          : [];
 
         // Process alternative routes
-        const alternativeRoutes: RouteAlternative[] = response.data.routes.slice(1, 3).map((altRoute: any) => {
-          const altLeg = altRoute.legs[0];
-          const altDistance = altLeg.distance.value / 1000;
-          const altDuration = Math.round(altLeg.duration_in_traffic?.value / 60) || Math.round(altLeg.duration.value / 60);
-          const altFare = rates.base + altDistance * rates.perKm + altDuration * rates.perMinute;
-          
-          return {
-            distance: Math.round(altDistance * 100) / 100,
-            duration: altDuration,
-            estimatedFare: Math.round(altFare * 100) / 100,
-            trafficDelay: altLeg.duration_in_traffic ? Math.round((altLeg.duration_in_traffic.value - altLeg.duration.value) / 60) : 0,
-            routeQuality: altDistance < distance ? 'shortest' : (altDuration < duration ? 'fastest' : 'balanced'),
-          };
-        });
+        const alternativeRoutes: RouteAlternative[] = response.data.routes
+          .slice(1, 3)
+          .map((altRoute: any) => {
+            const altLeg = altRoute.legs[0];
+            const altDistance = altLeg.distance.value / 1000;
+            const altDuration =
+              Math.round(altLeg.duration_in_traffic?.value / 60) ||
+              Math.round(altLeg.duration.value / 60);
+            const altFare =
+              rates.base +
+              altDistance * rates.perKm +
+              altDuration * rates.perMinute;
+
+            return {
+              distance: Math.round(altDistance * 100) / 100,
+              duration: altDuration,
+              estimatedFare: Math.round(altFare * 100) / 100,
+              trafficDelay: altLeg.duration_in_traffic
+                ? Math.round(
+                    (altLeg.duration_in_traffic.value - altLeg.duration.value) /
+                      60,
+                  )
+                : 0,
+              routeQuality:
+                altDistance < distance
+                  ? 'shortest'
+                  : altDuration < duration
+                    ? 'fastest'
+                    : 'balanced',
+            };
+          });
 
         return {
           distance: Math.round(distance * 100) / 100,
@@ -403,24 +438,29 @@ export class LocationService {
   /**
    * Get route from OpenStreetMap (OSRM)
    */
-  private async getOpenStreetMapRoute(routeData: RouteCalculationDto): Promise<RouteResult | null> {
+  private async getOpenStreetMapRoute(
+    routeData: RouteCalculationDto,
+  ): Promise<RouteResult | null> {
     try {
-      const response = await axios.get('http://router.project-osrm.org/route/v1/driving/' +
-        `${routeData.pickupLongitude},${routeData.pickupLatitude};${routeData.dropoffLongitude},${routeData.dropoffLatitude}`, {
-        params: {
-          overview: 'full',
-          geometries: 'polyline',
-          alternatives: true,
+      const response = await axios.get(
+        'http://router.project-osrm.org/route/v1/driving/' +
+          `${routeData.pickupLongitude},${routeData.pickupLatitude};${routeData.dropoffLongitude},${routeData.dropoffLatitude}`,
+        {
+          params: {
+            overview: 'full',
+            geometries: 'polyline',
+            alternatives: true,
+          },
+          timeout: 5000,
         },
-        timeout: 5000,
-      });
+      );
 
       if (response.data.code === 'Ok' && response.data.routes.length > 0) {
         const route = response.data.routes[0];
-        
+
         const distance = route.distance / 1000; // Convert to km
         const duration = Math.round(route.duration / 60); // Convert to minutes
-        
+
         // Calculate fare
         const fareRates = {
           standard: { base: 5.0, perKm: 2.5, perMinute: 0.3 },
@@ -428,23 +468,34 @@ export class LocationService {
           shared: { base: 3.0, perKm: 1.8, perMinute: 0.2 },
           delivery: { base: 4.0, perKm: 2.0, perMinute: 0.25 },
         };
-        
+
         const rates = fareRates[routeData.tripType || 'standard'];
-        const estimatedFare = rates.base + distance * rates.perKm + duration * rates.perMinute;
+        const estimatedFare =
+          rates.base + distance * rates.perKm + duration * rates.perMinute;
 
         // Process alternative routes
-        const alternativeRoutes: RouteAlternative[] = response.data.routes.slice(1, 3).map((altRoute: any) => {
-          const altDistance = altRoute.distance / 1000;
-          const altDuration = Math.round(altRoute.duration / 60);
-          const altFare = rates.base + altDistance * rates.perKm + altDuration * rates.perMinute;
-          
-          return {
-            distance: Math.round(altDistance * 100) / 100,
-            duration: altDuration,
-            estimatedFare: Math.round(altFare * 100) / 100,
-            routeQuality: altDistance < distance ? 'shortest' : (altDuration < duration ? 'fastest' : 'balanced'),
-          };
-        });
+        const alternativeRoutes: RouteAlternative[] = response.data.routes
+          .slice(1, 3)
+          .map((altRoute: any) => {
+            const altDistance = altRoute.distance / 1000;
+            const altDuration = Math.round(altRoute.duration / 60);
+            const altFare =
+              rates.base +
+              altDistance * rates.perKm +
+              altDuration * rates.perMinute;
+
+            return {
+              distance: Math.round(altDistance * 100) / 100,
+              duration: altDuration,
+              estimatedFare: Math.round(altFare * 100) / 100,
+              routeQuality:
+                altDistance < distance
+                  ? 'shortest'
+                  : altDuration < duration
+                    ? 'fastest'
+                    : 'balanced',
+            };
+          });
 
         return {
           distance: Math.round(distance * 100) / 100,
@@ -465,7 +516,9 @@ export class LocationService {
   /**
    * Get route from Mapbox Directions API
    */
-  private async getMapboxRoute(routeData: RouteCalculationDto): Promise<RouteResult | null> {
+  private async getMapboxRoute(
+    routeData: RouteCalculationDto,
+  ): Promise<RouteResult | null> {
     const accessToken = this.configService.get('MAPBOX_ACCESS_TOKEN');
     if (!accessToken) {
       this.logger.warn('Mapbox access token not configured');
@@ -473,24 +526,27 @@ export class LocationService {
     }
 
     try {
-      const response = await axios.get(`https://api.mapbox.com/directions/v5/mapbox/driving/` +
-        `${routeData.pickupLongitude},${routeData.pickupLatitude};${routeData.dropoffLongitude},${routeData.dropoffLatitude}`, {
-        params: {
-          access_token: accessToken,
-          overview: 'full',
-          geometries: 'polyline',
-          alternatives: true,
-          annotations: 'duration,distance',
+      const response = await axios.get(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/` +
+          `${routeData.pickupLongitude},${routeData.pickupLatitude};${routeData.dropoffLongitude},${routeData.dropoffLatitude}`,
+        {
+          params: {
+            access_token: accessToken,
+            overview: 'full',
+            geometries: 'polyline',
+            alternatives: true,
+            annotations: 'duration,distance',
+          },
+          timeout: 5000,
         },
-        timeout: 5000,
-      });
+      );
 
       if (response.data.code === 'Ok' && response.data.routes.length > 0) {
         const route = response.data.routes[0];
-        
+
         const distance = route.distance / 1000; // Convert to km
         const duration = Math.round(route.duration / 60); // Convert to minutes
-        
+
         // Calculate fare
         const fareRates = {
           standard: { base: 5.0, perKm: 2.5, perMinute: 0.3 },
@@ -498,23 +554,34 @@ export class LocationService {
           shared: { base: 3.0, perKm: 1.8, perMinute: 0.2 },
           delivery: { base: 4.0, perKm: 2.0, perMinute: 0.25 },
         };
-        
+
         const rates = fareRates[routeData.tripType || 'standard'];
-        const estimatedFare = rates.base + distance * rates.perKm + duration * rates.perMinute;
+        const estimatedFare =
+          rates.base + distance * rates.perKm + duration * rates.perMinute;
 
         // Process alternative routes
-        const alternativeRoutes: RouteAlternative[] = response.data.routes.slice(1, 3).map((altRoute: any) => {
-          const altDistance = altRoute.distance / 1000;
-          const altDuration = Math.round(altRoute.duration / 60);
-          const altFare = rates.base + altDistance * rates.perKm + altDuration * rates.perMinute;
-          
-          return {
-            distance: Math.round(altDistance * 100) / 100,
-            duration: altDuration,
-            estimatedFare: Math.round(altFare * 100) / 100,
-            routeQuality: altDistance < distance ? 'shortest' : (altDuration < duration ? 'fastest' : 'balanced'),
-          };
-        });
+        const alternativeRoutes: RouteAlternative[] = response.data.routes
+          .slice(1, 3)
+          .map((altRoute: any) => {
+            const altDistance = altRoute.distance / 1000;
+            const altDuration = Math.round(altRoute.duration / 60);
+            const altFare =
+              rates.base +
+              altDistance * rates.perKm +
+              altDuration * rates.perMinute;
+
+            return {
+              distance: Math.round(altDistance * 100) / 100,
+              duration: altDuration,
+              estimatedFare: Math.round(altFare * 100) / 100,
+              routeQuality:
+                altDistance < distance
+                  ? 'shortest'
+                  : altDuration < duration
+                    ? 'fastest'
+                    : 'balanced',
+            };
+          });
 
         return {
           distance: Math.round(distance * 100) / 100,
@@ -638,7 +705,7 @@ export class LocationService {
   ): Promise<boolean> {
     // Check against dynamic geofence areas first
     const serviceAreas = Array.from(this.geofenceAreas.values()).filter(
-      area => area.type === 'service_area' && area.isActive
+      (area) => area.type === 'service_area' && area.isActive,
     );
 
     for (const area of serviceAreas) {
@@ -671,14 +738,16 @@ export class LocationService {
     longitude: number,
   ): Promise<{ restricted: boolean; reason?: string }> {
     const restrictedAreas = Array.from(this.geofenceAreas.values()).filter(
-      area => area.type === 'restricted' && area.isActive
+      (area) => area.type === 'restricted' && area.isActive,
     );
 
     for (const area of restrictedAreas) {
       if (this.isPointInPolygon(latitude, longitude, area.coordinates)) {
         return {
           restricted: true,
-          reason: area.metadata?.reason || 'This area is restricted for ride services',
+          reason:
+            area.metadata?.reason ||
+            'This area is restricted for ride services',
         };
       }
     }
@@ -694,7 +763,7 @@ export class LocationService {
     longitude: number,
   ): Promise<number> {
     const surgeAreas = Array.from(this.geofenceAreas.values()).filter(
-      area => area.type === 'surge_pricing' && area.isActive
+      (area) => area.type === 'surge_pricing' && area.isActive,
     );
 
     for (const area of surgeAreas) {
@@ -716,12 +785,19 @@ export class LocationService {
   ): Promise<TrafficInfo> {
     try {
       // Try to get real traffic data from mapping service
-      const trafficData = await this.getTrafficFromMappingService(latitude, longitude, radius);
+      const trafficData = await this.getTrafficFromMappingService(
+        latitude,
+        longitude,
+        radius,
+      );
       if (trafficData) {
         return trafficData;
       }
     } catch (error) {
-      this.logger.warn('Traffic service unavailable, using estimated data', error);
+      this.logger.warn(
+        'Traffic service unavailable, using estimated data',
+        error,
+      );
     }
 
     // Fallback to estimated traffic based on time of day and location
@@ -744,7 +820,10 @@ export class LocationService {
         'COUNT(*) as activity_count',
         'AVG(location.accuracy) as avg_accuracy',
       ])
-      .where('location.recordedAt BETWEEN :dateFrom AND :dateTo', { dateFrom, dateTo })
+      .where('location.recordedAt BETWEEN :dateFrom AND :dateTo', {
+        dateFrom,
+        dateTo,
+      })
       .groupBy('location.latitude, location.longitude')
       .having('COUNT(*) > 5') // Filter out low-activity areas
       .orderBy('activity_count', 'DESC')
@@ -753,13 +832,19 @@ export class LocationService {
     // Filter by location type
     switch (type) {
       case 'pickup':
-        query.andWhere('location.type = :type', { type: LocationType.TRIP_START });
+        query.andWhere('location.type = :type', {
+          type: LocationType.TRIP_START,
+        });
         break;
       case 'dropoff':
-        query.andWhere('location.type = :type', { type: LocationType.TRIP_END });
+        query.andWhere('location.type = :type', {
+          type: LocationType.TRIP_END,
+        });
         break;
       case 'driver_activity':
-        query.andWhere('location.type = :type', { type: LocationType.DRIVER_LOCATION });
+        query.andWhere('location.type = :type', {
+          type: LocationType.DRIVER_LOCATION,
+        });
         break;
     }
 
@@ -770,7 +855,7 @@ export class LocationService {
       analytics: {
         type,
         period: { from: dateFrom, to: dateTo },
-        heatmapData: results.map(result => ({
+        heatmapData: results.map((result) => ({
           latitude: parseFloat(result.latitude),
           longitude: parseFloat(result.longitude),
           intensity: parseInt(result.activity_count),
@@ -778,8 +863,15 @@ export class LocationService {
         })),
         summary: {
           totalDataPoints: results.length,
-          totalActivity: results.reduce((sum, r) => sum + parseInt(r.activity_count), 0),
-          averageAccuracy: results.reduce((sum, r) => sum + parseFloat(r.avg_accuracy || '0'), 0) / results.length,
+          totalActivity: results.reduce(
+            (sum, r) => sum + parseInt(r.activity_count),
+            0,
+          ),
+          averageAccuracy:
+            results.reduce(
+              (sum, r) => sum + parseFloat(r.avg_accuracy || '0'),
+              0,
+            ) / results.length,
         },
       },
     };
@@ -788,14 +880,16 @@ export class LocationService {
   /**
    * Manage geofence areas
    */
-  async createGeofenceArea(areaData: Omit<GeofenceArea, 'id'>): Promise<GeofenceArea> {
+  async createGeofenceArea(
+    areaData: Omit<GeofenceArea, 'id'>,
+  ): Promise<GeofenceArea> {
     const area: GeofenceArea = {
       id: `geofence_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       ...areaData,
     };
 
     this.geofenceAreas.set(area.id, area);
-    
+
     // Cache in Redis for persistence across instances
     await this.redis.setex(`geofence:${area.id}`, 86400, JSON.stringify(area));
 
@@ -803,7 +897,10 @@ export class LocationService {
     return area;
   }
 
-  async updateGeofenceArea(areaId: string, updates: Partial<GeofenceArea>): Promise<GeofenceArea | null> {
+  async updateGeofenceArea(
+    areaId: string,
+    updates: Partial<GeofenceArea>,
+  ): Promise<GeofenceArea | null> {
     const area = this.geofenceAreas.get(areaId);
     if (!area) {
       return null;
@@ -811,9 +908,13 @@ export class LocationService {
 
     const updatedArea = { ...area, ...updates };
     this.geofenceAreas.set(areaId, updatedArea);
-    
+
     // Update in Redis
-    await this.redis.setex(`geofence:${areaId}`, 86400, JSON.stringify(updatedArea));
+    await this.redis.setex(
+      `geofence:${areaId}`,
+      86400,
+      JSON.stringify(updatedArea),
+    );
 
     this.logger.log(`Updated geofence area: ${updatedArea.name}`);
     return updatedArea;
@@ -830,7 +931,7 @@ export class LocationService {
 
   async getGeofenceAreas(type?: string): Promise<GeofenceArea[]> {
     const areas = Array.from(this.geofenceAreas.values());
-    return type ? areas.filter(area => area.type === type) : areas;
+    return type ? areas.filter((area) => area.type === type) : areas;
   }
 
   private async cacheDriverLocation(
@@ -1016,7 +1117,7 @@ export class LocationService {
 
       // Create default Khartoum service area if none exists
       const serviceAreas = Array.from(this.geofenceAreas.values()).filter(
-        area => area.type === 'service_area'
+        (area) => area.type === 'service_area',
       );
 
       if (serviceAreas.length === 0) {
@@ -1031,7 +1132,8 @@ export class LocationService {
           ],
           isActive: true,
           metadata: {
-            description: 'Main service area covering Khartoum metropolitan area',
+            description:
+              'Main service area covering Khartoum metropolitan area',
             priority: 1,
           },
         });
@@ -1061,7 +1163,7 @@ export class LocationService {
       const xj = polygon[j].longitude;
       const yj = polygon[j].latitude;
 
-      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) {
         inside = !inside;
       }
     }
@@ -1072,7 +1174,9 @@ export class LocationService {
   /**
    * Decode Google Maps polyline
    */
-  private decodePolyline(encoded: string): Array<{ latitude: number; longitude: number }> {
+  private decodePolyline(
+    encoded: string,
+  ): Array<{ latitude: number; longitude: number }> {
     const points: Array<{ latitude: number; longitude: number }> = [];
     let index = 0;
     let lat = 0;
@@ -1089,7 +1193,7 @@ export class LocationService {
         shift += 5;
       } while (b >= 0x20);
 
-      const dlat = ((result & 1) !== 0 ? ~(result >> 1) : (result >> 1));
+      const dlat = (result & 1) !== 0 ? ~(result >> 1) : result >> 1;
       lat += dlat;
 
       shift = 0;
@@ -1101,7 +1205,7 @@ export class LocationService {
         shift += 5;
       } while (b >= 0x20);
 
-      const dlng = ((result & 1) !== 0 ? ~(result >> 1) : (result >> 1));
+      const dlng = (result & 1) !== 0 ? ~(result >> 1) : result >> 1;
       lng += dlng;
 
       points.push({
@@ -1121,8 +1225,11 @@ export class LocationService {
     longitude: number,
     radius: number,
   ): Promise<TrafficInfo | null> {
-    const mappingProvider = this.configService.get('MAPPING_PROVIDER', 'openstreetmap');
-    
+    const mappingProvider = this.configService.get(
+      'MAPPING_PROVIDER',
+      'openstreetmap',
+    );
+
     // Only Google Maps provides traffic data
     if (mappingProvider === 'google') {
       return this.getGoogleTrafficInfo(latitude, longitude, radius);
@@ -1146,13 +1253,16 @@ export class LocationService {
 
     try {
       // Use Google Maps Roads API to get traffic data
-      const response = await axios.get('https://roads.googleapis.com/v1/speedLimits', {
-        params: {
-          path: `${latitude},${longitude}`,
-          key: apiKey,
+      const response = await axios.get(
+        'https://roads.googleapis.com/v1/speedLimits',
+        {
+          params: {
+            path: `${latitude},${longitude}`,
+            key: apiKey,
+          },
+          timeout: 3000,
         },
-        timeout: 3000,
-      });
+      );
 
       // This is a simplified implementation
       // In practice, you'd use more sophisticated traffic APIs
@@ -1171,13 +1281,16 @@ export class LocationService {
   /**
    * Estimate traffic info based on time and location
    */
-  private estimateTrafficInfo(latitude: number, longitude: number): TrafficInfo {
+  private estimateTrafficInfo(
+    latitude: number,
+    longitude: number,
+  ): TrafficInfo {
     const hour = new Date().getHours();
-    
+
     // Rush hour logic
     const isRushHour = (hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19);
     const isBusinessHours = hour >= 8 && hour <= 18;
-    
+
     let congestionLevel: 'low' | 'moderate' | 'high' | 'severe';
     let averageSpeed: number;
     let delayMinutes: number;

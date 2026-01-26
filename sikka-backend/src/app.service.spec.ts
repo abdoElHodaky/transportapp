@@ -21,6 +21,9 @@ describe('AppService', () => {
     expect(result).toHaveProperty('status', 'healthy');
     expect(result).toHaveProperty('timestamp');
     expect(result).toHaveProperty('version', '1.0.0');
-    expect(result).toHaveProperty('message', 'Sikka Transportation API is running!');
+    expect(result).toHaveProperty(
+      'message',
+      'Sikka Transportation API is running!',
+    );
   });
 });

@@ -161,7 +161,9 @@ export class RealtimeGateway
         lastSeen: Date.now(),
         deviceInfo: {
           platform: client.handshake.headers['user-agent'] || 'unknown',
-          version: client.handshake.headers['app-version'] || 'unknown',
+          version: Array.isArray(client.handshake.headers['app-version'])
+            ? client.handshake.headers['app-version'][0]
+            : client.handshake.headers['app-version'] || 'unknown',
         },
       };
       this.userPresence.set(user.id, presenceInfo);
@@ -230,14 +232,14 @@ export class RealtimeGateway
   async handleDisconnect(client: AuthenticatedSocket) {
     if (client.userId) {
       this.connectedUsers.delete(client.userId);
-      
+
       // Update user presence to offline
       const presenceInfo = this.userPresence.get(client.userId);
       if (presenceInfo) {
         presenceInfo.status = 'offline';
         presenceInfo.lastSeen = Date.now();
         this.userPresence.set(client.userId, presenceInfo);
-        
+
         // Broadcast presence update to relevant users
         this.broadcastPresenceUpdate(client.userId, presenceInfo);
       }
@@ -561,7 +563,12 @@ export class RealtimeGateway
       await this.persistChatMessage(chatMessage);
 
       // Send delivery receipts
-      await this.sendMessageReceipts(messageId, data.tripId, client.userId, 'sent');
+      await this.sendMessageReceipts(
+        messageId,
+        data.tripId,
+        client.userId,
+        'sent',
+      );
 
       // Stop typing indicator for sender
       await this.handleTypingStop(client, { tripId: data.tripId });
@@ -650,7 +657,12 @@ export class RealtimeGateway
 
     try {
       // Send read receipt
-      await this.sendMessageReceipts(data.messageId, data.tripId, client.userId, 'read');
+      await this.sendMessageReceipts(
+        data.messageId,
+        data.tripId,
+        client.userId,
+        'read',
+      );
 
       // Update message read status in persistence
       await this.updateMessageReadStatus(data.messageId, client.userId);
@@ -688,7 +700,11 @@ export class RealtimeGateway
         return { error: 'Not authorized for this trip' };
       }
 
-      const history = await this.getChatHistory(data.tripId, data.page || 1, data.limit || 50);
+      const history = await this.getChatHistory(
+        data.tripId,
+        data.page || 1,
+        data.limit || 50,
+      );
       return { success: true, history };
     } catch (error) {
       this.logger.error('Chat history error:', error);
@@ -987,7 +1003,9 @@ export class RealtimeGateway
       });
       await this.redis.expire(`receipts:${message.messageId}`, 86400 * 7); // 7 days
 
-      this.logger.debug(`Persisted message ${message.messageId} for trip ${message.tripId}`);
+      this.logger.debug(
+        `Persisted message ${message.messageId} for trip ${message.tripId}`,
+      );
     } catch (error) {
       this.logger.error('Failed to persist chat message:', error);
     }
@@ -996,7 +1014,11 @@ export class RealtimeGateway
   /**
    * Get chat history with pagination
    */
-  private async getChatHistory(tripId: string, page: number = 1, limit: number = 50) {
+  private async getChatHistory(
+    tripId: string,
+    page: number = 1,
+    limit: number = 50,
+  ) {
     try {
       const start = (page - 1) * limit;
       const end = start + limit - 1;
@@ -1004,11 +1026,13 @@ export class RealtimeGateway
       const messages = await this.redis.lrange(`chat:${tripId}`, start, end);
       const totalCount = await this.redis.llen(`chat:${tripId}`);
 
-      const parsedMessages = messages.map(msg => JSON.parse(msg)).reverse(); // Reverse to get chronological order
+      const parsedMessages = messages.map((msg) => JSON.parse(msg)).reverse(); // Reverse to get chronological order
 
       // Get read receipts for each message
       for (const message of parsedMessages) {
-        const receipts = await this.redis.hgetall(`receipts:${message.messageId}`);
+        const receipts = await this.redis.hgetall(
+          `receipts:${message.messageId}`,
+        );
         message.readReceipts = receipts;
       }
 
@@ -1027,7 +1051,14 @@ export class RealtimeGateway
       this.logger.error('Failed to get chat history:', error);
       return {
         messages: [],
-        pagination: { page, limit, total: 0, totalPages: 0, hasNext: false, hasPrev: false },
+        pagination: {
+          page,
+          limit,
+          total: 0,
+          totalPages: 0,
+          hasNext: false,
+          hasPrev: false,
+        },
       };
     }
   }
@@ -1053,7 +1084,9 @@ export class RealtimeGateway
         timestamp: Date.now(),
       });
 
-      this.logger.debug(`Sent ${status} receipt for message ${messageId} from user ${userId}`);
+      this.logger.debug(
+        `Sent ${status} receipt for message ${messageId} from user ${userId}`,
+      );
     } catch (error) {
       this.logger.error('Failed to send message receipt:', error);
     }
@@ -1065,7 +1098,9 @@ export class RealtimeGateway
   private async updateMessageReadStatus(messageId: string, userId: string) {
     try {
       await this.redis.hset(`receipts:${messageId}`, userId, 'read');
-      this.logger.debug(`Updated read status for message ${messageId} by user ${userId}`);
+      this.logger.debug(
+        `Updated read status for message ${messageId} by user ${userId}`,
+      );
     } catch (error) {
       this.logger.error('Failed to update message read status:', error);
     }
@@ -1074,7 +1109,10 @@ export class RealtimeGateway
   /**
    * Broadcast presence update to relevant users
    */
-  private async broadcastPresenceUpdate(userId: string, presence: PresenceInfo) {
+  private async broadcastPresenceUpdate(
+    userId: string,
+    presence: PresenceInfo,
+  ) {
     try {
       // Find active trips for this user
       const activeTrips = await this.tripRepository.find({
@@ -1097,9 +1135,15 @@ export class RealtimeGateway
       }
 
       // Cache presence in Redis for cross-instance communication
-      await this.redis.setex(`presence:${userId}`, 300, JSON.stringify(presence)); // 5 minutes TTL
+      await this.redis.setex(
+        `presence:${userId}`,
+        300,
+        JSON.stringify(presence),
+      ); // 5 minutes TTL
 
-      this.logger.debug(`Broadcasted presence update for user ${userId}: ${presence.status}`);
+      this.logger.debug(
+        `Broadcasted presence update for user ${userId}: ${presence.status}`,
+      );
     } catch (error) {
       this.logger.error('Failed to broadcast presence update:', error);
     }
