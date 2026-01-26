@@ -991,130 +991,59 @@ flowchart TD
 ### **Post-Trip Rating Flow**
 
 ```mermaid
-%%{init: {
+ %%{init: {
   "theme": "dark",
   "themeVariables": {
+    "darkMode": true,
+    "background": "#0d1117",
     "primaryColor": "#0d1117",
     "primaryTextColor": "#aff5b4",
     "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "lineColor": "#3fb950",
+    "signalColor": "#3fb950",
+    "signalTextColor": "#aff5b4",
+    "labelBoxBkgColor": "#161b22",
+    "labelBoxBorderColor": "#3fb950",
+    "noteBkgColor": "#04190b",
+    "noteTextColor": "#aff5b4",
+    "actorBkg": "#0d1117",
+    "actorBorder": "#238636",
+    "actorTextColor": "#aff5b4"
   }
-}%%
+}}%%
 sequenceDiagram
-    participant P as "Passenger"
-    participant D as "Driver"
-    participant A as "API"
-    participant N as "Notification"
-    
-    Note over P,D: Trip Completed
-    
-    A->>P: Request Rating
-    A->>D: Request Rating
-    
-    P->>A: Submit Rating (1-5 stars + comment)
-    A->>A: Validate Rating
-    A->>A: Update Driver Average
-    A->>N: Notify Driver of Rating
-    
-    D->>A: Submit Rating (1-5 stars + comment)
-    A->>A: Validate Rating
-    A->>A: Update Passenger Average
-    A->>N: Notify Passenger of Rating
-    
-    A->>A: Check for Issues
-    A->>A: Update User Profiles
+    autonumber
+    participant P as "fa:fa-user Passenger"
+    participant A as "fa:fa-gears API"
+    participant DB as "fa:fa-database DB"
+    participant N as "fa:fa-bell Notification"
+    participant CS as "fa:fa-headset Support"
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    Note over P,A: 🔐 Step 1: Authentication & Payload Validation
 
-    class A main;
-    class D decision;
-    class N revNode;
-    class P commNode;
+    P->>+A: POST /v1/ratings {score: 1}
+    A->>A: Verify Token
+    A->>A: Sanitize Comment
+    
+    Note over A,DB: ⚡ Step 2: Conditional Logic Branch
 
-
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
+    alt Score < 3 (Critical Path)
+        A->>+DB: INSERT INTO flags (user_id, reason)
+        DB-->>-A: Row Created
+        A->>N: Push: "Low Rating Received"
+        A->>+CS: Create Ticket #RTG-104
+        Note right of CS: SLA: 2-Hour Response
+        deactivate CS
+    else Score >= 3 (Happy Path)
+        A->>+DB: UPDATE user_profiles SET avg_rating
+        DB-->>-A: Updated
+        A->>N: Push: "New Rating Logged"
+    end
     
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
+    Note over A,P: ✅ Step 3: Resolution
     
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
+    A-->>-P: 201 Created (Rating Stored)
     
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
 
 
 ```
