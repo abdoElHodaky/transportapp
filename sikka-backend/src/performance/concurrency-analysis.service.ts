@@ -112,15 +112,17 @@ export class ConcurrencyAnalysisService {
       // PostgreSQL default max_connections is typically 100
       // TypeORM default pool size is 10
       const maxConnections = parseInt(process.env.DB_MAX_CONNECTIONS || '20');
-      
+
       // Get current connection count
       const connectionQuery = await this.dataSource.query(`
         SELECT count(*) as current_connections 
         FROM pg_stat_activity 
         WHERE state = 'active'
       `);
-      
-      const currentConnections = parseInt(connectionQuery[0]?.current_connections || '0');
+
+      const currentConnections = parseInt(
+        connectionQuery[0]?.current_connections || '0',
+      );
       const availableConnections = maxConnections - currentConnections;
       const connectionUtilization = (currentConnections / maxConnections) * 100;
 
@@ -154,14 +156,18 @@ export class ConcurrencyAnalysisService {
     try {
       const info = await this.redis.info();
       const memory = await this.redis.info('memory');
-      
+
       // Parse Redis info
-      const connectedClients = this.parseRedisInfo(info, 'connected_clients') || 0;
+      const connectedClients =
+        this.parseRedisInfo(info, 'connected_clients') || 0;
       const usedMemory = this.parseRedisInfo(memory, 'used_memory') || 0;
-      const maxMemory = this.parseRedisInfo(memory, 'maxmemory') || (1024 * 1024 * 1024); // 1GB default
-      
+      const maxMemory =
+        this.parseRedisInfo(memory, 'maxmemory') || 1024 * 1024 * 1024; // 1GB default
+
       // Redis can handle thousands of connections, but practical limit is ~10,000
-      const maxConnections = parseInt(process.env.REDIS_MAX_CONNECTIONS || '10000');
+      const maxConnections = parseInt(
+        process.env.REDIS_MAX_CONNECTIONS || '10000',
+      );
       const memoryUtilization = (usedMemory / maxMemory) * 100;
 
       // Redis can handle ~100,000 operations per second on modern hardware
@@ -196,8 +202,10 @@ export class ConcurrencyAnalysisService {
     try {
       // Socket.IO can handle ~10,000 concurrent connections per instance
       // Limited by memory and CPU rather than the library itself
-      const maxConnections = parseInt(process.env.WEBSOCKET_MAX_CONNECTIONS || '10000');
-      
+      const maxConnections = parseInt(
+        process.env.WEBSOCKET_MAX_CONNECTIONS || '10000',
+      );
+
       // Get current WebSocket connections (this would need to be tracked in the gateway)
       const currentConnections = 0; // This would be injected from WebSocket gateway
       const connectionUtilization = (currentConnections / maxConnections) * 100;
@@ -210,9 +218,14 @@ export class ConcurrencyAnalysisService {
       // Each WebSocket connection uses ~8KB of memory
       const availableMemory = os.freemem();
       const memoryPerConnection = 8 * 1024; // 8KB
-      const memoryBasedLimit = Math.floor(availableMemory * 0.3 / memoryPerConnection); // Use 30% of free memory
-      
-      const recommendedMaxConcurrentSessions = Math.min(maxConnections, memoryBasedLimit);
+      const memoryBasedLimit = Math.floor(
+        (availableMemory * 0.3) / memoryPerConnection,
+      ); // Use 30% of free memory
+
+      const recommendedMaxConcurrentSessions = Math.min(
+        maxConnections,
+        memoryBasedLimit,
+      );
 
       return {
         maxConnections,
@@ -273,7 +286,9 @@ export class ConcurrencyAnalysisService {
 
     // Recommended max concurrent requests considering keep-alive connections
     // Typically 80% of max connections for active requests
-    const recommendedMaxConcurrentRequests = Math.floor(maxConcurrentConnections * 0.8);
+    const recommendedMaxConcurrentRequests = Math.floor(
+      maxConcurrentConnections * 0.8,
+    );
 
     return {
       workerConnections,
@@ -298,9 +313,10 @@ export class ConcurrencyAnalysisService {
     };
 
     // Find the bottleneck
-    const bottleneck = Object.entries(capacityLimits).reduce((min, [key, value]) => 
-      value < min.value ? { component: key, value } : min,
-      { component: 'unknown', value: Infinity }
+    const bottleneck = Object.entries(capacityLimits).reduce(
+      (min, [key, value]) =>
+        value < min.value ? { component: key, value } : min,
+      { component: 'unknown', value: Infinity },
     );
 
     // Conservative estimates for concurrent operations
@@ -308,12 +324,16 @@ export class ConcurrencyAnalysisService {
     const maxConcurrentTrips = Math.floor(maxConcurrentUsers * 0.3); // 30% of users in active trips
     const maxConcurrentApiRequests = Math.min(
       metrics.nginx.recommendedMaxConcurrentRequests,
-      metrics.system.recommendedMaxConcurrentOperations
+      metrics.system.recommendedMaxConcurrentOperations,
     );
-    const maxConcurrentWebSocketSessions = metrics.websocket.recommendedMaxConcurrentSessions;
+    const maxConcurrentWebSocketSessions =
+      metrics.websocket.recommendedMaxConcurrentSessions;
 
     // Scaling recommendations
-    const scalingRecommendations = this.generateScalingRecommendations(metrics, bottleneck.component);
+    const scalingRecommendations = this.generateScalingRecommendations(
+      metrics,
+      bottleneck.component,
+    );
 
     return {
       maxConcurrentUsers,
@@ -328,53 +348,84 @@ export class ConcurrencyAnalysisService {
   /**
    * Generate scaling recommendations based on bottlenecks
    */
-  private generateScalingRecommendations(metrics: any, bottleneck: string): string[] {
+  private generateScalingRecommendations(
+    metrics: any,
+    bottleneck: string,
+  ): string[] {
     const recommendations = [];
 
     switch (bottleneck) {
       case 'database':
         recommendations.push('Increase database connection pool size');
-        recommendations.push('Consider database read replicas for read-heavy operations');
-        recommendations.push('Implement database connection pooling with PgBouncer');
+        recommendations.push(
+          'Consider database read replicas for read-heavy operations',
+        );
+        recommendations.push(
+          'Implement database connection pooling with PgBouncer',
+        );
         recommendations.push('Optimize slow queries and add database indexes');
         break;
 
       case 'redis':
         recommendations.push('Increase Redis memory allocation');
-        recommendations.push('Consider Redis clustering for horizontal scaling');
+        recommendations.push(
+          'Consider Redis clustering for horizontal scaling',
+        );
         recommendations.push('Implement Redis connection pooling');
         recommendations.push('Optimize cache TTL and eviction policies');
         break;
 
       case 'websocket':
         recommendations.push('Implement WebSocket connection load balancing');
-        recommendations.push('Consider horizontal scaling with multiple instances');
-        recommendations.push('Optimize WebSocket message handling and reduce memory usage');
-        recommendations.push('Implement connection throttling and rate limiting');
+        recommendations.push(
+          'Consider horizontal scaling with multiple instances',
+        );
+        recommendations.push(
+          'Optimize WebSocket message handling and reduce memory usage',
+        );
+        recommendations.push(
+          'Implement connection throttling and rate limiting',
+        );
         break;
 
       case 'system':
         recommendations.push('Upgrade server CPU and memory resources');
-        recommendations.push('Implement horizontal scaling with load balancers');
-        recommendations.push('Optimize application code for better CPU utilization');
-        recommendations.push('Consider containerization with Kubernetes for auto-scaling');
+        recommendations.push(
+          'Implement horizontal scaling with load balancers',
+        );
+        recommendations.push(
+          'Optimize application code for better CPU utilization',
+        );
+        recommendations.push(
+          'Consider containerization with Kubernetes for auto-scaling',
+        );
         break;
 
       case 'nginx':
         recommendations.push('Increase Nginx worker connections and processes');
-        recommendations.push('Implement Nginx load balancing across multiple backend instances');
-        recommendations.push('Optimize Nginx configuration for high concurrency');
+        recommendations.push(
+          'Implement Nginx load balancing across multiple backend instances',
+        );
+        recommendations.push(
+          'Optimize Nginx configuration for high concurrency',
+        );
         recommendations.push('Consider using a CDN for static content');
         break;
 
       default:
-        recommendations.push('Monitor system performance and identify specific bottlenecks');
+        recommendations.push(
+          'Monitor system performance and identify specific bottlenecks',
+        );
         recommendations.push('Implement comprehensive performance testing');
-        recommendations.push('Consider horizontal scaling across multiple instances');
+        recommendations.push(
+          'Consider horizontal scaling across multiple instances',
+        );
     }
 
     // General recommendations
-    recommendations.push('Implement caching strategies to reduce database load');
+    recommendations.push(
+      'Implement caching strategies to reduce database load',
+    );
     recommendations.push('Use message queues for asynchronous processing');
     recommendations.push('Monitor and alert on key performance metrics');
 
@@ -401,14 +452,18 @@ export class ConcurrencyAnalysisService {
       {
         name: 'Baseline Load Test',
         description: 'Test normal operating conditions',
-        concurrentUsers: Math.floor(capacity.estimatedCapacity.maxConcurrentUsers * 0.3),
+        concurrentUsers: Math.floor(
+          capacity.estimatedCapacity.maxConcurrentUsers * 0.3,
+        ),
         duration: '10 minutes',
         expectedThroughput: '95% requests under 200ms',
       },
       {
         name: 'Peak Load Test',
         description: 'Test expected peak traffic',
-        concurrentUsers: Math.floor(capacity.estimatedCapacity.maxConcurrentUsers * 0.7),
+        concurrentUsers: Math.floor(
+          capacity.estimatedCapacity.maxConcurrentUsers * 0.7,
+        ),
         duration: '15 minutes',
         expectedThroughput: '95% requests under 500ms',
       },
@@ -422,7 +477,9 @@ export class ConcurrencyAnalysisService {
       {
         name: 'WebSocket Load Test',
         description: 'Test real-time messaging capacity',
-        concurrentUsers: Math.floor(capacity.websocket.recommendedMaxConcurrentSessions * 0.8),
+        concurrentUsers: Math.floor(
+          capacity.websocket.recommendedMaxConcurrentSessions * 0.8,
+        ),
         duration: '30 minutes',
         expectedThroughput: '1000+ messages per second',
       },
@@ -459,4 +516,3 @@ export class ConcurrencyAnalysisService {
     return match ? parseInt(match[1]) : 0;
   }
 }
-

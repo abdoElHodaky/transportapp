@@ -69,15 +69,23 @@ export class DatabaseScalingConfig implements TypeOrmOptionsFactory {
               database: baseConfig.database,
             },
             // Add more read replicas for scale phase
-            ...(phaseConfig.phase === 'scale' ? [
-              {
-                host: this.configService.get('DB_SLAVE_2_HOST', baseConfig.host),
-                port: this.configService.get('DB_SLAVE_2_PORT', baseConfig.port),
-                username: baseConfig.username,
-                password: baseConfig.password,
-                database: baseConfig.database,
-              },
-            ] : []),
+            ...(phaseConfig.phase === 'scale'
+              ? [
+                  {
+                    host: this.configService.get(
+                      'DB_SLAVE_2_HOST',
+                      baseConfig.host,
+                    ),
+                    port: this.configService.get(
+                      'DB_SLAVE_2_PORT',
+                      baseConfig.port,
+                    ),
+                    username: baseConfig.username,
+                    password: baseConfig.password,
+                    database: baseConfig.database,
+                  },
+                ]
+              : []),
           ],
         },
       };
@@ -150,7 +158,7 @@ unix_socket_dir = /var/run/postgresql
         FROM pg_stat_activity 
         WHERE state = 'active'
       `,
-      
+
       // Connection pool utilization
       connection_stats: `
         SELECT 
@@ -161,7 +169,7 @@ unix_socket_dir = /var/run/postgresql
         GROUP BY state
         ORDER BY count DESC
       `,
-      
+
       // Slow queries
       slow_queries: `
         SELECT 
@@ -175,7 +183,7 @@ unix_socket_dir = /var/run/postgresql
         ORDER BY mean_time DESC 
         LIMIT 10
       `,
-      
+
       // Database size and growth
       database_size: `
         SELECT 
@@ -184,7 +192,7 @@ unix_socket_dir = /var/run/postgresql
         FROM pg_database
         WHERE pg_database.datname = current_database()
       `,
-      
+
       // Index usage
       index_usage: `
         SELECT 
@@ -198,7 +206,7 @@ unix_socket_dir = /var/run/postgresql
         ORDER BY idx_scan DESC 
         LIMIT 10
       `,
-      
+
       // Lock monitoring
       locks: `
         SELECT 
@@ -209,7 +217,7 @@ unix_socket_dir = /var/run/postgresql
         GROUP BY mode 
         ORDER BY count DESC
       `,
-      
+
       // Replication lag (for read replicas)
       replication_lag: `
         SELECT 
@@ -236,7 +244,7 @@ unix_socket_dir = /var/run/postgresql
     }>;
   } {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    
+
     const baseOptimizations = [
       {
         category: 'Connection Management',
@@ -250,14 +258,16 @@ unix_socket_dir = /var/run/postgresql
         action: 'Add database indexes',
         impact: 'high' as const,
         effort: 'low' as const,
-        description: 'Create indexes on frequently queried columns (user_id, trip_id, location coordinates)',
+        description:
+          'Create indexes on frequently queried columns (user_id, trip_id, location coordinates)',
       },
       {
         category: 'Monitoring',
         action: 'Enable query statistics',
         impact: 'medium' as const,
         effort: 'low' as const,
-        description: 'Install pg_stat_statements extension for query performance monitoring',
+        description:
+          'Install pg_stat_statements extension for query performance monitoring',
       },
     ];
 
@@ -268,7 +278,8 @@ unix_socket_dir = /var/run/postgresql
           action: 'Tune PostgreSQL settings',
           impact: 'medium' as const,
           effort: 'low' as const,
-          description: 'Optimize shared_buffers, work_mem, and maintenance_work_mem',
+          description:
+            'Optimize shared_buffers, work_mem, and maintenance_work_mem',
         },
       ],
       growth: [
@@ -277,7 +288,8 @@ unix_socket_dir = /var/run/postgresql
           action: 'Implement read replicas',
           impact: 'high' as const,
           effort: 'high' as const,
-          description: 'Set up read replicas for location queries and analytics',
+          description:
+            'Set up read replicas for location queries and analytics',
         },
         {
           category: 'Partitioning',
@@ -314,4 +326,3 @@ unix_socket_dir = /var/run/postgresql
     };
   }
 }
-

@@ -31,22 +31,19 @@ export class RedisScalingConfig {
    */
   private createStandardConnection(): Redis {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    
+
     return new Redis({
       host: this.configService.get('REDIS_HOST', 'localhost'),
       port: parseInt(this.configService.get('REDIS_PORT', '6379')),
       password: this.configService.get('REDIS_PASSWORD'),
       db: parseInt(this.configService.get('REDIS_DB', '0')),
       maxRetriesPerRequest: 3,
-      retryDelayOnFailover: 100,
       lazyConnect: true,
       keepAlive: 30000,
       // Connection pool settings
       family: 4,
       connectTimeout: 10000,
       commandTimeout: 5000,
-      // Memory optimization
-      maxmemoryPolicy: 'allkeys-lru',
     });
   }
 
@@ -58,23 +55,30 @@ export class RedisScalingConfig {
       sentinels: [
         {
           host: this.configService.get('REDIS_SENTINEL_1_HOST', 'localhost'),
-          port: parseInt(this.configService.get('REDIS_SENTINEL_1_PORT', '26379')),
+          port: parseInt(
+            this.configService.get('REDIS_SENTINEL_1_PORT', '26379'),
+          ),
         },
         {
           host: this.configService.get('REDIS_SENTINEL_2_HOST', 'localhost'),
-          port: parseInt(this.configService.get('REDIS_SENTINEL_2_PORT', '26380')),
+          port: parseInt(
+            this.configService.get('REDIS_SENTINEL_2_PORT', '26380'),
+          ),
         },
         {
           host: this.configService.get('REDIS_SENTINEL_3_HOST', 'localhost'),
-          port: parseInt(this.configService.get('REDIS_SENTINEL_3_PORT', '26381')),
+          port: parseInt(
+            this.configService.get('REDIS_SENTINEL_3_PORT', '26381'),
+          ),
         },
       ],
-      name: this.configService.get('REDIS_SENTINEL_MASTER_NAME', 'sikka-master'),
+      name: this.configService.get(
+        'REDIS_SENTINEL_MASTER_NAME',
+        'sikka-master',
+      ),
       password: this.configService.get('REDIS_PASSWORD'),
       db: parseInt(this.configService.get('REDIS_DB', '0')),
       // Sentinel-specific settings
-      sentinelRetryDelayOnFailover: 100,
-      sentinelRetryDelayOnClusterDown: 300,
       maxRetriesPerRequest: 3,
       // High availability settings
       enableReadyCheck: true,
@@ -120,19 +124,14 @@ export class RedisScalingConfig {
         connectTimeout: 10000,
         commandTimeout: 5000,
         lazyConnect: true,
-      },
-      // Cluster-specific settings
-      enableOfflineQueue: false,
-      retryDelayOnFailover: 100,
-      retryDelayOnClusterDown: 300,
-      maxRetriesPerRequest: 3,
-      scaleReads: 'slave', // Read from slave nodes
-      // Performance optimization
-      enableReadyCheck: true,
-      redisOptions: {
         keepAlive: 30000,
         family: 4,
       },
+      // Cluster-specific settings
+      enableOfflineQueue: false,
+      scaleReads: 'slave', // Read from slave nodes
+      // Performance optimization
+      enableReadyCheck: true,
     });
   }
 
@@ -150,13 +149,13 @@ export class RedisScalingConfig {
     const baseConfig = {
       maxmemory: redisConfig.maxMemory,
       'maxmemory-policy': 'allkeys-lru',
-      'save': '900 1 300 10 60 10000', // Persistence settings
-      'appendonly': 'yes',
-      'appendfsync': 'everysec',
+      save: '900 1 300 10 60 10000', // Persistence settings
+      appendonly: 'yes',
+      appendfsync: 'everysec',
       'tcp-keepalive': '300',
-      'timeout': '0',
+      timeout: '0',
       'tcp-backlog': '511',
-      'databases': '16',
+      databases: '16',
     };
 
     if (redisConfig.enableClustering) {
@@ -197,7 +196,7 @@ export class RedisScalingConfig {
    */
   private getStandardDockerCompose(): string {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    
+
     return `
   # ⚡ Redis Cache - ${phaseConfig.phase} phase
   redis:
@@ -227,7 +226,7 @@ export class RedisScalingConfig {
    */
   private getSentinelDockerCompose(): string {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    
+
     return `
   # ⚡ Redis Master - ${phaseConfig.phase} phase
   redis-master:
@@ -455,7 +454,7 @@ export class RedisScalingConfig {
     monitoringCommands: Record<string, string>;
   } {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    
+
     const baseOptimizations = [
       {
         category: 'Memory Management',
@@ -539,4 +538,3 @@ export class RedisScalingConfig {
     };
   }
 }
-

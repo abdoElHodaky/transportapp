@@ -52,8 +52,11 @@ export class ScalingPhasesConfig {
    * Get configuration for current scaling phase
    */
   getCurrentPhaseConfig(): ScalingPhaseConfig {
-    const currentPhase = this.configService.get('SCALING_PHASE', 'launch') as 'launch' | 'growth' | 'scale';
-    
+    const currentPhase = this.configService.get('SCALING_PHASE', 'launch') as
+      | 'launch'
+      | 'growth'
+      | 'scale';
+
     switch (currentPhase) {
       case 'launch':
         return this.getLaunchPhaseConfig();
@@ -98,7 +101,7 @@ export class ScalingPhasesConfig {
         enableLoadBalancing: false,
         rateLimits: {
           api: 15, // Increased from 10
-          auth: 8,  // Increased from 5
+          auth: 8, // Increased from 5
         },
       },
       monitoringConfig: {
@@ -218,42 +221,50 @@ export class ScalingPhasesConfig {
    */
   getPhaseEnvironmentVariables(): Record<string, string> {
     const config = this.getCurrentPhaseConfig();
-    
+
     return {
       // Database configuration
       DB_MAX_CONNECTIONS: config.databaseConfig.maxConnections.toString(),
       DB_POOL_SIZE: config.databaseConfig.poolSize.toString(),
-      DB_ENABLE_READ_REPLICAS: config.databaseConfig.enableReadReplicas.toString(),
-      DB_ENABLE_CONNECTION_POOLING: config.databaseConfig.enableConnectionPooling.toString(),
-      
+      DB_ENABLE_READ_REPLICAS:
+        config.databaseConfig.enableReadReplicas.toString(),
+      DB_ENABLE_CONNECTION_POOLING:
+        config.databaseConfig.enableConnectionPooling.toString(),
+
       // Redis configuration
       REDIS_MAX_CONNECTIONS: config.redisConfig.maxConnections.toString(),
       REDIS_MAX_MEMORY: config.redisConfig.maxMemory,
       REDIS_ENABLE_CLUSTERING: config.redisConfig.enableClustering.toString(),
       REDIS_ENABLE_SENTINEL: config.redisConfig.enableSentinel.toString(),
-      
+
       // WebSocket configuration
-      WEBSOCKET_MAX_CONNECTIONS: config.websocketConfig.maxConnections.toString(),
-      WEBSOCKET_ENABLE_LOAD_BALANCING: config.websocketConfig.enableLoadBalancing.toString(),
-      WEBSOCKET_ENABLE_STICKY_SESSIONS: config.websocketConfig.enableStickySessions.toString(),
-      
+      WEBSOCKET_MAX_CONNECTIONS:
+        config.websocketConfig.maxConnections.toString(),
+      WEBSOCKET_ENABLE_LOAD_BALANCING:
+        config.websocketConfig.enableLoadBalancing.toString(),
+      WEBSOCKET_ENABLE_STICKY_SESSIONS:
+        config.websocketConfig.enableStickySessions.toString(),
+
       // Nginx configuration
       NGINX_WORKER_CONNECTIONS: config.nginxConfig.workerConnections.toString(),
       NGINX_WORKER_PROCESSES: config.nginxConfig.workerProcesses.toString(),
-      NGINX_ENABLE_LOAD_BALANCING: config.nginxConfig.enableLoadBalancing.toString(),
+      NGINX_ENABLE_LOAD_BALANCING:
+        config.nginxConfig.enableLoadBalancing.toString(),
       NGINX_RATE_LIMIT_API: config.nginxConfig.rateLimits.api.toString(),
       NGINX_RATE_LIMIT_AUTH: config.nginxConfig.rateLimits.auth.toString(),
-      
+
       // Feature flags
       ENABLE_CACHING: config.features.enableCaching.toString(),
       ENABLE_MESSAGE_QUEUES: config.features.enableMessageQueues.toString(),
       ENABLE_CDN: config.features.enableCDN.toString(),
       ENABLE_AUTO_SCALING: config.features.enableAutoScaling.toString(),
-      
+
       // Monitoring
-      ENABLE_ADVANCED_METRICS: config.monitoringConfig.enableAdvancedMetrics.toString(),
+      ENABLE_ADVANCED_METRICS:
+        config.monitoringConfig.enableAdvancedMetrics.toString(),
       ENABLE_ALERTING: config.monitoringConfig.enableAlerting.toString(),
-      ENABLE_PERFORMANCE_OPTIMIZATION: config.monitoringConfig.enablePerformanceOptimization.toString(),
+      ENABLE_PERFORMANCE_OPTIMIZATION:
+        config.monitoringConfig.enablePerformanceOptimization.toString(),
     };
   }
 
@@ -268,7 +279,7 @@ export class ScalingPhasesConfig {
     criticalActions: string[];
   } {
     const currentConfig = this.getCurrentPhaseConfig();
-    
+
     switch (currentConfig.phase) {
       case 'launch':
         return {
@@ -291,7 +302,7 @@ export class ScalingPhasesConfig {
             'Redis Sentinel configuration',
           ],
         };
-        
+
       case 'growth':
         return {
           currentPhase: 'Growth (3,000-5,000 users)',
@@ -313,7 +324,7 @@ export class ScalingPhasesConfig {
             'Kubernetes auto-scaling',
           ],
         };
-        
+
       case 'scale':
         return {
           currentPhase: 'Scale (10,000+ users)',
@@ -335,7 +346,7 @@ export class ScalingPhasesConfig {
             'Advanced monitoring implementation',
           ],
         };
-        
+
       default:
         return {
           currentPhase: 'Unknown',
@@ -347,4 +358,3 @@ export class ScalingPhasesConfig {
     }
   }
 }
-
