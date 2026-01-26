@@ -24,6 +24,8 @@ import {
   CloudProviderType,
 } from './cloud-provider.factory';
 import { InfrastructureConfig } from './interfaces/infrastructure-config.interface';
+import { InfrastructureOptions } from './interfaces/cloud-provider.interface';
+import { ScalingPhasesConfig, ScalingPhaseConfig } from '../config/scaling-phases.config';
 
 @ApiTags('Cloud Providers')
 @Controller('cloud-providers')
@@ -34,7 +36,29 @@ export class CloudProvidersController {
     private readonly providerManager: CloudProviderManagerService,
     private readonly costComparison: CostComparisonService,
     private readonly providerFactory: CloudProviderFactory,
+    private readonly scalingPhasesConfig: ScalingPhasesConfig,
   ) {}
+
+  /**
+   * Convert string phase to ScalingPhaseConfig
+   */
+  private getPhaseConfig(phase: 'launch' | 'growth' | 'scale'): ScalingPhaseConfig {
+    return this.scalingPhasesConfig.getPhaseConfig(phase);
+  }
+
+  /**
+   * Convert InfrastructureConfig to InfrastructureOptions
+   */
+  private toInfrastructureOptions(config: InfrastructureConfig, region: string): InfrastructureOptions {
+    return {
+      region,
+      environment: config.metadata?.environment || 'development',
+      highAvailability: config.metadata?.scalingPhase === 'scale',
+      backupRetention: config.database?.backup?.retentionPeriod || 7,
+      monitoringLevel: config.monitoring ? 'standard' : 'basic',
+      securityLevel: config.security ? 'standard' : 'basic',
+    };
+  }
 
   @Get('available')
   @ApiOperation({ summary: 'Get all available cloud providers' })
@@ -90,7 +114,6 @@ export class CloudProvidersController {
         currentProvider: {
           type: 'string',
           enum: ['aws', 'linode'],
-          required: false,
         },
       },
       required: ['scalingPhase', 'region', 'config'],
@@ -240,10 +263,11 @@ export class CloudProvidersController {
     try {
       const providerInstance =
         this.providerFactory.getValidatedProvider(provider);
+      const phaseConfig = this.getPhaseConfig(request.scalingPhase);
+      const options = this.toInfrastructureOptions(request.config, request.region);
       const template = await providerInstance.generateInfrastructureTemplate(
-        request.scalingPhase,
-        request.region,
-        request.config,
+        phaseConfig,
+        options,
       );
 
       return {

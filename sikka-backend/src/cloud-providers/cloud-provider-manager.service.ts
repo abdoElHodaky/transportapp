@@ -314,15 +314,17 @@ export class CloudProviderManagerService {
     const toProviderInstance = this.providerFactory.createProvider(toProvider);
 
     // Get cost estimates for comparison
+    const phaseConfig = this.getPhaseConfig(scalingPhase);
+    const costOptions = this.toCostCalculationOptions(config);
     const fromCost = await fromProviderInstance.calculateCost(
-      scalingPhase,
+      phaseConfig,
       'us-east-1',
-      config,
+      costOptions,
     );
     const toCost = await toProviderInstance.calculateCost(
-      scalingPhase,
+      phaseConfig,
       'us-east-1',
-      config,
+      costOptions,
     );
     const savings = fromCost.totalMonthlyCost - toCost.totalMonthlyCost;
 
@@ -364,7 +366,10 @@ export class CloudProviderManagerService {
 
     for (const [providerType, provider] of providers) {
       try {
-        const result = await provider.validateConfiguration(config);
+        const region = config.metadata?.region || 'us-east-1';
+        const scalingPhase = config.metadata?.scalingPhase || 'launch';
+        const phaseConfig = this.getPhaseConfig(scalingPhase);
+        const result = await provider.validateConfiguration(phaseConfig, region);
         validationResults.set(providerType, result);
       } catch (error) {
         this.logger.error(

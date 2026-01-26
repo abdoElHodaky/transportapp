@@ -169,10 +169,11 @@ export class CostCalculatorService {
     );
 
     const providerInstance = this.providerFactory.createProvider(provider);
+    const phaseConfig = this.getPhaseConfig(scalingPhase);
     const baseCost = await providerInstance.calculateCost(
-      scalingPhase,
+      phaseConfig,
       region,
-      config,
+      this.toCostCalculationOptions(config),
     );
 
     const projections: CostProjection[] = [];
