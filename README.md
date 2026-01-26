@@ -744,6 +744,7 @@ npm run type-check
 ### 📖 Available Docs
 
 - **[🏗️ Architecture Guide](docs/ARCHITECTURE.md)** - System design and components
+- **[🚀 Scaling Architecture](docs/SCALING_ARCHITECTURE.md)** - Three-phase scaling strategy and API documentation
 - **[📋 Business Processes](docs/BUSINESS_PROCESSES.md)** - User journeys and workflows
 - **[🗄️ Database Schema](docs/DATABASE_SCHEMA.md)** - Data models and relationships
 - **[🎨 Styling Showcase](mermaid_styling_showcase.md)** - Diagram themes and examples
