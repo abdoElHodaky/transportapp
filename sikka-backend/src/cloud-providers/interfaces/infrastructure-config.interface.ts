@@ -38,9 +38,12 @@ export interface InfrastructureMetadata {
  * Compute Configuration
  */
 export interface ComputeConfig {
-  instances: ComputeInstance[];
+  instances?: ComputeInstance[];
   autoScaling: AutoScalingConfig;
   containerOrchestration?: ContainerConfig;
+  // Additional simplified properties for basic configuration
+  instanceType?: string;
+  instanceCount?: number;
 }
 
 /**
@@ -148,6 +151,7 @@ export interface DatabaseConfig {
   allocatedStorage?: number;
   backupRetention?: number;
   multiAz?: boolean;
+  storage?: number;
 }
 
 /**
@@ -240,14 +244,14 @@ export interface ClusterConfig {
  * Load Balancer Configuration
  */
 export interface LoadBalancerConfig {
-  type: 'application' | 'network' | 'classic';
-  scheme: 'internet-facing' | 'internal';
-  ipAddressType: 'ipv4' | 'dualstack';
-  subnets: string[];
-  securityGroups: string[];
-  listeners: LoadBalancerListener[];
-  targetGroups: TargetGroup[];
-  healthCheck: HealthCheckConfig;
+  type?: 'application' | 'network' | 'classic';
+  scheme?: 'internet-facing' | 'internal';
+  ipAddressType?: 'ipv4' | 'dualstack';
+  subnets?: string[];
+  securityGroups?: string[];
+  listeners?: LoadBalancerListener[];
+  targetGroups?: TargetGroup[];
+  healthCheck?: HealthCheckConfig;
   sslPolicy?: string;
   certificates?: string[];
 }
@@ -328,15 +332,20 @@ export interface TargetGroup {
  * Health Check Configuration
  */
 export interface HealthCheckConfig {
-  enabled: boolean;
-  protocol: 'HTTP' | 'HTTPS' | 'TCP';
-  port: number;
+  enabled?: boolean;
+  protocol?: 'HTTP' | 'HTTPS' | 'TCP';
+  port?: number;
   path?: string;
-  intervalSeconds: number;
-  timeoutSeconds: number;
-  healthyThresholdCount: number;
-  unhealthyThresholdCount: number;
+  intervalSeconds?: number;
+  timeoutSeconds?: number;
+  healthyThresholdCount?: number;
+  unhealthyThresholdCount?: number;
   matcher?: string; // HTTP status codes
+  // Additional simplified properties for basic configuration
+  interval?: number;
+  timeout?: number;
+  healthyThreshold?: number;
+  unhealthyThreshold?: number;
 }
 
 /**
@@ -362,9 +371,14 @@ export interface Target {
  * Storage Configuration
  */
 export interface StorageConfig {
-  blockStorage: BlockStorageConfig[];
-  objectStorage: ObjectStorageConfig[];
+  blockStorage?: BlockStorageConfig[];
+  objectStorage?: ObjectStorageConfig[];
   fileStorage?: FileStorageConfig[];
+  // Additional simplified properties for basic configuration
+  type?: string;
+  size?: number;
+  encrypted?: boolean;
+  defaultSize?: number;
 }
 
 /**
@@ -501,13 +515,15 @@ export interface PosixUser {
  * Networking Configuration
  */
 export interface NetworkingConfig {
-  vpc: VpcConfig;
-  subnets: SubnetConfig[];
+  vpc?: VpcConfig;
+  subnets?: SubnetConfig[];
   internetGateway?: InternetGatewayConfig;
-  natGateways?: NatGatewayConfig[];
-  routeTables: RouteTableConfig[];
-  securityGroups: SecurityGroupConfig[];
+  natGateways?: NatGatewayConfig[] | number; // Support both array and number
+  routeTables?: RouteTableConfig[];
+  securityGroups?: SecurityGroupConfig[];
   networkAcls?: NetworkAclConfig[];
+  // Additional simplified properties for basic configuration
+  vpcCidr?: string;
 }
 
 /**
@@ -627,11 +643,14 @@ export interface NetworkAclRule {
  * Monitoring Configuration
  */
 export interface MonitoringConfig {
-  metrics: MetricConfig[];
-  alarms: AlarmConfig[];
-  dashboards: DashboardConfig[];
-  logGroups: LogGroupConfig[];
-  notifications: NotificationConfig[];
+  metrics?: MetricConfig[];
+  alarms?: AlarmConfig[];
+  dashboards?: DashboardConfig[];
+  logGroups?: LogGroupConfig[];
+  notifications?: NotificationConfig[];
+  // Additional simplified properties for basic configuration
+  enabled?: boolean;
+  retentionDays?: number;
 }
 
 /**

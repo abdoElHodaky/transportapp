@@ -96,10 +96,21 @@ export class LinodeProviderService implements CloudProviderInterface {
     );
     const total = breakdown.reduce((sum, item) => sum + item.monthlyCost, 0);
 
+    // Convert breakdown array to CostBreakdownSummary object
+    const breakdownSummary = {
+      compute: breakdown.find(item => item.service === 'compute')?.monthlyCost || 0,
+      database: breakdown.find(item => item.service === 'database')?.monthlyCost || 0,
+      storage: breakdown.find(item => item.service === 'storage')?.monthlyCost || 0,
+      networking: breakdown.find(item => item.service === 'networking')?.monthlyCost || 0,
+      monitoring: breakdown.find(item => item.service === 'monitoring')?.monthlyCost || 0,
+      cache: breakdown.find(item => item.service === 'cache')?.monthlyCost || 0,
+      other: breakdown.filter(item => !['compute', 'database', 'storage', 'networking', 'monitoring', 'cache'].includes(item.service)).reduce((sum, item) => sum + item.monthlyCost, 0),
+    };
+
     return {
       totalMonthlyCost: total,
       currency: 'USD',
-      breakdown,
+      breakdown: breakdownSummary,
       confidence: 0.85,
       lastUpdated: new Date(),
       assumptions: [
