@@ -45,6 +45,35 @@ interface ChatMessage {
   message: string;
   timestamp: number;
   type: 'text' | 'location' | 'system';
+  messageId?: string;
+  replyTo?: string;
+  edited?: boolean;
+  editedAt?: number;
+}
+
+interface TypingIndicator {
+  tripId: string;
+  userId: string;
+  userName: string;
+  isTyping: boolean;
+  timestamp: number;
+}
+
+interface MessageReceipt {
+  messageId: string;
+  userId: string;
+  status: 'sent' | 'delivered' | 'read';
+  timestamp: number;
+}
+
+interface PresenceInfo {
+  userId: string;
+  status: 'online' | 'away' | 'offline';
+  lastSeen: number;
+  deviceInfo?: {
+    platform: string;
+    version: string;
+  };
 }
 
 @Injectable()
@@ -63,6 +92,8 @@ export class RealtimeGateway
 
   private readonly logger = new Logger(RealtimeGateway.name);
   private connectedUsers = new Map<string, AuthenticatedSocket>();
+  private userPresence = new Map<string, PresenceInfo>();
+  private typingUsers = new Map<string, Set<string>>(); // tripId -> Set of userIds
   private redis: Redis;
   private redisSubscriber: Redis;
 
@@ -122,6 +153,18 @@ export class RealtimeGateway
       client.user = user;
 
       this.connectedUsers.set(client.userId, client);
+
+      // Update user presence
+      const presenceInfo: PresenceInfo = {
+        userId: user.id,
+        status: 'online',
+        lastSeen: Date.now(),
+        deviceInfo: {
+          platform: client.handshake.headers['user-agent'] || 'unknown',
+          version: client.handshake.headers['app-version'] || 'unknown',
+        },
+      };
+      this.userPresence.set(user.id, presenceInfo);
 
       // Join user to their personal room
       await client.join(`user:${user.id}`);
@@ -187,6 +230,30 @@ export class RealtimeGateway
   async handleDisconnect(client: AuthenticatedSocket) {
     if (client.userId) {
       this.connectedUsers.delete(client.userId);
+      
+      // Update user presence to offline
+      const presenceInfo = this.userPresence.get(client.userId);
+      if (presenceInfo) {
+        presenceInfo.status = 'offline';
+        presenceInfo.lastSeen = Date.now();
+        this.userPresence.set(client.userId, presenceInfo);
+        
+        // Broadcast presence update to relevant users
+        this.broadcastPresenceUpdate(client.userId, presenceInfo);
+      }
+
+      // Remove from typing indicators
+      this.typingUsers.forEach((typingSet, tripId) => {
+        if (typingSet.has(client.userId)) {
+          typingSet.delete(client.userId);
+          this.server.to(`trip:${tripId}`).emit('typing:stop', {
+            userId: client.userId,
+            tripId,
+            timestamp: Date.now(),
+          });
+        }
+      });
+
       this.logger.log(
         `Client ${client.id} disconnected (User: ${client.userId})`,
       );
@@ -471,7 +538,11 @@ export class RealtimeGateway
         return { error: 'Not authorized for this trip' };
       }
 
+      // Generate unique message ID
+      const messageId = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
       const chatMessage = {
+        messageId,
         tripId: data.tripId,
         senderId: client.userId,
         senderRole: client.userRole,
@@ -479,22 +550,176 @@ export class RealtimeGateway
         message: data.message,
         type: data.type,
         timestamp: Date.now(),
+        replyTo: data.replyTo,
+        edited: false,
       };
 
       // Send message to trip participants
       this.server.to(`trip:${data.tripId}`).emit('chat:message', chatMessage);
 
-      // Store message in Redis for chat history
-      await this.redis.lpush(
-        `chat:${data.tripId}`,
-        JSON.stringify(chatMessage),
-      );
-      await this.redis.expire(`chat:${data.tripId}`, 86400); // 24 hours
+      // Store message in Redis for chat history with persistence
+      await this.persistChatMessage(chatMessage);
 
-      return { success: true, timestamp: Date.now() };
+      // Send delivery receipts
+      await this.sendMessageReceipts(messageId, data.tripId, client.userId, 'sent');
+
+      // Stop typing indicator for sender
+      await this.handleTypingStop(client, { tripId: data.tripId });
+
+      return { success: true, messageId, timestamp: Date.now() };
     } catch (error) {
       this.logger.error('Chat message error:', error);
       return { error: 'Failed to send message' };
+    }
+  }
+
+  @SubscribeMessage('chat:typing:start')
+  async handleTypingStart(
+    @ConnectedSocket() client: AuthenticatedSocket,
+    @MessageBody() data: { tripId: string },
+  ) {
+    if (!client.userId) {
+      return { error: 'Not authenticated' };
+    }
+
+    try {
+      // Add user to typing set
+      if (!this.typingUsers.has(data.tripId)) {
+        this.typingUsers.set(data.tripId, new Set());
+      }
+      this.typingUsers.get(data.tripId).add(client.userId);
+
+      // Broadcast typing indicator to other trip participants
+      client.to(`trip:${data.tripId}`).emit('typing:start', {
+        userId: client.userId,
+        userName: client.user.firstName,
+        tripId: data.tripId,
+        timestamp: Date.now(),
+      });
+
+      // Auto-stop typing after 3 seconds
+      setTimeout(() => {
+        this.handleTypingStop(client, data);
+      }, 3000);
+
+      return { success: true };
+    } catch (error) {
+      this.logger.error('Typing start error:', error);
+      return { error: 'Failed to start typing indicator' };
+    }
+  }
+
+  @SubscribeMessage('chat:typing:stop')
+  async handleTypingStop(
+    @ConnectedSocket() client: AuthenticatedSocket,
+    @MessageBody() data: { tripId: string },
+  ) {
+    if (!client.userId) {
+      return { error: 'Not authenticated' };
+    }
+
+    try {
+      // Remove user from typing set
+      const typingSet = this.typingUsers.get(data.tripId);
+      if (typingSet && typingSet.has(client.userId)) {
+        typingSet.delete(client.userId);
+
+        // Broadcast stop typing to other trip participants
+        client.to(`trip:${data.tripId}`).emit('typing:stop', {
+          userId: client.userId,
+          tripId: data.tripId,
+          timestamp: Date.now(),
+        });
+      }
+
+      return { success: true };
+    } catch (error) {
+      this.logger.error('Typing stop error:', error);
+      return { error: 'Failed to stop typing indicator' };
+    }
+  }
+
+  @SubscribeMessage('chat:message:read')
+  async handleMessageRead(
+    @ConnectedSocket() client: AuthenticatedSocket,
+    @MessageBody() data: { messageId: string; tripId: string },
+  ) {
+    if (!client.userId) {
+      return { error: 'Not authenticated' };
+    }
+
+    try {
+      // Send read receipt
+      await this.sendMessageReceipts(data.messageId, data.tripId, client.userId, 'read');
+
+      // Update message read status in persistence
+      await this.updateMessageReadStatus(data.messageId, client.userId);
+
+      return { success: true };
+    } catch (error) {
+      this.logger.error('Message read error:', error);
+      return { error: 'Failed to mark message as read' };
+    }
+  }
+
+  @SubscribeMessage('chat:history')
+  async handleChatHistory(
+    @ConnectedSocket() client: AuthenticatedSocket,
+    @MessageBody() data: { tripId: string; page?: number; limit?: number },
+  ) {
+    if (!client.userId) {
+      return { error: 'Not authenticated' };
+    }
+
+    try {
+      const trip = await this.tripRepository.findOne({
+        where: { id: data.tripId },
+      });
+
+      if (!trip) {
+        return { error: 'Trip not found' };
+      }
+
+      // Verify user is part of this trip
+      if (
+        trip.passengerId !== client.userId &&
+        trip.driverId !== client.userId
+      ) {
+        return { error: 'Not authorized for this trip' };
+      }
+
+      const history = await this.getChatHistory(data.tripId, data.page || 1, data.limit || 50);
+      return { success: true, history };
+    } catch (error) {
+      this.logger.error('Chat history error:', error);
+      return { error: 'Failed to retrieve chat history' };
+    }
+  }
+
+  @SubscribeMessage('presence:update')
+  async handlePresenceUpdate(
+    @ConnectedSocket() client: AuthenticatedSocket,
+    @MessageBody() data: { status: 'online' | 'away' | 'offline' },
+  ) {
+    if (!client.userId) {
+      return { error: 'Not authenticated' };
+    }
+
+    try {
+      const presenceInfo = this.userPresence.get(client.userId);
+      if (presenceInfo) {
+        presenceInfo.status = data.status;
+        presenceInfo.lastSeen = Date.now();
+        this.userPresence.set(client.userId, presenceInfo);
+
+        // Broadcast presence update
+        this.broadcastPresenceUpdate(client.userId, presenceInfo);
+      }
+
+      return { success: true };
+    } catch (error) {
+      this.logger.error('Presence update error:', error);
+      return { error: 'Failed to update presence' };
     }
   }
 
@@ -705,6 +930,8 @@ export class RealtimeGateway
     await this.redisSubscriber.subscribe('trip:requests');
     await this.redisSubscriber.subscribe('trip:updates');
     await this.redisSubscriber.subscribe('system:broadcasts');
+    await this.redisSubscriber.subscribe('chat:messages');
+    await this.redisSubscriber.subscribe('presence:updates');
 
     this.redisSubscriber.on('message', (channel, message) => {
       try {
@@ -720,10 +947,189 @@ export class RealtimeGateway
           case 'system:broadcasts':
             this.server.emit('system:message', data);
             break;
+          case 'chat:messages':
+            this.server.to(`trip:${data.tripId}`).emit('chat:message', data);
+            break;
+          case 'presence:updates':
+            this.broadcastPresenceUpdate(data.userId, data.presence);
+            break;
         }
       } catch (error) {
         this.logger.error('Redis message processing error:', error);
       }
     });
+  }
+
+  /**
+   * Persist chat message with enhanced features
+   */
+  private async persistChatMessage(message: any) {
+    try {
+      // Store in Redis list for quick access
+      await this.redis.lpush(`chat:${message.tripId}`, JSON.stringify(message));
+      await this.redis.expire(`chat:${message.tripId}`, 86400 * 7); // 7 days
+
+      // Store in Redis hash for message lookup
+      await this.redis.hset(`message:${message.messageId}`, {
+        tripId: message.tripId,
+        senderId: message.senderId,
+        message: message.message,
+        timestamp: message.timestamp,
+        type: message.type,
+        replyTo: message.replyTo || '',
+        edited: message.edited ? '1' : '0',
+      });
+      await this.redis.expire(`message:${message.messageId}`, 86400 * 7); // 7 days
+
+      // Store read receipts
+      await this.redis.hset(`receipts:${message.messageId}`, {
+        [message.senderId]: 'sent',
+      });
+      await this.redis.expire(`receipts:${message.messageId}`, 86400 * 7); // 7 days
+
+      this.logger.debug(`Persisted message ${message.messageId} for trip ${message.tripId}`);
+    } catch (error) {
+      this.logger.error('Failed to persist chat message:', error);
+    }
+  }
+
+  /**
+   * Get chat history with pagination
+   */
+  private async getChatHistory(tripId: string, page: number = 1, limit: number = 50) {
+    try {
+      const start = (page - 1) * limit;
+      const end = start + limit - 1;
+
+      const messages = await this.redis.lrange(`chat:${tripId}`, start, end);
+      const totalCount = await this.redis.llen(`chat:${tripId}`);
+
+      const parsedMessages = messages.map(msg => JSON.parse(msg)).reverse(); // Reverse to get chronological order
+
+      // Get read receipts for each message
+      for (const message of parsedMessages) {
+        const receipts = await this.redis.hgetall(`receipts:${message.messageId}`);
+        message.readReceipts = receipts;
+      }
+
+      return {
+        messages: parsedMessages,
+        pagination: {
+          page,
+          limit,
+          total: totalCount,
+          totalPages: Math.ceil(totalCount / limit),
+          hasNext: end < totalCount - 1,
+          hasPrev: page > 1,
+        },
+      };
+    } catch (error) {
+      this.logger.error('Failed to get chat history:', error);
+      return {
+        messages: [],
+        pagination: { page, limit, total: 0, totalPages: 0, hasNext: false, hasPrev: false },
+      };
+    }
+  }
+
+  /**
+   * Send message receipts
+   */
+  private async sendMessageReceipts(
+    messageId: string,
+    tripId: string,
+    userId: string,
+    status: 'sent' | 'delivered' | 'read',
+  ) {
+    try {
+      // Update receipt status
+      await this.redis.hset(`receipts:${messageId}`, userId, status);
+
+      // Broadcast receipt to trip participants
+      this.server.to(`trip:${tripId}`).emit('message:receipt', {
+        messageId,
+        userId,
+        status,
+        timestamp: Date.now(),
+      });
+
+      this.logger.debug(`Sent ${status} receipt for message ${messageId} from user ${userId}`);
+    } catch (error) {
+      this.logger.error('Failed to send message receipt:', error);
+    }
+  }
+
+  /**
+   * Update message read status
+   */
+  private async updateMessageReadStatus(messageId: string, userId: string) {
+    try {
+      await this.redis.hset(`receipts:${messageId}`, userId, 'read');
+      this.logger.debug(`Updated read status for message ${messageId} by user ${userId}`);
+    } catch (error) {
+      this.logger.error('Failed to update message read status:', error);
+    }
+  }
+
+  /**
+   * Broadcast presence update to relevant users
+   */
+  private async broadcastPresenceUpdate(userId: string, presence: PresenceInfo) {
+    try {
+      // Find active trips for this user
+      const activeTrips = await this.tripRepository.find({
+        where: [
+          { passengerId: userId, status: TripStatus.IN_PROGRESS },
+          { passengerId: userId, status: TripStatus.ACCEPTED },
+          { driverId: userId, status: TripStatus.IN_PROGRESS },
+          { driverId: userId, status: TripStatus.ACCEPTED },
+        ],
+      });
+
+      // Broadcast to trip participants
+      for (const trip of activeTrips) {
+        this.server.to(`trip:${trip.id}`).emit('presence:update', {
+          userId,
+          status: presence.status,
+          lastSeen: presence.lastSeen,
+          timestamp: Date.now(),
+        });
+      }
+
+      // Cache presence in Redis for cross-instance communication
+      await this.redis.setex(`presence:${userId}`, 300, JSON.stringify(presence)); // 5 minutes TTL
+
+      this.logger.debug(`Broadcasted presence update for user ${userId}: ${presence.status}`);
+    } catch (error) {
+      this.logger.error('Failed to broadcast presence update:', error);
+    }
+  }
+
+  /**
+   * Get user presence information
+   */
+  getUserPresence(userId: string): PresenceInfo | null {
+    return this.userPresence.get(userId) || null;
+  }
+
+  /**
+   * Get typing users for a trip
+   */
+  getTypingUsers(tripId: string): string[] {
+    const typingSet = this.typingUsers.get(tripId);
+    return typingSet ? Array.from(typingSet) : [];
+  }
+
+  /**
+   * Clean up expired typing indicators
+   */
+  private cleanupTypingIndicators() {
+    setInterval(() => {
+      this.typingUsers.forEach((typingSet, tripId) => {
+        if (typingSet.size === 0) {
+          this.typingUsers.delete(tripId);
+        }
+      });
+    }, 30000); // Clean up every 30 seconds
   }
 }
