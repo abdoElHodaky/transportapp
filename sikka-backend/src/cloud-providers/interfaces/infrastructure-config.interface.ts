@@ -9,7 +9,7 @@
  * Complete Infrastructure Configuration
  */
 export interface InfrastructureConfig {
-  metadata: InfrastructureMetadata;
+  metadata?: InfrastructureMetadata;
   compute: ComputeConfig;
   database: DatabaseConfig;
   cache: CacheConfig;
@@ -17,7 +17,7 @@ export interface InfrastructureConfig {
   storage: StorageConfig;
   networking: NetworkingConfig;
   monitoring: MonitoringConfig;
-  security: SecurityConfig;
+  security?: SecurityConfig;
 }
 
 /**
