@@ -392,41 +392,34 @@ Get concise phase summary with critical information.
   'theme': 'base',
   'themeVariables': {
     'primaryColor': '#10b981',
-    'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#059669',
-    'lineColor': '#10b981',
-    'secondaryColor': '#f59e0b',
-    'tertiaryColor': '#ef4444',
-    'background': '#ffffff',
-    'mainBkg': '#10b981',
-    'secondBkg': '#f59e0b',
-    'tertiaryBkg': '#ef4444'
+    'lineColor': '#64748b',
+    'fontSize': '14px'
   }
 }}%%
 graph LR
-    subgraph "🟢 Optimal (0-60%)"
-        A["CPU: < 60%<br/>Memory: < 70%<br/>Connections: < 80%"]
-    end
-    
-    subgraph "🟡 Warning (60-80%)"
-        B["CPU: 60-80%<br/>Memory: 70-85%<br/>Connections: 80-90%"]
-    end
-    
-    subgraph "🔴 Critical (80%+)"
-        C["CPU: > 80%<br/>Memory: > 85%<br/>Connections: > 90%"]
-    end
-    
-    A --> B
-    B --> C
-    
-    B --> D["📊 Monitor Closely<br/>🔄 Prepare Scaling"]
-    C --> E["🚨 Immediate Action<br/>⚡ Scale Now"]
-    
-    classDef optimal fill:#d1fae5,stroke:#10b981,stroke-width:3px,color:#065f46
-    classDef warning fill:#fef3c7,stroke:#f59e0b,stroke-width:3px,color:#92400e
-    classDef critical fill:#fee2e2,stroke:#ef4444,stroke-width:3px,color:#991b1b
-    classDef action fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#3730a3
-    
+    %% DISTINCT NODES
+    A[/"🟢 <b>OPTIMAL</b><hr/>CPU: < 60%"/] 
+    B("(🟡 <b>WARNING</b><hr/>CPU: 60-80%)")
+    C[["🔴 <b>CRITICAL</b><hr/>CPU: > 80%"]]
+
+    %% ESCALATION (Heavy, Forward)
+    A ===>|Load Increases| B
+    B ===>|Threshold Breach| C
+
+    %% RECOVERY (Smooth, Dotted Backwards)
+    C -.->|Cooldown/Scale Up| B
+    B -.->|System Stabilized| A
+
+    %% ACTIONS
+    B --> D{{"📊 MONITOR"}}
+    C ==> E{{"🚨 SCALE NOW"}}
+
+    %% STYLE CLASSES
+    classDef optimal fill:#f0fdf4,stroke:#22c55e,stroke-width:1px,color:#166534
+    classDef warning fill:#fffbeb,stroke:#f59e0b,stroke-width:3px,color:#92400e
+    classDef critical fill:#fef2f2,stroke:#ef4444,stroke-width:6px,color:#991b1b
+    classDef action fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,stroke-dasharray: 5 5
+
     class A optimal
     class B warning
     class C critical
