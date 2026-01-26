@@ -1013,14 +1013,13 @@ flowchart TD
 }}%%
 sequenceDiagram
     autonumber
-    participant P as "fa:fa-user Passenger"
-    participant A as "fa:fa-gears API"
-    participant DB as "fa:fa-database DB"
-    participant N as "fa:fa-bell Notification"
-    participant CS as "fa:fa-headset Support"
+    participant P as "👤 Passenger"
+    participant A as "⚙️ API"
+    participant DB as "🗄️ Database"
+    participant N as "🔔 Notification"
+    participant CS as "🎧 Support"
 
-    Note over P,A: 🔐 Step 1: Authentication & Payload Validation
-
+    Note over P,A: 🔐 Step 1: Authentication & Validation
     P->>+A: POST /v1/ratings {score: 1}
     A->>A: Verify Token
     A->>A: Sanitize Comment
