@@ -832,3 +832,156 @@ export interface StorageSpec {
   throughput?: number; // MB/s
 }
 
+/**
+ * Cloud Region Configuration
+ */
+export interface CloudRegion {
+  name: string;
+  displayName: string;
+  country: string;
+  continent: string;
+  available: boolean;
+  services: string[];
+}
+
+/**
+ * Infrastructure Template
+ */
+export interface InfrastructureTemplate {
+  templateType: 'terraform' | 'cloudformation' | 'pulumi' | 'ansible';
+  version: string;
+  provider: string;
+  region: string;
+  template: string;
+  variables: Record<string, any>;
+  outputs: Record<string, any>;
+  dependencies: string[];
+  estimatedCost: number;
+  estimatedDeploymentTime: number; // minutes
+}
+
+/**
+ * Cost Estimate
+ */
+export interface CostEstimate {
+  provider: string;
+  region: string;
+  currency: 'USD' | 'EUR' | 'GBP';
+  period: 'hourly' | 'daily' | 'monthly' | 'yearly';
+  breakdown: CostBreakdown;
+  total: number;
+  confidence: number; // 0-1
+  lastUpdated: Date;
+  assumptions: string[];
+}
+
+/**
+ * Cost Breakdown
+ */
+export interface CostBreakdown {
+  compute: number;
+  storage: number;
+  database: number;
+  networking: number;
+  monitoring: number;
+  security: number;
+  other: number;
+  details: CostDetail[];
+}
+
+/**
+ * Cost Detail
+ */
+export interface CostDetail {
+  service: string;
+  resource: string;
+  quantity: number;
+  unit: string;
+  unitPrice: number;
+  totalPrice: number;
+  description: string;
+}
+
+/**
+ * Service Recommendation
+ */
+export interface ServiceRecommendation {
+  service: string;
+  provider: string;
+  region: string;
+  instanceType: string;
+  configuration: Record<string, any>;
+  estimatedCost: number;
+  performance: PerformanceMetrics;
+  pros: string[];
+  cons: string[];
+  confidence: number; // 0-1
+  alternatives: AlternativeRecommendation[];
+}
+
+/**
+ * Performance Metrics
+ */
+export interface PerformanceMetrics {
+  cpu: number; // cores
+  memory: number; // GB
+  storage: number; // GB
+  network: number; // Gbps
+  iops: number;
+  throughput: number; // MB/s
+}
+
+/**
+ * Alternative Recommendation
+ */
+export interface AlternativeRecommendation {
+  service: string;
+  instanceType: string;
+  estimatedCost: number;
+  performance: PerformanceMetrics;
+  reason: string;
+}
+
+/**
+ * Validation Result
+ */
+export interface ValidationResult {
+  valid: boolean;
+  errors: ValidationError[];
+  warnings: ValidationWarning[];
+  suggestions: ValidationSuggestion[];
+  score: number; // 0-100
+}
+
+/**
+ * Validation Error
+ */
+export interface ValidationError {
+  code: string;
+  message: string;
+  field: string;
+  severity: 'error' | 'warning' | 'info';
+  suggestion?: string;
+}
+
+/**
+ * Validation Warning
+ */
+export interface ValidationWarning {
+  code: string;
+  message: string;
+  field: string;
+  impact: 'high' | 'medium' | 'low';
+  suggestion?: string;
+}
+
+/**
+ * Validation Suggestion
+ */
+export interface ValidationSuggestion {
+  code: string;
+  message: string;
+  field: string;
+  benefit: string;
+  effort: 'low' | 'medium' | 'high';
+}

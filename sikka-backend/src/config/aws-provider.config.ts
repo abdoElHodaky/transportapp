@@ -740,5 +740,11 @@ export class AwsProviderConfig {
       },
     };
   }
-}
 
+  /**
+   * Get the complete AWS provider configuration
+   */
+  getProviderConfig(): AwsServiceMapping {
+    return this.getServiceMapping();
+  }
+}

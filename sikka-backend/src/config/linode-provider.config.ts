@@ -791,5 +791,11 @@ export class LinodeProviderConfig {
       },
     };
   }
-}
 
+  /**
+   * Get the complete Linode provider configuration
+   */
+  getProviderConfig(): LinodeServiceMapping {
+    return this.getServiceMapping();
+  }
+}

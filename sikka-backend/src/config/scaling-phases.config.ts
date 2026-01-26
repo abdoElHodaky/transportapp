@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 export interface ScalingPhaseConfig {
   phase: 'launch' | 'growth' | 'scale';
+  expectedUsers: number;
   maxConcurrentUsers: number;
   maxConcurrentTrips: number;
   databaseConfig: {
@@ -112,6 +113,7 @@ export class ScalingPhasesConfig {
   private getLaunchPhaseConfig(): ScalingPhaseConfig {
     return {
       phase: 'launch',
+      expectedUsers: 2000,
       maxConcurrentUsers: 2000,
       maxConcurrentTrips: 600,
       databaseConfig: {
@@ -161,6 +163,7 @@ export class ScalingPhasesConfig {
   private getGrowthPhaseConfig(): ScalingPhaseConfig {
     return {
       phase: 'growth',
+      expectedUsers: 5000,
       maxConcurrentUsers: 5000,
       maxConcurrentTrips: 1500,
       databaseConfig: {
@@ -210,6 +213,7 @@ export class ScalingPhasesConfig {
   private getScalePhaseConfig(): ScalingPhaseConfig {
     return {
       phase: 'scale',
+      expectedUsers: 15000,
       maxConcurrentUsers: 15000,
       maxConcurrentTrips: 4500,
       databaseConfig: {
