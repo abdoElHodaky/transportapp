@@ -114,24 +114,41 @@ graph TB
 %%{init: {
   "theme": "dark",
   "themeVariables": {
+    "darkMode": true,
+    "background": "#0d1117",
     "primaryColor": "#0d1117",
     "primaryTextColor": "#cffafe",
     "primaryBorderColor": "#06b6d4",
-    "lineColor": "#06b6d4"
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
+    "lineColor": "#22d3ee",
+    "signalColor": "#22d3ee",
+    "signalTextColor": "#cffafe",
+    "labelBoxBkgColor": "#0d1117",
+    "labelBoxBorderColor": "#06b6d4",
+    "loopTextColor": "#cffafe",
+    "noteBkgColor": "#083344",
+    "noteTextColor": "#cffafe"
   }
 }}%%
 sequenceDiagram
-    participant C as "Client"
-    participant S as "Server"
+    autonumber
+    participant C as 🖥️ Client
+    participant S as ☁️ Server
     
-    C->>S: Connect
-    S->>C: Connected
+    Note over C,S: Initialization Phase
     
-    classDef primary fill:#0d1117,stroke:#06b6d4,stroke-width:4px,color:#cffafe,font-weight:bold;
+    rect rgb(13, 17, 23)
+        C->>+S: TCP SYN (Connect)
+        S-->>-C: TCP ACK (Connected)
+    end
+
+    C->>S: Request Financial Data
+    
+    activate S
+    S-->>S: Process Reports
+    S->>C: Push Dashboard Payload
+    deactivate S
+
+    Note right of S: Update Financial Logs;
 ```
 
 ## Driver Flow Theme (Professional Gold)
