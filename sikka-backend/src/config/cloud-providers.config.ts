@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 /**
  * Cloud Provider Configuration
- * 
+ *
  * Manages configuration for multiple cloud providers and provides
  * intelligent provider selection based on cost, performance, and requirements.
  */
@@ -175,16 +175,17 @@ export class CloudProvidersConfig {
    * Get all available cloud provider configurations
    */
   getAllProviders(): CloudProviderConfig[] {
-    return [
-      this.getAwsConfig(),
-      this.getLinodeConfig(),
-    ].filter(provider => provider.enabled);
+    return [this.getAwsConfig(), this.getLinodeConfig()].filter(
+      (provider) => provider.enabled,
+    );
   }
 
   /**
    * Get configuration for a specific provider
    */
-  getProviderConfig(providerName: 'aws' | 'linode'): CloudProviderConfig | null {
+  getProviderConfig(
+    providerName: 'aws' | 'linode',
+  ): CloudProviderConfig | null {
     switch (providerName) {
       case 'aws':
         return this.getAwsConfig();
@@ -199,13 +200,18 @@ export class CloudProvidersConfig {
    * Get the preferred provider based on configuration
    */
   getPreferredProvider(): CloudProviderConfig {
-    const preferredProvider = this.configService.get('PREFERRED_CLOUD_PROVIDER', 'auto');
-    
+    const preferredProvider = this.configService.get(
+      'PREFERRED_CLOUD_PROVIDER',
+      'auto',
+    );
+
     if (preferredProvider === 'auto') {
       return this.selectOptimalProvider();
     }
-    
-    const provider = this.getProviderConfig(preferredProvider as 'aws' | 'linode');
+
+    const provider = this.getProviderConfig(
+      preferredProvider as 'aws' | 'linode',
+    );
     return provider || this.getLinodeConfig(); // Default to Linode for cost optimization
   }
 
@@ -215,12 +221,12 @@ export class CloudProvidersConfig {
   private selectOptimalProvider(): CloudProviderConfig {
     const providers = this.getAllProviders();
     const scalingPhase = this.configService.get('SCALING_PHASE', 'launch');
-    
+
     // For launch phase, prioritize cost (Linode)
     if (scalingPhase === 'launch') {
-      return providers.find(p => p.name === 'linode') || providers[0];
+      return providers.find((p) => p.name === 'linode') || providers[0];
     }
-    
+
     // For growth and scale phases, consider feature availability
     return providers.sort((a, b) => a.priority - b.priority)[0];
   }
@@ -304,7 +310,7 @@ export class CloudProvidersConfig {
               storage: 80,
               networkPerformance: 'Up to 10 Gbps',
               costPerHour: 0.34,
-              costPerMonth: 248.20,
+              costPerMonth: 248.2,
               suitable: ['scale'],
             },
           ],
@@ -346,12 +352,12 @@ export class CloudProvidersConfig {
           },
           blockStorage: {
             available: true,
-            costPerGB: 0.10,
+            costPerGB: 0.1,
             maxIOPS: 64000,
           },
           fileStorage: {
             available: true,
-            costPerGB: 0.30,
+            costPerGB: 0.3,
             nfsCompatible: true,
           },
         },
@@ -362,7 +368,7 @@ export class CloudProvidersConfig {
           alerting: true,
           dashboards: true,
           logAggregation: true,
-          costPerMetric: 0.30,
+          costPerMetric: 0.3,
         },
         networking: {
           vpc: true,
@@ -376,7 +382,7 @@ export class CloudProvidersConfig {
       pricing: {
         currency: 'USD',
         dataTransfer: {
-          inbound: 0.00,
+          inbound: 0.0,
           outbound: 0.09,
           interRegion: 0.02,
         },
@@ -473,7 +479,7 @@ export class CloudProvidersConfig {
               storage: 25,
               networkPerformance: '40 Gbps',
               costPerHour: 0.0075,
-              costPerMonth: 5.50,
+              costPerMonth: 5.5,
               suitable: ['launch'],
             },
             {
@@ -483,7 +489,7 @@ export class CloudProvidersConfig {
               storage: 80,
               networkPerformance: '40 Gbps',
               costPerHour: 0.033,
-              costPerMonth: 24.00,
+              costPerMonth: 24.0,
               suitable: ['launch', 'growth'],
             },
             {
@@ -493,7 +499,7 @@ export class CloudProvidersConfig {
               storage: 80,
               networkPerformance: '40 Gbps',
               costPerHour: 0.06,
-              costPerMonth: 43.00,
+              costPerMonth: 43.0,
               suitable: ['growth'],
             },
             {
@@ -503,7 +509,7 @@ export class CloudProvidersConfig {
               storage: 320,
               networkPerformance: '40 Gbps',
               costPerHour: 0.24,
-              costPerMonth: 173.00,
+              costPerMonth: 173.0,
               suitable: ['scale'],
             },
           ],
@@ -545,7 +551,7 @@ export class CloudProvidersConfig {
           },
           blockStorage: {
             available: true,
-            costPerGB: 0.10,
+            costPerGB: 0.1,
             maxIOPS: 40000,
           },
           fileStorage: {
@@ -561,7 +567,7 @@ export class CloudProvidersConfig {
           alerting: true,
           dashboards: true,
           logAggregation: false,
-          costPerMetric: 0.00, // Included with Longview
+          costPerMetric: 0.0, // Included with Longview
         },
         networking: {
           vpc: true,
@@ -575,7 +581,7 @@ export class CloudProvidersConfig {
       pricing: {
         currency: 'USD',
         dataTransfer: {
-          inbound: 0.00,
+          inbound: 0.0,
           outbound: 0.005,
           interRegion: 0.01,
         },
@@ -614,4 +620,3 @@ export class CloudProvidersConfig {
     };
   }
 }
-

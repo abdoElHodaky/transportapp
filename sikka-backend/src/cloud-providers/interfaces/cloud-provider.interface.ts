@@ -2,7 +2,7 @@ import { ScalingPhaseConfig } from '../../config/scaling-phases.config';
 
 /**
  * Cloud Provider Interface
- * 
+ *
  * Defines the contract that all cloud provider implementations must follow.
  * This abstraction allows the scaling system to work with multiple cloud providers
  * while maintaining a consistent interface.
@@ -23,7 +23,7 @@ export interface CloudProviderInterface {
    */
   generateInfrastructureTemplate(
     phaseConfig: ScalingPhaseConfig,
-    options: InfrastructureOptions
+    options: InfrastructureOptions,
   ): Promise<InfrastructureTemplate>;
 
   /**
@@ -32,7 +32,7 @@ export interface CloudProviderInterface {
   calculateCost(
     phaseConfig: ScalingPhaseConfig,
     region: string,
-    options: CostCalculationOptions
+    options: CostCalculationOptions,
   ): Promise<CostEstimate>;
 
   /**
@@ -40,7 +40,7 @@ export interface CloudProviderInterface {
    */
   getServiceRecommendations(
     phaseConfig: ScalingPhaseConfig,
-    requirements: ServiceRequirements
+    requirements: ServiceRequirements,
   ): Promise<ServiceRecommendation[]>;
 
   /**
@@ -48,7 +48,7 @@ export interface CloudProviderInterface {
    */
   validateConfiguration(
     phaseConfig: ScalingPhaseConfig,
-    region: string
+    region: string,
   ): Promise<ValidationResult>;
 
   /**
@@ -56,14 +56,14 @@ export interface CloudProviderInterface {
    */
   getEnvironmentVariables(
     phaseConfig: ScalingPhaseConfig,
-    region: string
+    region: string,
   ): Promise<Record<string, string>>;
 
   /**
    * Get monitoring and alerting configuration
    */
   getMonitoringConfiguration(
-    phaseConfig: ScalingPhaseConfig
+    phaseConfig: ScalingPhaseConfig,
   ): Promise<MonitoringConfig>;
 }
 
@@ -109,7 +109,7 @@ export interface InfrastructureOptions {
 export interface CostEstimate {
   totalMonthlyCost: number;
   currency: string;
-  breakdown: CostBreakdown[];
+  breakdown: CostBreakdownSummary;
   confidence: number; // 0-1, how accurate the estimate is
   lastUpdated: Date;
   assumptions: string[];
@@ -117,11 +117,30 @@ export interface CostEstimate {
 }
 
 /**
+ * Cost Breakdown Summary by Category
+ */
+export interface CostBreakdownSummary {
+  compute: number;
+  database: number;
+  storage: number;
+  networking: number;
+  monitoring: number;
+  cache: number;
+  other: number;
+}
+
+/**
  * Cost Breakdown by Service
  */
 export interface CostBreakdown {
   service: string;
-  category: 'compute' | 'database' | 'storage' | 'networking' | 'monitoring' | 'other';
+  category:
+    | 'compute'
+    | 'database'
+    | 'storage'
+    | 'networking'
+    | 'monitoring'
+    | 'other';
   monthlyCost: number;
   unit: string;
   quantity: number;
@@ -261,10 +280,13 @@ export interface WidgetConfig {
  * Cost Optimization Recommendation
  */
 export interface CostOptimizationRecommendation {
-  type: 'instance_sizing' | 'reserved_instances' | 'storage_optimization' | 'network_optimization';
+  type:
+    | 'instance_sizing'
+    | 'reserved_instances'
+    | 'storage_optimization'
+    | 'network_optimization';
   description: string;
   potentialSavings: number;
   effort: 'low' | 'medium' | 'high';
   impact: 'low' | 'medium' | 'high';
 }
-

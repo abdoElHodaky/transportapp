@@ -1,11 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { CloudProviderInterface, CloudRegion, InfrastructureTemplate, InfrastructureOptions, CostEstimate, CostCalculationOptions, ServiceRecommendation, ServiceRequirements, ValidationResult, MonitoringConfig, CostBreakdown } from '../interfaces/cloud-provider.interface';
+import {
+  CloudProviderInterface,
+  CloudRegion,
+  InfrastructureTemplate,
+  InfrastructureOptions,
+  CostEstimate,
+  CostCalculationOptions,
+  ServiceRecommendation,
+  ServiceRequirements,
+  ValidationResult,
+  MonitoringConfig,
+  CostBreakdown,
+} from '../interfaces/cloud-provider.interface';
 import { ScalingPhaseConfig } from '../../config/scaling-phases.config';
 import { AwsProviderConfig } from '../../config/aws-provider.config';
 
 /**
  * AWS Cloud Provider Service
- * 
+ *
  * Implements the CloudProviderInterface for Amazon Web Services.
  * Provides comprehensive AWS infrastructure management and cost optimization
  * for the Sikka Transportation Platform scaling strategy.
@@ -58,10 +70,10 @@ export class AwsProviderService implements CloudProviderInterface {
 
   async generateInfrastructureTemplate(
     phaseConfig: ScalingPhaseConfig,
-    options: InfrastructureOptions
+    options: InfrastructureOptions,
   ): Promise<InfrastructureTemplate> {
     const template = this.generateTerraformTemplate(phaseConfig, options);
-    
+
     return {
       templateType: 'terraform',
       template,
@@ -75,15 +87,30 @@ export class AwsProviderService implements CloudProviderInterface {
   async calculateCost(
     phaseConfig: ScalingPhaseConfig,
     region: string,
-    options: CostCalculationOptions
+    options: CostCalculationOptions,
   ): Promise<CostEstimate> {
-    const breakdown = await this.calculateCostBreakdown(phaseConfig, region, options);
+    const breakdown = await this.calculateCostBreakdown(
+      phaseConfig,
+      region,
+      options,
+    );
     const total = breakdown.reduce((sum, item) => sum + item.monthlyCost, 0);
+
+    // Convert breakdown array to CostBreakdownSummary object
+    const breakdownSummary = {
+      compute: breakdown.find(item => item.service === 'compute')?.monthlyCost || 0,
+      database: breakdown.find(item => item.service === 'database')?.monthlyCost || 0,
+      storage: breakdown.find(item => item.service === 'storage')?.monthlyCost || 0,
+      networking: breakdown.find(item => item.service === 'networking')?.monthlyCost || 0,
+      monitoring: breakdown.find(item => item.service === 'monitoring')?.monthlyCost || 0,
+      cache: breakdown.find(item => item.service === 'cache')?.monthlyCost || 0,
+      other: breakdown.filter(item => !['compute', 'database', 'storage', 'networking', 'monitoring', 'cache'].includes(item.service)).reduce((sum, item) => sum + item.monthlyCost, 0),
+    };
 
     return {
       totalMonthlyCost: total,
       currency: 'USD',
-      breakdown,
+      breakdown: breakdownSummary,
       confidence: 0.9,
       lastUpdated: new Date(),
       assumptions: [
@@ -105,7 +132,7 @@ export class AwsProviderService implements CloudProviderInterface {
 
   async getServiceRecommendations(
     phaseConfig: ScalingPhaseConfig,
-    requirements: ServiceRequirements
+    requirements: ServiceRequirements,
   ): Promise<ServiceRecommendation[]> {
     const recommendations: ServiceRecommendation[] = [];
 
@@ -126,7 +153,7 @@ export class AwsProviderService implements CloudProviderInterface {
 
   async validateConfiguration(
     phaseConfig: ScalingPhaseConfig,
-    region: string
+    region: string,
   ): Promise<ValidationResult> {
     const errors = [];
     const warnings = [];
@@ -134,7 +161,7 @@ export class AwsProviderService implements CloudProviderInterface {
 
     // Validate region availability
     const regions = await this.getAvailableRegions();
-    if (!regions.find(r => r.id === region)) {
+    if (!regions.find((r) => r.id === region)) {
       errors.push({
         field: 'region',
         message: `Region ${region} is not available for AWS`,
@@ -153,7 +180,9 @@ export class AwsProviderService implements CloudProviderInterface {
 
     // Add recommendations
     if (phaseConfig.expectedUsers > 50000) {
-      recommendations.push('Consider using AWS Auto Scaling Groups for better scalability');
+      recommendations.push(
+        'Consider using AWS Auto Scaling Groups for better scalability',
+      );
     }
 
     return {
@@ -166,7 +195,7 @@ export class AwsProviderService implements CloudProviderInterface {
 
   async getEnvironmentVariables(
     phaseConfig: ScalingPhaseConfig,
-    region: string
+    region: string,
   ): Promise<Record<string, string>> {
     return {
       CLOUD_PROVIDER: 'aws',
@@ -178,7 +207,7 @@ export class AwsProviderService implements CloudProviderInterface {
   }
 
   async getMonitoringConfiguration(
-    phaseConfig: ScalingPhaseConfig
+    phaseConfig: ScalingPhaseConfig,
   ): Promise<MonitoringConfig> {
     return {
       metrics: [
@@ -244,7 +273,10 @@ export class AwsProviderService implements CloudProviderInterface {
     };
   }
 
-  private generateTerraformTemplate(phaseConfig: ScalingPhaseConfig, options: InfrastructureOptions): string {
+  private generateTerraformTemplate(
+    phaseConfig: ScalingPhaseConfig,
+    options: InfrastructureOptions,
+  ): string {
     return `
 # AWS Infrastructure Template for ${phaseConfig.phase} phase
 terraform {
@@ -459,9 +491,12 @@ data "aws_availability_zones" "available" {
 `;
   }
 
-  private getTemplateVariables(phaseConfig: ScalingPhaseConfig, options: InfrastructureOptions): Record<string, any> {
+  private getTemplateVariables(
+    phaseConfig: ScalingPhaseConfig,
+    options: InfrastructureOptions,
+  ): Record<string, any> {
     const instanceSpecs = this.getInstanceSpecsForPhase(phaseConfig.phase);
-    
+
     return {
       aws_region: {
         description: 'AWS region',
@@ -526,19 +561,20 @@ data "aws_availability_zones" "available" {
 
   private estimateDeploymentTime(phaseConfig: ScalingPhaseConfig): number {
     const baseTime = 20; // Base deployment time in minutes
-    const instanceMultiplier = this.getInstanceSpecsForPhase(phaseConfig.phase).desiredCount * 3;
+    const instanceMultiplier =
+      this.getInstanceSpecsForPhase(phaseConfig.phase).desiredCount * 3;
     return baseTime + instanceMultiplier;
   }
 
   private async calculateCostBreakdown(
     phaseConfig: ScalingPhaseConfig,
     region: string,
-    options: CostCalculationOptions
+    options: CostCalculationOptions,
   ): Promise<CostBreakdown[]> {
     const specs = this.getInstanceSpecsForPhase(phaseConfig.phase);
     const regionMultiplier = await this.getRegionCostMultiplier(region);
 
-    const breakdown = [
+    const breakdown: CostBreakdown[] = [
       {
         service: 'EC2 Instances',
         category: 'compute' as const,
@@ -640,26 +676,45 @@ data "aws_availability_zones" "available" {
 
   private async getRegionCostMultiplier(region: string): Promise<number> {
     const regions = await this.getAvailableRegions();
-    const regionInfo = regions.find(r => r.id === region);
+    const regionInfo = regions.find((r) => r.id === region);
     return regionInfo?.costMultiplier || 1.0;
   }
 
-  private getComputeRecommendation(phaseConfig: ScalingPhaseConfig, requirements: ServiceRequirements): ServiceRecommendation | null {
+  private getComputeRecommendation(
+    phaseConfig: ScalingPhaseConfig,
+    requirements: ServiceRequirements,
+  ): ServiceRecommendation | null {
     const specs = this.getInstanceSpecsForPhase(phaseConfig.phase);
-    
+
     return {
       service: 'EC2 Compute',
       instanceType: specs.type,
       configuration: {
-        vcpu: specs.type.includes('medium') ? 2 : specs.type.includes('large') ? 4 : 8,
-        memory: specs.type.includes('medium') ? 4 : specs.type.includes('large') ? 8 : 16,
+        vcpu: specs.type.includes('medium')
+          ? 2
+          : specs.type.includes('large')
+            ? 4
+            : 8,
+        memory: specs.type.includes('medium')
+          ? 4
+          : specs.type.includes('large')
+            ? 8
+            : 16,
         storage: 100,
         network: 'Up to 5 Gbps',
       },
       monthlyCost: specs.instanceCost * specs.desiredCount,
       performance: {
-        cpu: specs.type.includes('medium') ? 2 : specs.type.includes('large') ? 4 : 8,
-        memory: specs.type.includes('medium') ? 4 : specs.type.includes('large') ? 8 : 16,
+        cpu: specs.type.includes('medium')
+          ? 2
+          : specs.type.includes('large')
+            ? 4
+            : 8,
+        memory: specs.type.includes('medium')
+          ? 4
+          : specs.type.includes('large')
+            ? 8
+            : 16,
         storage: 100,
         network: 5000,
       },
@@ -674,9 +729,12 @@ data "aws_availability_zones" "available" {
     };
   }
 
-  private getDatabaseRecommendation(phaseConfig: ScalingPhaseConfig, requirements: ServiceRequirements): ServiceRecommendation | null {
+  private getDatabaseRecommendation(
+    phaseConfig: ScalingPhaseConfig,
+    requirements: ServiceRequirements,
+  ): ServiceRecommendation | null {
     const specs = this.getInstanceSpecsForPhase(phaseConfig.phase);
-    
+
     return {
       service: 'RDS PostgreSQL',
       instanceType: specs.dbClass,
@@ -690,7 +748,11 @@ data "aws_availability_zones" "available" {
       monthlyCost: specs.dbCost,
       performance: {
         cpu: 1,
-        memory: specs.dbClass.includes('micro') ? 1 : specs.dbClass.includes('small') ? 2 : 8,
+        memory: specs.dbClass.includes('micro')
+          ? 1
+          : specs.dbClass.includes('small')
+            ? 2
+            : 8,
         storage: 100,
         network: 1000,
       },
@@ -699,13 +761,17 @@ data "aws_availability_zones" "available" {
         {
           instanceType: 'self-managed',
           monthlyCost: specs.dbCost * 0.5,
-          tradeoffs: 'Lower cost but requires manual management and maintenance',
+          tradeoffs:
+            'Lower cost but requires manual management and maintenance',
         },
       ],
     };
   }
 
-  private getLoadBalancerRecommendation(phaseConfig: ScalingPhaseConfig, requirements: ServiceRequirements): ServiceRecommendation | null {
+  private getLoadBalancerRecommendation(
+    phaseConfig: ScalingPhaseConfig,
+    requirements: ServiceRequirements,
+  ): ServiceRecommendation | null {
     return {
       service: 'Application Load Balancer',
       instanceType: 'standard',
@@ -722,7 +788,8 @@ data "aws_availability_zones" "available" {
         storage: 0,
         network: 25000, // 25 Gbps
       },
-      rationale: 'Highly available load balancer with SSL termination and health checks',
+      rationale:
+        'Highly available load balancer with SSL termination and health checks',
       alternatives: [
         {
           instanceType: 'network-load-balancer',

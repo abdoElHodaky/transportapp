@@ -1,6 +1,6 @@
 /**
  * Infrastructure Configuration Interfaces
- * 
+ *
  * Defines the structure for infrastructure configurations that can be
  * translated into provider-specific templates and deployments.
  */
@@ -9,7 +9,7 @@
  * Complete Infrastructure Configuration
  */
 export interface InfrastructureConfig {
-  metadata: InfrastructureMetadata;
+  metadata?: InfrastructureMetadata;
   compute: ComputeConfig;
   database: DatabaseConfig;
   cache: CacheConfig;
@@ -17,7 +17,7 @@ export interface InfrastructureConfig {
   storage: StorageConfig;
   networking: NetworkingConfig;
   monitoring: MonitoringConfig;
-  security: SecurityConfig;
+  security?: SecurityConfig;
 }
 
 /**
@@ -38,9 +38,12 @@ export interface InfrastructureMetadata {
  * Compute Configuration
  */
 export interface ComputeConfig {
-  instances: ComputeInstance[];
+  instances?: ComputeInstance[];
   autoScaling: AutoScalingConfig;
   containerOrchestration?: ContainerConfig;
+  // Additional simplified properties for basic configuration
+  instanceType?: string;
+  instanceCount?: number;
 }
 
 /**
@@ -69,10 +72,10 @@ export interface AutoScalingConfig {
   minInstances: number;
   maxInstances: number;
   targetCpuUtilization: number;
-  targetMemoryUtilization: number;
-  scaleUpCooldown: number; // seconds
-  scaleDownCooldown: number; // seconds
-  metrics: ScalingMetric[];
+  targetMemoryUtilization?: number;
+  scaleUpCooldown?: number; // seconds
+  scaleDownCooldown?: number; // seconds
+  metrics?: ScalingMetric[];
 }
 
 /**
@@ -137,10 +140,18 @@ export interface ServicePort {
  * Database Configuration
  */
 export interface DatabaseConfig {
-  primary: DatabaseInstance;
-  readReplicas: DatabaseInstance[];
-  backup: BackupConfig;
-  maintenance: MaintenanceConfig;
+  primary?: DatabaseInstance;
+  readReplicas?: DatabaseInstance[] | number;
+  backup?: BackupConfig;
+  maintenance?: MaintenanceConfig;
+  // Additional simplified properties for basic configuration
+  engine?: string;
+  version?: string;
+  instanceClass?: string;
+  allocatedStorage?: number;
+  backupRetention?: number;
+  multiAz?: boolean;
+  storage?: number;
 }
 
 /**
@@ -193,16 +204,18 @@ export interface MaintenanceConfig {
  * Cache Configuration
  */
 export interface CacheConfig {
-  engine: 'redis' | 'memcached';
-  version: string;
-  nodeType: string;
-  numCacheNodes: number;
-  port: number;
+  engine?: 'redis' | 'memcached' | string; // Allow string for flexibility
+  version?: string;
+  nodeType?: string;
+  numCacheNodes?: number;
+  numNodes?: number;
+  port?: number;
   parameterGroup?: string;
-  subnetGroup: string;
-  securityGroups: string[];
+  subnetGroup?: string;
+  securityGroups?: string[];
   replicationGroup?: ReplicationGroupConfig;
   cluster?: ClusterConfig;
+  replicationEnabled?: boolean;
 }
 
 /**
@@ -231,14 +244,14 @@ export interface ClusterConfig {
  * Load Balancer Configuration
  */
 export interface LoadBalancerConfig {
-  type: 'application' | 'network' | 'classic';
-  scheme: 'internet-facing' | 'internal';
-  ipAddressType: 'ipv4' | 'dualstack';
-  subnets: string[];
-  securityGroups: string[];
-  listeners: LoadBalancerListener[];
-  targetGroups: TargetGroup[];
-  healthCheck: HealthCheckConfig;
+  type?: 'application' | 'network' | 'classic';
+  scheme?: 'internet-facing' | 'internal';
+  ipAddressType?: 'ipv4' | 'dualstack';
+  subnets?: string[];
+  securityGroups?: string[];
+  listeners?: LoadBalancerListener[];
+  targetGroups?: TargetGroup[];
+  healthCheck?: HealthCheckConfig;
   sslPolicy?: string;
   certificates?: string[];
 }
@@ -319,15 +332,20 @@ export interface TargetGroup {
  * Health Check Configuration
  */
 export interface HealthCheckConfig {
-  enabled: boolean;
-  protocol: 'HTTP' | 'HTTPS' | 'TCP';
-  port: number;
+  enabled?: boolean;
+  protocol?: 'HTTP' | 'HTTPS' | 'TCP';
+  port?: number;
   path?: string;
-  intervalSeconds: number;
-  timeoutSeconds: number;
-  healthyThresholdCount: number;
-  unhealthyThresholdCount: number;
+  intervalSeconds?: number;
+  timeoutSeconds?: number;
+  healthyThresholdCount?: number;
+  unhealthyThresholdCount?: number;
   matcher?: string; // HTTP status codes
+  // Additional simplified properties for basic configuration
+  interval?: number;
+  timeout?: number;
+  healthyThreshold?: number;
+  unhealthyThreshold?: number;
 }
 
 /**
@@ -353,9 +371,16 @@ export interface Target {
  * Storage Configuration
  */
 export interface StorageConfig {
-  blockStorage: BlockStorageConfig[];
-  objectStorage: ObjectStorageConfig[];
+  blockStorage?: BlockStorageConfig[];
+  objectStorage?: ObjectStorageConfig[];
   fileStorage?: FileStorageConfig[];
+  // Additional simplified properties for basic configuration
+  type?: string;
+  size?: number;
+  encrypted?: boolean;
+  defaultSize?: number;
+  versioning?: boolean;
+  encryption?: boolean;
 }
 
 /**
@@ -451,7 +476,12 @@ export interface FileStorageConfig {
  * File Lifecycle Policy
  */
 export interface FileLifecyclePolicy {
-  transitionToIA: 'AFTER_7_DAYS' | 'AFTER_14_DAYS' | 'AFTER_30_DAYS' | 'AFTER_60_DAYS' | 'AFTER_90_DAYS';
+  transitionToIA:
+    | 'AFTER_7_DAYS'
+    | 'AFTER_14_DAYS'
+    | 'AFTER_30_DAYS'
+    | 'AFTER_60_DAYS'
+    | 'AFTER_90_DAYS';
   transitionToPrimaryStorageClass: 'AFTER_1_ACCESS';
 }
 
@@ -487,13 +517,17 @@ export interface PosixUser {
  * Networking Configuration
  */
 export interface NetworkingConfig {
-  vpc: VpcConfig;
-  subnets: SubnetConfig[];
+  vpc?: VpcConfig;
+  subnets?: SubnetConfig[];
   internetGateway?: InternetGatewayConfig;
-  natGateways?: NatGatewayConfig[];
-  routeTables: RouteTableConfig[];
-  securityGroups: SecurityGroupConfig[];
+  natGateways?: NatGatewayConfig[] | number; // Support both array and number
+  routeTables?: RouteTableConfig[];
+  securityGroups?: SecurityGroupConfig[];
   networkAcls?: NetworkAclConfig[];
+  // Additional simplified properties for basic configuration
+  vpcCidr?: string;
+  publicSubnets?: string[];
+  privateSubnets?: string[];
 }
 
 /**
@@ -613,11 +647,15 @@ export interface NetworkAclRule {
  * Monitoring Configuration
  */
 export interface MonitoringConfig {
-  metrics: MetricConfig[];
-  alarms: AlarmConfig[];
-  dashboards: DashboardConfig[];
-  logGroups: LogGroupConfig[];
-  notifications: NotificationConfig[];
+  metrics?: MetricConfig[];
+  alarms?: AlarmConfig[];
+  dashboards?: DashboardConfig[];
+  logGroups?: LogGroupConfig[];
+  notifications?: NotificationConfig[];
+  // Additional simplified properties for basic configuration
+  enabled?: boolean;
+  retentionDays?: number;
+  detailedMonitoring?: boolean;
 }
 
 /**
@@ -631,7 +669,11 @@ export interface MetricConfig {
   period: number; // seconds
   evaluationPeriods: number;
   threshold: number;
-  comparisonOperator: 'GreaterThanThreshold' | 'LessThanThreshold' | 'GreaterThanOrEqualToThreshold' | 'LessThanOrEqualToThreshold';
+  comparisonOperator:
+    | 'GreaterThanThreshold'
+    | 'LessThanThreshold'
+    | 'GreaterThanOrEqualToThreshold'
+    | 'LessThanOrEqualToThreshold';
 }
 
 /**
@@ -836,12 +878,16 @@ export interface StorageSpec {
  * Cloud Region Configuration
  */
 export interface CloudRegion {
+  id?: string; // Added for compatibility with cloud-provider.interface
   name: string;
-  displayName: string;
-  country: string;
-  continent: string;
+  displayName?: string; // Made optional for compatibility
+  country?: string; // Made optional for compatibility
+  continent?: string; // Made optional for compatibility
+  location?: string; // Added for compatibility with cloud-provider.interface
   available: boolean;
-  services: string[];
+  services?: string[]; // Made optional for compatibility
+  latency?: number; // Added for compatibility with cloud-provider.interface
+  costMultiplier?: number; // Added for compatibility with cloud-provider.interface
 }
 
 /**
@@ -849,14 +895,14 @@ export interface CloudRegion {
  */
 export interface InfrastructureTemplate {
   templateType: 'terraform' | 'cloudformation' | 'pulumi' | 'ansible';
-  version: string;
-  provider: string;
-  region: string;
+  version?: string; // Made optional for compatibility
+  provider?: string; // Made optional for compatibility
+  region?: string; // Made optional for compatibility
   template: string;
   variables: Record<string, any>;
-  outputs: Record<string, any>;
+  outputs: Record<string, any> | Record<string, string>; // Allow both types for compatibility
   dependencies: string[];
-  estimatedCost: number;
+  estimatedCost?: number; // Made optional for compatibility
   estimatedDeploymentTime: number; // minutes
 }
 
@@ -903,20 +949,31 @@ export interface CostDetail {
 }
 
 /**
+ * Service Alternative (for compatibility with cloud-provider.interface)
+ */
+export interface ServiceAlternative {
+  instanceType: string;
+  monthlyCost: number;
+  tradeoffs: string;
+}
+
+/**
  * Service Recommendation
  */
 export interface ServiceRecommendation {
   service: string;
-  provider: string;
-  region: string;
+  provider?: string; // Made optional for compatibility
+  region?: string; // Made optional for compatibility
   instanceType: string;
   configuration: Record<string, any>;
-  estimatedCost: number;
-  performance: PerformanceMetrics;
-  pros: string[];
-  cons: string[];
-  confidence: number; // 0-1
-  alternatives: AlternativeRecommendation[];
+  estimatedCost?: number; // Made optional for compatibility
+  monthlyCost?: number; // Added for compatibility with cloud-provider.interface
+  performance: PerformanceMetrics | { cpu: number; memory: number; storage: number; network: number; }; // Allow both types
+  pros?: string[]; // Made optional for compatibility
+  cons?: string[]; // Made optional for compatibility
+  confidence?: number; // Made optional for compatibility (0-1)
+  rationale?: string; // Added for compatibility with cloud-provider.interface
+  alternatives: AlternativeRecommendation[] | ServiceAlternative[]; // Allow both types
 }
 
 /**

@@ -6,44 +6,63 @@ The Sikka Transportation Platform implements a sophisticated multi-cloud scaling
 
 ## 🏗️ Architecture Components
 
-### Core Components
+### 🚀 Multi-Cloud Intelligence Architecture - Eye-Catching Design
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'background': 'transparent',
+    'primaryColor': '#FF6B6B',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#E55555',
+    'lineColor': '#4ECDC4',
+    'secondaryColor': '#45B7D1',
+    'tertiaryColor': '#96CEB4'
+  }
+}}%%
 graph TB
-    subgraph "API Layer"
-        SC[Scaling Controller]
-        CPC[Cloud Providers Controller]
+    subgraph APILayer["🌐 Smart API Gateway"]
+        SC["🎯 Scaling Brain<br/>⚡ Auto-Decision"]
+        CPC["☁️ Cloud Commander<br/>🎛️ Multi-Provider"]
     end
     
-    subgraph "Service Layer"
-        SS[Scaling Service]
-        CPMS[Cloud Provider Manager]
-        CCS[Cost Comparison Service]
-        CCS2[Cost Calculator Service]
+    subgraph ServiceLayer["🧠 Intelligence Engine"]
+        SS["📊 Scale Master<br/>🚀 Performance"]
+        CPMS["🔧 Provider Wizard<br/>⚖️ Load Balance"]
+        CCS["💎 Cost Optimizer<br/>💰 Save Money"]
     end
     
-    subgraph "Provider Layer"
-        CPF[Cloud Provider Factory]
-        AWS[AWS Provider Service]
-        LIN[Linode Provider Service]
+    subgraph ProviderLayer["☁️ Cloud Powerhouse"]
+        AWS["🔥 AWS Engine<br/>🌟 Enterprise"]
+        LIN["⚡ Linode Turbo<br/>💚 Cost-Effective"]
     end
     
-    subgraph "Infrastructure Layer"
-        AWST[AWS Terraform Templates]
-        LINT[Linode Terraform Templates]
+    subgraph InfrastructureLayer["🏗️ Auto-Deploy Foundation"]
+        INFRA["🚀 Smart Templates<br/>📋 Zero-Config Deploy"]
     end
     
-    SC --> SS
-    CPC --> CPMS
-    CPC --> CCS
-    SS --> CPMS
-    SS --> CCS
-    CPMS --> CPF
-    CCS --> CCS2
-    CPF --> AWS
-    CPF --> LIN
-    AWS --> AWST
-    LIN --> LINT
+    %% Eye-catching connections
+    APILayer ==> ServiceLayer
+    ServiceLayer ==> ProviderLayer
+    ProviderLayer ==> InfrastructureLayer
+    
+    SC -.->|"🎯 Controls"| SS
+    CPC -.->|"⚡ Manages"| CPMS
+    SS -.->|"💎 Optimizes"| CCS
+    CPMS -.->|"🔥"| AWS
+    CPMS -.->|"⚡"| LIN
+
+    %% Distinguished Eye-catching Styling
+    classDef api fill:#FF6B6B,stroke:#E55555,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:14px
+    classDef service fill:#45B7D1,stroke:#3A9BC1,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:14px
+    classDef provider fill:#96CEB4,stroke:#7FB069,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:14px
+    classDef infrastructure fill:#9B59B6,stroke:#8E44AD,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:14px
+
+    class SC,CPC api
+    class SS,CPMS,CCS service
+    class AWS,LIN provider
+    class INFRA infrastructure
 ```
 
 ## 🎯 Key Features

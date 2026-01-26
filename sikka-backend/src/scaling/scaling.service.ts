@@ -79,24 +79,29 @@ export class ScalingService {
    */
   async getScalingStatus(): Promise<ScalingStatus> {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    const nextPhaseRecommendations = this.scalingConfig.getNextPhaseRecommendations();
-    const concurrencyMetrics = await this.concurrencyAnalysis.analyzeConcurrencyCapacity();
-    
+    const nextPhaseRecommendations =
+      this.scalingConfig.getNextPhaseRecommendations();
+    const concurrencyMetrics =
+      await this.concurrencyAnalysis.analyzeConcurrencyCapacity();
+
     // Calculate current utilization
     const utilizationPercentage = this.calculateUtilization(concurrencyMetrics);
-    
+
     // Assess phase progress
     const phaseProgress = await this.assessPhaseProgress();
-    
+
     // Generate recommendations
-    const recommendations = this.generateRecommendations(phaseConfig, concurrencyMetrics);
-    
+    const recommendations = this.generateRecommendations(
+      phaseConfig,
+      concurrencyMetrics,
+    );
+
     // Get infrastructure status
     const infrastructure = await this.getInfrastructureStatus();
-    
+
     // Create timeline
     const timeline = this.createScalingTimeline(phaseConfig.phase);
-    
+
     // Get multi-cloud analysis
     const multiCloud = await this.getMultiCloudAnalysis(phaseConfig.phase);
 
@@ -104,8 +109,10 @@ export class ScalingService {
       currentPhase: nextPhaseRecommendations.currentPhase,
       nextPhase: nextPhaseRecommendations.nextPhase,
       currentCapacity: {
-        maxConcurrentUsers: concurrencyMetrics.estimatedCapacity.maxConcurrentUsers,
-        maxConcurrentTrips: concurrencyMetrics.estimatedCapacity.maxConcurrentTrips,
+        maxConcurrentUsers:
+          concurrencyMetrics.estimatedCapacity.maxConcurrentUsers,
+        maxConcurrentTrips:
+          concurrencyMetrics.estimatedCapacity.maxConcurrentTrips,
         utilizationPercentage,
       },
       phaseProgress,
@@ -119,14 +126,16 @@ export class ScalingService {
   /**
    * Execute scaling phase transition
    */
-  async executePhaseTransition(targetPhase: 'launch' | 'growth' | 'scale'): Promise<{
+  async executePhaseTransition(
+    targetPhase: 'launch' | 'growth' | 'scale',
+  ): Promise<{
     success: boolean;
     message: string;
     actions: string[];
     nextSteps: string[];
   }> {
     const currentPhase = this.scalingConfig.getCurrentPhaseConfig().phase;
-    
+
     if (currentPhase === targetPhase) {
       return {
         success: false,
@@ -136,7 +145,9 @@ export class ScalingService {
       };
     }
 
-    this.logger.log(`Initiating phase transition from ${currentPhase} to ${targetPhase}`);
+    this.logger.log(
+      `Initiating phase transition from ${currentPhase} to ${targetPhase}`,
+    );
 
     const actions = [];
     const nextSteps = [];
@@ -144,12 +155,14 @@ export class ScalingService {
     try {
       // Update environment variables
       const envVars = this.scalingConfig.getPhaseEnvironmentVariables();
-      actions.push(`Updated ${Object.keys(envVars).length} environment variables`);
+      actions.push(
+        `Updated ${Object.keys(envVars).length} environment variables`,
+      );
 
       // Generate configuration files
       const dbOptimizations = this.databaseConfig.getDatabaseOptimizations();
       const redisConfig = this.redisConfig.getRedisConfiguration();
-      
+
       actions.push('Generated database optimization recommendations');
       actions.push('Generated Redis configuration for new phase');
 
@@ -181,7 +194,6 @@ export class ScalingService {
         actions,
         nextSteps,
       };
-
     } catch (error) {
       this.logger.error(`Failed to execute phase transition: ${error.message}`);
       return {
@@ -205,17 +217,18 @@ export class ScalingService {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
     const envVars = this.scalingConfig.getPhaseEnvironmentVariables();
     const redisConfig = this.redisConfig.getRedisConfiguration();
-    
+
     // Generate Docker Compose
     const dockerCompose = this.generateDockerCompose(phaseConfig);
-    
+
     // Generate Nginx configuration
     const nginxConfig = this.generateNginxConfig(phaseConfig);
-    
+
     // Generate Kubernetes manifests for scale phase
-    const kubernetesManifests = phaseConfig.phase === 'scale' 
-      ? this.generateKubernetesManifests(phaseConfig)
-      : undefined;
+    const kubernetesManifests =
+      phaseConfig.phase === 'scale'
+        ? this.generateKubernetesManifests(phaseConfig)
+        : undefined;
 
     return {
       dockerCompose,
@@ -236,7 +249,9 @@ export class ScalingService {
       metrics.system.memoryUtilization,
     ];
 
-    const avgUtilization = utilizationFactors.reduce((sum, util) => sum + util, 0) / utilizationFactors.length;
+    const avgUtilization =
+      utilizationFactors.reduce((sum, util) => sum + util, 0) /
+      utilizationFactors.length;
     return Math.round(avgUtilization * 100) / 100;
   }
 
@@ -250,7 +265,7 @@ export class ScalingService {
     progressPercentage: number;
   }> {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    
+
     // This would be enhanced with actual infrastructure checks
     const completedActions = [
       'Basic monitoring enabled',
@@ -281,8 +296,10 @@ export class ScalingService {
         break;
     }
 
-    const totalActions = completedActions.length + pendingActions.length + criticalActions.length;
-    const progressPercentage = totalActions > 0 ? (completedActions.length / totalActions) * 100 : 0;
+    const totalActions =
+      completedActions.length + pendingActions.length + criticalActions.length;
+    const progressPercentage =
+      totalActions > 0 ? (completedActions.length / totalActions) * 100 : 0;
 
     return {
       completedActions,
@@ -295,7 +312,10 @@ export class ScalingService {
   /**
    * Generate scaling recommendations
    */
-  private generateRecommendations(phaseConfig: any, metrics: any): {
+  private generateRecommendations(
+    phaseConfig: any,
+    metrics: any,
+  ): {
     immediate: string[];
     shortTerm: string[];
     longTerm: string[];
@@ -349,13 +369,14 @@ export class ScalingService {
    */
   private async getInfrastructureStatus(): Promise<any> {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    
+
     return {
       database: {
         phase: phaseConfig.phase,
         maxConnections: phaseConfig.databaseConfig.maxConnections,
         readReplicasEnabled: phaseConfig.databaseConfig.enableReadReplicas,
-        connectionPoolingEnabled: phaseConfig.databaseConfig.enableConnectionPooling,
+        connectionPoolingEnabled:
+          phaseConfig.databaseConfig.enableConnectionPooling,
       },
       redis: {
         phase: phaseConfig.phase,
@@ -400,19 +421,25 @@ export class ScalingService {
           {
             name: 'Database Optimization',
             description: 'Increase connection pool and optimize queries',
-            targetDate: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'in-progress' as const,
           },
           {
             name: 'Monitoring Enhancement',
             description: 'Implement comprehensive monitoring and alerting',
-            targetDate: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'pending' as const,
           },
           {
             name: 'Growth Phase Preparation',
             description: 'Prepare infrastructure for growth phase',
-            targetDate: new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'pending' as const,
           },
         );
@@ -426,19 +453,25 @@ export class ScalingService {
           {
             name: 'Read Replicas Deployment',
             description: 'Deploy and configure database read replicas',
-            targetDate: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'in-progress' as const,
           },
           {
             name: 'Redis Sentinel Setup',
             description: 'Implement Redis Sentinel for high availability',
-            targetDate: new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'pending' as const,
           },
           {
             name: 'Scale Phase Preparation',
             description: 'Prepare for horizontal scaling',
-            targetDate: new Date(now.getTime() + 120 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 120 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'pending' as const,
           },
         );
@@ -452,19 +485,25 @@ export class ScalingService {
           {
             name: 'Redis Cluster Deployment',
             description: 'Deploy and configure Redis Cluster',
-            targetDate: new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'in-progress' as const,
           },
           {
             name: 'Horizontal Scaling',
             description: 'Implement horizontal scaling with load balancers',
-            targetDate: new Date(now.getTime() + 45 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 45 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'pending' as const,
           },
           {
             name: 'Auto-scaling Implementation',
             description: 'Implement Kubernetes auto-scaling',
-            targetDate: new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            targetDate: new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split('T')[0],
             status: 'pending' as const,
           },
         );
@@ -486,7 +525,7 @@ export class ScalingService {
    */
   private generateDockerCompose(phaseConfig: any): string {
     const redisConfig = this.redisConfig.getRedisConfiguration();
-    
+
     return `# 🐳 Sikka Transportation Platform - ${phaseConfig.phase} Phase
 version: '3.8'
 
@@ -683,38 +722,44 @@ spec:
   /**
    * Get multi-cloud analysis for current scaling phase
    */
-  private async getMultiCloudAnalysis(currentPhase: string): Promise<ScalingStatus['multiCloud']> {
+  private async getMultiCloudAnalysis(
+    currentPhase: string,
+  ): Promise<ScalingStatus['multiCloud']> {
     try {
       // Get current cloud provider from configuration
       const currentProvider = this.getCurrentCloudProvider();
-      
+
       // Create infrastructure configuration for current phase
-      const infrastructureConfig = this.createInfrastructureConfig(currentPhase);
-      
+      const infrastructureConfig =
+        this.createInfrastructureConfig(currentPhase);
+
       // Get cost comparison report
-      const costReport = await this.costComparison.generateCostComparisonReport({
-        scalingPhase: currentPhase as 'launch' | 'growth' | 'scale',
-        region: 'us-east-1',
-        config: infrastructureConfig,
-        currentProvider,
-        includeProjections: false,
-        includeMigrationAnalysis: true
-      });
+      const costReport = await this.costComparison.generateCostComparisonReport(
+        {
+          scalingPhase: currentPhase as 'launch' | 'growth' | 'scale',
+          region: 'us-east-1',
+          config: infrastructureConfig,
+          currentProvider,
+          includeProjections: false,
+          includeMigrationAnalysis: true,
+        },
+      );
 
       // Generate migration plan if different provider is recommended
       let migrationPlan;
       if (costReport.summary.recommendedProvider !== currentProvider) {
-        const migrationAnalysis = await this.cloudProviderManager.switchProvider(
-          currentProvider,
-          costReport.summary.recommendedProvider,
-          currentPhase as 'launch' | 'growth' | 'scale',
-          infrastructureConfig
-        );
+        const migrationAnalysis =
+          await this.cloudProviderManager.switchProvider(
+            currentProvider,
+            costReport.summary.recommendedProvider,
+            currentPhase as 'launch' | 'growth' | 'scale',
+            infrastructureConfig,
+          );
 
         migrationPlan = {
           steps: migrationAnalysis.migrationSteps,
           estimatedDowntime: migrationAnalysis.estimatedDowntime,
-          estimatedCost: migrationAnalysis.costImpact.from.totalMonthlyCost
+          estimatedCost: migrationAnalysis.costImpact.from.totalMonthlyCost,
         };
       }
 
@@ -722,12 +767,19 @@ spec:
         currentProvider,
         recommendedProvider: costReport.summary.recommendedProvider,
         costComparison: {
-          currentCost: costReport.detailedComparison.providers[currentProvider].totalMonthlyCost,
-          recommendedCost: costReport.detailedComparison.providers[costReport.summary.recommendedProvider].totalMonthlyCost,
+          currentCost:
+            costReport.detailedComparison.providers[currentProvider]
+              .totalMonthlyCost,
+          recommendedCost:
+            costReport.detailedComparison.providers[
+              costReport.summary.recommendedProvider
+            ].totalMonthlyCost,
           potentialSavings: costReport.summary.potentialMonthlySavings,
-          savingsPercentage: Math.abs(costReport.detailedComparison.totalSavingsPercentage)
+          savingsPercentage: Math.abs(
+            costReport.detailedComparison.totalSavingsPercentage,
+          ),
         },
-        migrationPlan
+        migrationPlan,
       };
     } catch (error) {
       this.logger.error('Failed to get multi-cloud analysis:', error);
@@ -739,8 +791,14 @@ spec:
    * Get current cloud provider from configuration
    */
   private getCurrentCloudProvider(): CloudProviderType {
-    const cloudConfig = this.scalingConfig.getCurrentPhaseConfig().cloudProvider;
-    return cloudConfig?.preferred || 'aws'; // Default to AWS if not specified
+    const cloudConfig =
+      this.scalingConfig.getCurrentPhaseConfig().cloudProvider;
+    const preferred = cloudConfig?.preferred;
+    // Handle 'auto' case by defaulting to 'aws'
+    if (preferred === 'auto' || !preferred) {
+      return 'aws';
+    }
+    return preferred as CloudProviderType;
   }
 
   /**
@@ -748,7 +806,7 @@ spec:
    */
   private createInfrastructureConfig(phase: string): InfrastructureConfig {
     const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
-    
+
     return {
       compute: {
         instanceType: this.getInstanceTypeForPhase(phase),
@@ -757,8 +815,8 @@ spec:
           enabled: phase !== 'launch',
           minInstances: phase === 'launch' ? 1 : phase === 'growth' ? 2 : 3,
           maxInstances: phase === 'launch' ? 3 : phase === 'growth' ? 6 : 20,
-          targetCpuUtilization: 70
-        }
+          targetCpuUtilization: 70,
+        },
       },
       database: {
         engine: 'postgresql',
@@ -767,14 +825,14 @@ spec:
         storage: this.getDatabaseStorageForPhase(phase),
         backupRetention: phase === 'launch' ? 7 : phase === 'growth' ? 14 : 30,
         multiAz: phase !== 'launch',
-        readReplicas: phase === 'launch' ? 0 : phase === 'growth' ? 1 : 2
+        readReplicas: phase === 'launch' ? 0 : phase === 'growth' ? 1 : 2,
       },
       cache: {
         engine: 'redis',
         version: '7.0',
         nodeType: this.getCacheNodeTypeForPhase(phase),
         numNodes: phase === 'launch' ? 1 : phase === 'growth' ? 2 : 3,
-        replicationEnabled: phase !== 'launch'
+        replicationEnabled: phase !== 'launch',
       },
       loadBalancer: {
         type: 'application',
@@ -784,71 +842,91 @@ spec:
           interval: 30,
           timeout: 5,
           healthyThreshold: 2,
-          unhealthyThreshold: 3
-        }
+          unhealthyThreshold: 3,
+        },
       },
       storage: {
         type: 'object',
         defaultSize: phase === 'launch' ? 100 : phase === 'growth' ? 500 : 2000, // GB
         versioning: true,
-        encryption: true
+        encryption: true,
       },
       networking: {
         vpcCidr: '10.0.0.0/16',
         publicSubnets: ['10.0.1.0/24', '10.0.2.0/24', '10.0.3.0/24'],
         privateSubnets: ['10.0.10.0/24', '10.0.11.0/24', '10.0.12.0/24'],
-        natGateways: phase === 'launch' ? 1 : phase === 'growth' ? 2 : 3
+        natGateways: phase === 'launch' ? 1 : phase === 'growth' ? 2 : 3,
       },
       monitoring: {
         enabled: true,
         retentionDays: phase === 'launch' ? 7 : phase === 'growth' ? 14 : 30,
-        detailedMonitoring: phase !== 'launch'
-      }
+        detailedMonitoring: phase !== 'launch',
+      },
     };
   }
 
   private getInstanceTypeForPhase(phase: string): string {
     switch (phase) {
-      case 'launch': return 't3.micro';
-      case 'growth': return 'c5.large';
-      case 'scale': return 'c5.xlarge';
-      default: return 't3.micro';
+      case 'launch':
+        return 't3.micro';
+      case 'growth':
+        return 'c5.large';
+      case 'scale':
+        return 'c5.xlarge';
+      default:
+        return 't3.micro';
     }
   }
 
   private getInstanceCountForPhase(phase: string): number {
     switch (phase) {
-      case 'launch': return 1;
-      case 'growth': return 2;
-      case 'scale': return 6;
-      default: return 1;
+      case 'launch':
+        return 1;
+      case 'growth':
+        return 2;
+      case 'scale':
+        return 6;
+      default:
+        return 1;
     }
   }
 
   private getDatabaseInstanceForPhase(phase: string): string {
     switch (phase) {
-      case 'launch': return 'db.t3.micro';
-      case 'growth': return 'db.t3.medium';
-      case 'scale': return 'db.r5.2xlarge';
-      default: return 'db.t3.micro';
+      case 'launch':
+        return 'db.t3.micro';
+      case 'growth':
+        return 'db.t3.medium';
+      case 'scale':
+        return 'db.r5.2xlarge';
+      default:
+        return 'db.t3.micro';
     }
   }
 
   private getDatabaseStorageForPhase(phase: string): number {
     switch (phase) {
-      case 'launch': return 20;
-      case 'growth': return 50;
-      case 'scale': return 200;
-      default: return 20;
+      case 'launch':
+        return 20;
+      case 'growth':
+        return 50;
+      case 'scale':
+        return 200;
+      default:
+        return 20;
     }
   }
 
   private getCacheNodeTypeForPhase(phase: string): string {
     switch (phase) {
-      case 'launch': return 'cache.t3.micro';
-      case 'growth': return 'cache.m5.large';
-      case 'scale': return 'cache.r6g.4xlarge';
-      default: return 'cache.t3.micro';
+      case 'launch':
+        return 'cache.t3.micro';
+      case 'growth':
+        return 'cache.m5.large';
+      case 'scale':
+        return 'cache.r6g.4xlarge';
+      default:
+        return 'cache.t3.micro';
     }
   }
 }

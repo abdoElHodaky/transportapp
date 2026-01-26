@@ -1,20 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { CloudProviderInterface, CloudRegion, InfrastructureTemplate, InfrastructureOptions, CostEstimate, CostCalculationOptions, ServiceRecommendation, ServiceRequirements, ValidationResult, MonitoringConfig, CostBreakdown } from '../interfaces/cloud-provider.interface';
+import {
+  CloudProviderInterface,
+  CloudRegion,
+  InfrastructureTemplate,
+  InfrastructureOptions,
+  CostEstimate,
+  CostCalculationOptions,
+  ServiceRecommendation,
+  ServiceRequirements,
+  ValidationResult,
+  MonitoringConfig,
+  CostBreakdown,
+} from '../interfaces/cloud-provider.interface';
 import { ScalingPhaseConfig } from '../../config/scaling-phases.config';
 import { LinodeProviderConfig } from '../../config/linode-provider.config';
 
 /**
  * Linode Cloud Provider Service
- * 
+ *
  * Implements the CloudProviderInterface for Linode cloud services.
  * Provides cost-effective alternatives to AWS with competitive pricing
  * and simplified infrastructure management.
  */
 @Injectable()
 export class LinodeProviderService implements CloudProviderInterface {
-  constructor(
-    private readonly linodeConfig: LinodeProviderConfig,
-  ) {}
+  constructor(private readonly linodeConfig: LinodeProviderConfig) {}
 
   getProviderName(): string {
     return 'linode';
@@ -60,10 +70,10 @@ export class LinodeProviderService implements CloudProviderInterface {
 
   async generateInfrastructureTemplate(
     phaseConfig: ScalingPhaseConfig,
-    options: InfrastructureOptions
+    options: InfrastructureOptions,
   ): Promise<InfrastructureTemplate> {
     const template = this.generateTerraformTemplate(phaseConfig, options);
-    
+
     return {
       templateType: 'terraform',
       template,
@@ -77,15 +87,30 @@ export class LinodeProviderService implements CloudProviderInterface {
   async calculateCost(
     phaseConfig: ScalingPhaseConfig,
     region: string,
-    options: CostCalculationOptions
+    options: CostCalculationOptions,
   ): Promise<CostEstimate> {
-    const breakdown = await this.calculateCostBreakdown(phaseConfig, region, options);
+    const breakdown = await this.calculateCostBreakdown(
+      phaseConfig,
+      region,
+      options,
+    );
     const total = breakdown.reduce((sum, item) => sum + item.monthlyCost, 0);
+
+    // Convert breakdown array to CostBreakdownSummary object
+    const breakdownSummary = {
+      compute: breakdown.find(item => item.service === 'compute')?.monthlyCost || 0,
+      database: breakdown.find(item => item.service === 'database')?.monthlyCost || 0,
+      storage: breakdown.find(item => item.service === 'storage')?.monthlyCost || 0,
+      networking: breakdown.find(item => item.service === 'networking')?.monthlyCost || 0,
+      monitoring: breakdown.find(item => item.service === 'monitoring')?.monthlyCost || 0,
+      cache: breakdown.find(item => item.service === 'cache')?.monthlyCost || 0,
+      other: breakdown.filter(item => !['compute', 'database', 'storage', 'networking', 'monitoring', 'cache'].includes(item.service)).reduce((sum, item) => sum + item.monthlyCost, 0),
+    };
 
     return {
       totalMonthlyCost: total,
       currency: 'USD',
-      breakdown,
+      breakdown: breakdownSummary,
       confidence: 0.85,
       lastUpdated: new Date(),
       assumptions: [
@@ -96,7 +121,8 @@ export class LinodeProviderService implements CloudProviderInterface {
       recommendations: [
         {
           type: 'instance_sizing',
-          description: 'Consider using Dedicated CPU instances for consistent performance',
+          description:
+            'Consider using Dedicated CPU instances for consistent performance',
           potentialSavings: total * 0.15,
           effort: 'low',
           impact: 'medium',
@@ -107,7 +133,7 @@ export class LinodeProviderService implements CloudProviderInterface {
 
   async getServiceRecommendations(
     phaseConfig: ScalingPhaseConfig,
-    requirements: ServiceRequirements
+    requirements: ServiceRequirements,
   ): Promise<ServiceRecommendation[]> {
     const recommendations: ServiceRecommendation[] = [];
 
@@ -128,7 +154,7 @@ export class LinodeProviderService implements CloudProviderInterface {
 
   async validateConfiguration(
     phaseConfig: ScalingPhaseConfig,
-    region: string
+    region: string,
   ): Promise<ValidationResult> {
     const errors = [];
     const warnings = [];
@@ -136,7 +162,7 @@ export class LinodeProviderService implements CloudProviderInterface {
 
     // Validate region availability
     const regions = await this.getAvailableRegions();
-    if (!regions.find(r => r.id === region)) {
+    if (!regions.find((r) => r.id === region)) {
       errors.push({
         field: 'region',
         message: `Region ${region} is not available for Linode`,
@@ -155,7 +181,9 @@ export class LinodeProviderService implements CloudProviderInterface {
 
     // Add recommendations
     if (phaseConfig.expectedUsers > 10000) {
-      recommendations.push('Consider using Linode Kubernetes Engine for better scalability');
+      recommendations.push(
+        'Consider using Linode Kubernetes Engine for better scalability',
+      );
     }
 
     return {
@@ -168,7 +196,7 @@ export class LinodeProviderService implements CloudProviderInterface {
 
   async getEnvironmentVariables(
     phaseConfig: ScalingPhaseConfig,
-    region: string
+    region: string,
   ): Promise<Record<string, string>> {
     return {
       CLOUD_PROVIDER: 'linode',
@@ -180,7 +208,7 @@ export class LinodeProviderService implements CloudProviderInterface {
   }
 
   async getMonitoringConfiguration(
-    phaseConfig: ScalingPhaseConfig
+    phaseConfig: ScalingPhaseConfig,
   ): Promise<MonitoringConfig> {
     return {
       metrics: [
@@ -246,7 +274,10 @@ export class LinodeProviderService implements CloudProviderInterface {
     };
   }
 
-  private generateTerraformTemplate(phaseConfig: ScalingPhaseConfig, options: InfrastructureOptions): string {
+  private generateTerraformTemplate(
+    phaseConfig: ScalingPhaseConfig,
+    options: InfrastructureOptions,
+  ): string {
     return `
 # Linode Infrastructure Template for ${phaseConfig.phase} phase
 terraform {
@@ -331,9 +362,12 @@ resource "linode_database_postgresql" "main" {
 `;
   }
 
-  private getTemplateVariables(phaseConfig: ScalingPhaseConfig, options: InfrastructureOptions): Record<string, any> {
+  private getTemplateVariables(
+    phaseConfig: ScalingPhaseConfig,
+    options: InfrastructureOptions,
+  ): Record<string, any> {
     const instanceSpecs = this.getInstanceSpecsForPhase(phaseConfig.phase);
-    
+
     return {
       linode_token: {
         description: 'Linode API token',
@@ -393,19 +427,20 @@ resource "linode_database_postgresql" "main" {
 
   private estimateDeploymentTime(phaseConfig: ScalingPhaseConfig): number {
     const baseTime = 15; // Base deployment time in minutes
-    const instanceMultiplier = this.getInstanceSpecsForPhase(phaseConfig.phase).count * 2;
+    const instanceMultiplier =
+      this.getInstanceSpecsForPhase(phaseConfig.phase).count * 2;
     return baseTime + instanceMultiplier;
   }
 
   private async calculateCostBreakdown(
     phaseConfig: ScalingPhaseConfig,
     region: string,
-    options: CostCalculationOptions
+    options: CostCalculationOptions,
   ): Promise<CostBreakdown[]> {
     const specs = this.getInstanceSpecsForPhase(phaseConfig.phase);
     const regionMultiplier = await this.getRegionCostMultiplier(region);
 
-    const breakdown = [
+    const breakdown: CostBreakdown[] = [
       {
         service: 'Linode Instances',
         category: 'compute' as const,
@@ -492,30 +527,50 @@ resource "linode_database_postgresql" "main" {
 
   private async getRegionCostMultiplier(region: string): Promise<number> {
     const regions = await this.getAvailableRegions();
-    const regionInfo = regions.find(r => r.id === region);
+    const regionInfo = regions.find((r) => r.id === region);
     return regionInfo?.costMultiplier || 1.0;
   }
 
-  private getComputeRecommendation(phaseConfig: ScalingPhaseConfig, requirements: ServiceRequirements): ServiceRecommendation | null {
+  private getComputeRecommendation(
+    phaseConfig: ScalingPhaseConfig,
+    requirements: ServiceRequirements,
+  ): ServiceRecommendation | null {
     const specs = this.getInstanceSpecsForPhase(phaseConfig.phase);
-    
+
     return {
       service: 'Linode Compute',
       instanceType: specs.type,
       configuration: {
-        vcpu: specs.type.includes('standard-2') ? 2 : specs.type.includes('standard-4') ? 4 : 8,
-        memory: specs.type.includes('standard-2') ? 4 : specs.type.includes('standard-4') ? 8 : 16,
+        vcpu: specs.type.includes('standard-2')
+          ? 2
+          : specs.type.includes('standard-4')
+            ? 4
+            : 8,
+        memory: specs.type.includes('standard-2')
+          ? 4
+          : specs.type.includes('standard-4')
+            ? 8
+            : 16,
         storage: 80,
         network: 1000,
       },
       monthlyCost: specs.instanceCost * specs.count,
       performance: {
-        cpu: specs.type.includes('standard-2') ? 2 : specs.type.includes('standard-4') ? 4 : 8,
-        memory: specs.type.includes('standard-2') ? 4 : specs.type.includes('standard-4') ? 8 : 16,
+        cpu: specs.type.includes('standard-2')
+          ? 2
+          : specs.type.includes('standard-4')
+            ? 4
+            : 8,
+        memory: specs.type.includes('standard-2')
+          ? 4
+          : specs.type.includes('standard-4')
+            ? 8
+            : 16,
         storage: 80,
         network: 1000,
       },
-      rationale: 'Cost-effective general purpose instances with good performance',
+      rationale:
+        'Cost-effective general purpose instances with good performance',
       alternatives: [
         {
           instanceType: 'g6-dedicated-2',
@@ -526,9 +581,12 @@ resource "linode_database_postgresql" "main" {
     };
   }
 
-  private getDatabaseRecommendation(phaseConfig: ScalingPhaseConfig, requirements: ServiceRequirements): ServiceRecommendation | null {
+  private getDatabaseRecommendation(
+    phaseConfig: ScalingPhaseConfig,
+    requirements: ServiceRequirements,
+  ): ServiceRecommendation | null {
     const specs = this.getInstanceSpecsForPhase(phaseConfig.phase);
-    
+
     return {
       service: 'Linode Database',
       instanceType: specs.dbType,
@@ -556,7 +614,10 @@ resource "linode_database_postgresql" "main" {
     };
   }
 
-  private getLoadBalancerRecommendation(phaseConfig: ScalingPhaseConfig, requirements: ServiceRequirements): ServiceRecommendation | null {
+  private getLoadBalancerRecommendation(
+    phaseConfig: ScalingPhaseConfig,
+    requirements: ServiceRequirements,
+  ): ServiceRecommendation | null {
     return {
       service: 'NodeBalancer',
       instanceType: 'standard',

@@ -1,6 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CloudProviderFactory, CloudProviderType } from './cloud-provider.factory';
-import { InfrastructureConfig, CostEstimate } from './interfaces/infrastructure-config.interface';
+import {
+  CloudProviderFactory,
+  CloudProviderType,
+} from './cloud-provider.factory';
+import {
+  InfrastructureConfig,
+} from './interfaces/infrastructure-config.interface';
+import {
+  CostEstimate,
+  CostCalculationOptions,
+} from './interfaces/cloud-provider.interface';
+import { ScalingPhasesConfig, ScalingPhaseConfig } from '../config/scaling-phases.config';
 
 export interface CostBreakdownComparison {
   service: string;
@@ -29,7 +39,13 @@ export interface DetailedCostComparison {
 }
 
 export interface CostOptimizationSuggestion {
-  category: 'compute' | 'database' | 'cache' | 'storage' | 'networking' | 'monitoring';
+  category:
+    | 'compute'
+    | 'database'
+    | 'cache'
+    | 'storage'
+    | 'networking'
+    | 'monitoring';
   suggestion: string;
   potentialSavings: number;
   effort: 'low' | 'medium' | 'high';
@@ -51,7 +67,31 @@ export interface CostProjection {
 export class CostCalculatorService {
   private readonly logger = new Logger(CostCalculatorService.name);
 
-  constructor(private readonly providerFactory: CloudProviderFactory) {}
+  constructor(
+    private readonly providerFactory: CloudProviderFactory,
+    private readonly scalingPhasesConfig: ScalingPhasesConfig,
+  ) {}
+
+  /**
+   * Convert string phase name to ScalingPhaseConfig object
+   */
+  private getPhaseConfig(phase: 'launch' | 'growth' | 'scale'): ScalingPhaseConfig {
+    return this.scalingPhasesConfig.getPhaseConfig(phase);
+  }
+
+  /**
+   * Convert InfrastructureConfig to CostCalculationOptions
+   */
+  private toCostCalculationOptions(config: InfrastructureConfig): CostCalculationOptions {
+    return {
+      includeDataTransfer: true,
+      includeBackups: config.database?.backup?.enabled ?? true,
+      includeMonitoring: config.monitoring ? true : false,
+      usagePattern: config.metadata?.scalingPhase === 'launch' ? 'light' : 
+                   config.metadata?.scalingPhase === 'growth' ? 'moderate' : 'heavy',
+      reservedInstanceDiscount: config.metadata?.scalingPhase === 'scale',
+    };
+  }
 
   /**
    * Compare costs between all providers for a specific configuration
@@ -63,7 +103,7 @@ export class CostCalculatorService {
   async compareProviderCosts(
     scalingPhase: 'launch' | 'growth' | 'scale',
     region: string,
-    config: InfrastructureConfig
+    config: InfrastructureConfig,
   ): Promise<DetailedCostComparison> {
     this.logger.log(`Comparing costs for ${scalingPhase} phase in ${region}`);
 
@@ -71,24 +111,29 @@ export class CostCalculatorService {
     const linodeProvider = this.providerFactory.createProvider('linode');
 
     // Get cost estimates from both providers
+    const phaseConfig = this.getPhaseConfig(scalingPhase);
     const [awsCost, linodeCost] = await Promise.all([
-      awsProvider.calculateCost(scalingPhase, region, config),
-      linodeProvider.calculateCost(scalingPhase, region, config)
+      awsProvider.calculateCost(phaseConfig, region, this.toCostCalculationOptions(config)),
+      linodeProvider.calculateCost(phaseConfig, region, this.toCostCalculationOptions(config)),
     ]);
 
     // Calculate savings
     const totalSavings = awsCost.totalMonthlyCost - linodeCost.totalMonthlyCost;
-    const totalSavingsPercentage = (totalSavings / awsCost.totalMonthlyCost) * 100;
+    const totalSavingsPercentage =
+      (totalSavings / awsCost.totalMonthlyCost) * 100;
 
     // Create breakdown comparison
-    const breakdownComparison = this.createBreakdownComparison(awsCost, linodeCost);
+    const breakdownComparison = this.createBreakdownComparison(
+      awsCost,
+      linodeCost,
+    );
 
     // Determine optimal provider and recommendation
     const recommendation = this.generateCostRecommendation(
       awsCost,
       linodeCost,
       totalSavings,
-      totalSavingsPercentage
+      totalSavingsPercentage,
     );
 
     return {
@@ -96,12 +141,12 @@ export class CostCalculatorService {
       region,
       providers: {
         aws: awsCost,
-        linode: linodeCost
+        linode: linodeCost,
       },
       totalSavings,
       totalSavingsPercentage,
       breakdownComparison,
-      recommendation
+      recommendation,
     };
   }
 
@@ -117,22 +162,34 @@ export class CostCalculatorService {
     scalingPhase: 'launch' | 'growth' | 'scale',
     provider: CloudProviderType,
     region: string,
-    config: InfrastructureConfig
+    config: InfrastructureConfig,
   ): Promise<CostProjection[]> {
-    this.logger.log(`Calculating cost projections for ${provider} in ${scalingPhase} phase`);
+    this.logger.log(
+      `Calculating cost projections for ${provider} in ${scalingPhase} phase`,
+    );
 
     const providerInstance = this.providerFactory.createProvider(provider);
-    const baseCost = await providerInstance.calculateCost(scalingPhase, region, config);
+    const phaseConfig = this.getPhaseConfig(scalingPhase);
+    const baseCost = await providerInstance.calculateCost(
+      phaseConfig,
+      region,
+      this.toCostCalculationOptions(config),
+    );
 
     const projections: CostProjection[] = [];
-    const timeframes: Array<{ period: 'monthly' | 'quarterly' | 'annually'; multiplier: number; growthFactor: number }> = [
+    const timeframes: Array<{
+      period: 'monthly' | 'quarterly' | 'annually';
+      multiplier: number;
+      growthFactor: number;
+    }> = [
       { period: 'monthly', multiplier: 1, growthFactor: 1.0 },
       { period: 'quarterly', multiplier: 3, growthFactor: 1.05 }, // 5% growth per quarter
-      { period: 'annually', multiplier: 12, growthFactor: 1.2 }   // 20% growth per year
+      { period: 'annually', multiplier: 12, growthFactor: 1.2 }, // 20% growth per year
     ];
 
     for (const timeframe of timeframes) {
-      const projectedMonthlyCost = baseCost.totalMonthlyCost * timeframe.growthFactor;
+      const projectedMonthlyCost =
+        baseCost.totalMonthlyCost * timeframe.growthFactor;
       const totalCost = projectedMonthlyCost * timeframe.multiplier;
 
       projections.push({
@@ -142,7 +199,10 @@ export class CostCalculatorService {
         baseCost: baseCost.totalMonthlyCost,
         projectedCost: totalCost,
         growthFactor: timeframe.growthFactor,
-        assumptions: this.getProjectionAssumptions(scalingPhase, timeframe.period)
+        assumptions: this.getProjectionAssumptions(
+          scalingPhase,
+          timeframe.period,
+        ),
       });
     }
 
@@ -159,29 +219,43 @@ export class CostCalculatorService {
   async generateOptimizationSuggestions(
     scalingPhase: 'launch' | 'growth' | 'scale',
     provider: CloudProviderType,
-    costEstimate: CostEstimate
+    costEstimate: CostEstimate,
   ): Promise<CostOptimizationSuggestion[]> {
-    this.logger.log(`Generating optimization suggestions for ${provider} in ${scalingPhase} phase`);
+    this.logger.log(
+      `Generating optimization suggestions for ${provider} in ${scalingPhase} phase`,
+    );
 
     const suggestions: CostOptimizationSuggestion[] = [];
 
     // Compute optimizations
-    suggestions.push(...this.getComputeOptimizations(scalingPhase, provider, costEstimate));
+    suggestions.push(
+      ...this.getComputeOptimizations(scalingPhase, provider, costEstimate),
+    );
 
     // Database optimizations
-    suggestions.push(...this.getDatabaseOptimizations(scalingPhase, provider, costEstimate));
+    suggestions.push(
+      ...this.getDatabaseOptimizations(scalingPhase, provider, costEstimate),
+    );
 
     // Cache optimizations
-    suggestions.push(...this.getCacheOptimizations(scalingPhase, provider, costEstimate));
+    suggestions.push(
+      ...this.getCacheOptimizations(scalingPhase, provider, costEstimate),
+    );
 
     // Storage optimizations
-    suggestions.push(...this.getStorageOptimizations(scalingPhase, provider, costEstimate));
+    suggestions.push(
+      ...this.getStorageOptimizations(scalingPhase, provider, costEstimate),
+    );
 
     // Networking optimizations
-    suggestions.push(...this.getNetworkingOptimizations(scalingPhase, provider, costEstimate));
+    suggestions.push(
+      ...this.getNetworkingOptimizations(scalingPhase, provider, costEstimate),
+    );
 
     // Monitoring optimizations
-    suggestions.push(...this.getMonitoringOptimizations(scalingPhase, provider, costEstimate));
+    suggestions.push(
+      ...this.getMonitoringOptimizations(scalingPhase, provider, costEstimate),
+    );
 
     // Sort by potential savings (highest first)
     return suggestions.sort((a, b) => b.potentialSavings - a.potentialSavings);
@@ -203,7 +277,7 @@ export class CostCalculatorService {
     scalingPhase: 'launch' | 'growth' | 'scale',
     region: string,
     config: InfrastructureConfig,
-    migrationCost: number
+    migrationCost: number,
   ): Promise<{
     monthlySavings: number;
     annualSavings: number;
@@ -213,21 +287,26 @@ export class CostCalculatorService {
     recommendation: 'switch' | 'stay' | 'evaluate';
     reasoning: string;
   }> {
-    this.logger.log(`Calculating ROI for switching from ${fromProvider} to ${toProvider}`);
+    this.logger.log(
+      `Calculating ROI for switching from ${fromProvider} to ${toProvider}`,
+    );
 
-    const fromProviderInstance = this.providerFactory.createProvider(fromProvider);
+    const fromProviderInstance =
+      this.providerFactory.createProvider(fromProvider);
     const toProviderInstance = this.providerFactory.createProvider(toProvider);
 
+    const phaseConfig = this.getPhaseConfig(scalingPhase);
     const [fromCost, toCost] = await Promise.all([
-      fromProviderInstance.calculateCost(scalingPhase, region, config),
-      toProviderInstance.calculateCost(scalingPhase, region, config)
+      fromProviderInstance.calculateCost(phaseConfig, region, this.toCostCalculationOptions(config)),
+      toProviderInstance.calculateCost(phaseConfig, region, this.toCostCalculationOptions(config)),
     ]);
 
     const monthlySavings = fromCost.totalMonthlyCost - toCost.totalMonthlyCost;
     const annualSavings = monthlySavings * 12;
     const paybackPeriodMonths = migrationCost / monthlySavings;
     const threeYearSavings = annualSavings * 3;
-    const threeYearROI = ((threeYearSavings - migrationCost) / migrationCost) * 100;
+    const threeYearROI =
+      ((threeYearSavings - migrationCost) / migrationCost) * 100;
 
     let recommendation: 'switch' | 'stay' | 'evaluate';
     let reasoning: string;
@@ -253,7 +332,7 @@ export class CostCalculatorService {
       paybackPeriodMonths,
       threeYearROI,
       recommendation,
-      reasoning
+      reasoning,
     };
   }
 
@@ -267,14 +346,16 @@ export class CostCalculatorService {
   async getCostTrends(
     provider: CloudProviderType,
     scalingPhase: 'launch' | 'growth' | 'scale',
-    historicalData?: Array<{ month: string; cost: number }>
+    historicalData?: Array<{ month: string; cost: number }>,
   ): Promise<{
     currentTrend: 'increasing' | 'decreasing' | 'stable';
     projectedGrowth: number;
     seasonalFactors: Array<{ month: string; factor: number }>;
     recommendations: string[];
   }> {
-    this.logger.log(`Analyzing cost trends for ${provider} in ${scalingPhase} phase`);
+    this.logger.log(
+      `Analyzing cost trends for ${provider} in ${scalingPhase} phase`,
+    );
 
     // If no historical data, provide general trends based on scaling phase
     if (!historicalData || historicalData.length === 0) {
@@ -282,29 +363,44 @@ export class CostCalculatorService {
     }
 
     // Analyze historical data
-    const costs = historicalData.map(d => d.cost);
+    const costs = historicalData.map((d) => d.cost);
     const avgGrowth = this.calculateAverageGrowth(costs);
-    
+
     let currentTrend: 'increasing' | 'decreasing' | 'stable';
     if (avgGrowth > 5) currentTrend = 'increasing';
     else if (avgGrowth < -5) currentTrend = 'decreasing';
     else currentTrend = 'stable';
 
     const seasonalFactors = this.calculateSeasonalFactors(historicalData);
-    const recommendations = this.generateTrendRecommendations(currentTrend, avgGrowth, scalingPhase);
+    const recommendations = this.generateTrendRecommendations(
+      currentTrend,
+      avgGrowth,
+      scalingPhase,
+    );
 
     return {
       currentTrend,
       projectedGrowth: avgGrowth,
       seasonalFactors,
-      recommendations
+      recommendations,
     };
   }
 
-  private createBreakdownComparison(awsCost: CostEstimate, linodeCost: CostEstimate): CostBreakdownComparison[] {
-    const services = ['compute', 'database', 'cache', 'loadBalancer', 'storage', 'networking', 'monitoring'];
-    
-    return services.map(service => {
+  private createBreakdownComparison(
+    awsCost: CostEstimate,
+    linodeCost: CostEstimate,
+  ): CostBreakdownComparison[] {
+    const services = [
+      'compute',
+      'database',
+      'cache',
+      'loadBalancer',
+      'storage',
+      'networking',
+      'monitoring',
+    ];
+
+    return services.map((service) => {
       const awsAmount = awsCost.breakdown[service] || 0;
       const linodeAmount = linodeCost.breakdown[service] || 0;
       const savings = awsAmount - linodeAmount;
@@ -315,7 +411,7 @@ export class CostCalculatorService {
         aws: awsAmount,
         linode: linodeAmount,
         savings,
-        savingsPercentage
+        savingsPercentage,
       };
     });
   }
@@ -324,9 +420,10 @@ export class CostCalculatorService {
     awsCost: CostEstimate,
     linodeCost: CostEstimate,
     totalSavings: number,
-    totalSavingsPercentage: number
+    totalSavingsPercentage: number,
   ): DetailedCostComparison['recommendation'] {
-    const optimalProvider: CloudProviderType = totalSavings > 0 ? 'linode' : 'aws';
+    const optimalProvider: CloudProviderType =
+      totalSavings > 0 ? 'linode' : 'aws';
     const estimatedMonthlySavings = Math.abs(totalSavings);
     const estimatedAnnualSavings = estimatedMonthlySavings * 12;
 
@@ -341,40 +438,53 @@ export class CostCalculatorService {
       optimalProvider,
       reason,
       estimatedMonthlySavings,
-      estimatedAnnualSavings
+      estimatedAnnualSavings,
     };
   }
 
-  private getProjectionAssumptions(scalingPhase: string, timeframe: string): string[] {
+  private getProjectionAssumptions(
+    scalingPhase: string,
+    timeframe: string,
+  ): string[] {
     const baseAssumptions = [
       'Assumes consistent usage patterns',
       'Does not include potential discounts or reserved instance savings',
-      'Based on current pricing (subject to change)'
+      'Based on current pricing (subject to change)',
     ];
 
     const phaseAssumptions = {
       launch: ['Moderate user growth expected', 'Basic feature set'],
-      growth: ['Steady user base expansion', 'Additional features and services'],
-      scale: ['High traffic volumes', 'Premium performance requirements']
+      growth: [
+        'Steady user base expansion',
+        'Additional features and services',
+      ],
+      scale: ['High traffic volumes', 'Premium performance requirements'],
     };
 
     const timeframeAssumptions = {
       monthly: ['Short-term projection with minimal growth'],
-      quarterly: ['Seasonal variations considered', '5% quarterly growth assumed'],
-      annually: ['Long-term growth trends', '20% annual growth assumed', 'Potential for scaling phase transitions']
+      quarterly: [
+        'Seasonal variations considered',
+        '5% quarterly growth assumed',
+      ],
+      annually: [
+        'Long-term growth trends',
+        '20% annual growth assumed',
+        'Potential for scaling phase transitions',
+      ],
     };
 
     return [
       ...baseAssumptions,
-      ...phaseAssumptions[scalingPhase] || [],
-      ...timeframeAssumptions[timeframe] || []
+      ...(phaseAssumptions[scalingPhase] || []),
+      ...(timeframeAssumptions[timeframe] || []),
     ];
   }
 
   private getComputeOptimizations(
     scalingPhase: string,
     provider: CloudProviderType,
-    costEstimate: CostEstimate
+    costEstimate: CostEstimate,
   ): CostOptimizationSuggestion[] {
     const suggestions: CostOptimizationSuggestion[] = [];
 
@@ -385,7 +495,7 @@ export class CostCalculatorService {
         potentialSavings: costEstimate.breakdown.compute * 0.3,
         effort: 'low',
         impact: 'high',
-        provider
+        provider,
       });
 
       if (scalingPhase !== 'launch') {
@@ -395,7 +505,7 @@ export class CostCalculatorService {
           potentialSavings: costEstimate.breakdown.compute * 0.15,
           effort: 'medium',
           impact: 'medium',
-          provider
+          provider,
         });
       }
     }
@@ -403,11 +513,12 @@ export class CostCalculatorService {
     if (provider === 'linode') {
       suggestions.push({
         category: 'compute',
-        suggestion: 'Consider dedicated CPU instances for consistent performance',
+        suggestion:
+          'Consider dedicated CPU instances for consistent performance',
         potentialSavings: costEstimate.breakdown.compute * 0.1,
         effort: 'low',
         impact: 'medium',
-        provider
+        provider,
       });
     }
 
@@ -417,7 +528,7 @@ export class CostCalculatorService {
   private getDatabaseOptimizations(
     scalingPhase: string,
     provider: CloudProviderType,
-    costEstimate: CostEstimate
+    costEstimate: CostEstimate,
   ): CostOptimizationSuggestion[] {
     const suggestions: CostOptimizationSuggestion[] = [];
 
@@ -428,7 +539,7 @@ export class CostCalculatorService {
         potentialSavings: costEstimate.breakdown.database * 0.2,
         effort: 'medium',
         impact: 'high',
-        provider
+        provider,
       });
     }
 
@@ -439,7 +550,7 @@ export class CostCalculatorService {
         potentialSavings: costEstimate.breakdown.database * 0.25,
         effort: 'low',
         impact: 'high',
-        provider
+        provider,
       });
     }
 
@@ -449,7 +560,7 @@ export class CostCalculatorService {
   private getCacheOptimizations(
     scalingPhase: string,
     provider: CloudProviderType,
-    costEstimate: CostEstimate
+    costEstimate: CostEstimate,
   ): CostOptimizationSuggestion[] {
     const suggestions: CostOptimizationSuggestion[] = [];
 
@@ -460,7 +571,7 @@ export class CostCalculatorService {
         potentialSavings: costEstimate.breakdown.cache * 0.5,
         effort: 'high',
         impact: 'high',
-        provider
+        provider,
       });
     }
 
@@ -470,7 +581,7 @@ export class CostCalculatorService {
   private getStorageOptimizations(
     scalingPhase: string,
     provider: CloudProviderType,
-    costEstimate: CostEstimate
+    costEstimate: CostEstimate,
   ): CostOptimizationSuggestion[] {
     const suggestions: CostOptimizationSuggestion[] = [];
 
@@ -480,7 +591,7 @@ export class CostCalculatorService {
       potentialSavings: costEstimate.breakdown.storage * 0.3,
       effort: 'low',
       impact: 'medium',
-      provider
+      provider,
     });
 
     return suggestions;
@@ -489,18 +600,18 @@ export class CostCalculatorService {
   private getNetworkingOptimizations(
     scalingPhase: string,
     provider: CloudProviderType,
-    costEstimate: CostEstimate
+    costEstimate: CostEstimate,
   ): CostOptimizationSuggestion[] {
     const suggestions: CostOptimizationSuggestion[] = [];
 
     if (provider === 'linode') {
       suggestions.push({
         category: 'networking',
-        suggestion: 'Leverage Linode\'s generous data transfer allowances',
+        suggestion: "Leverage Linode's generous data transfer allowances",
         potentialSavings: costEstimate.breakdown.networking * 0.6,
         effort: 'low',
         impact: 'high',
-        provider
+        provider,
       });
     }
 
@@ -510,7 +621,7 @@ export class CostCalculatorService {
   private getMonitoringOptimizations(
     scalingPhase: string,
     provider: CloudProviderType,
-    costEstimate: CostEstimate
+    costEstimate: CostEstimate,
   ): CostOptimizationSuggestion[] {
     const suggestions: CostOptimizationSuggestion[] = [];
 
@@ -521,7 +632,7 @@ export class CostCalculatorService {
         potentialSavings: costEstimate.breakdown.monitoring * 0.8,
         effort: 'low',
         impact: 'medium',
-        provider
+        provider,
       });
     }
 
@@ -540,11 +651,13 @@ export class CostCalculatorService {
     return totalGrowth / (costs.length - 1);
   }
 
-  private calculateSeasonalFactors(historicalData: Array<{ month: string; cost: number }>): Array<{ month: string; factor: number }> {
+  private calculateSeasonalFactors(
+    historicalData: Array<{ month: string; cost: number }>,
+  ): Array<{ month: string; factor: number }> {
     // Simple seasonal analysis - in a real implementation, this would be more sophisticated
     const monthlyAverages = new Map<string, number>();
-    
-    historicalData.forEach(data => {
+
+    historicalData.forEach((data) => {
       const month = data.month.substring(5, 7); // Extract month from YYYY-MM format
       if (!monthlyAverages.has(month)) {
         monthlyAverages.set(month, 0);
@@ -552,36 +665,48 @@ export class CostCalculatorService {
       monthlyAverages.set(month, monthlyAverages.get(month)! + data.cost);
     });
 
-    const overallAverage = historicalData.reduce((sum, data) => sum + data.cost, 0) / historicalData.length;
+    const overallAverage =
+      historicalData.reduce((sum, data) => sum + data.cost, 0) /
+      historicalData.length;
 
     return Array.from(monthlyAverages.entries()).map(([month, total]) => ({
       month,
-      factor: total / overallAverage
+      factor: total / overallAverage,
     }));
   }
 
   private generateTrendRecommendations(
     trend: 'increasing' | 'decreasing' | 'stable',
     growth: number,
-    scalingPhase: string
+    scalingPhase: string,
   ): string[] {
     const recommendations: string[] = [];
 
     switch (trend) {
       case 'increasing':
-        recommendations.push('Monitor resource utilization to identify optimization opportunities');
+        recommendations.push(
+          'Monitor resource utilization to identify optimization opportunities',
+        );
         recommendations.push('Consider implementing cost alerts and budgets');
         if (growth > 20) {
-          recommendations.push('Evaluate if current scaling phase is appropriate');
+          recommendations.push(
+            'Evaluate if current scaling phase is appropriate',
+          );
         }
         break;
       case 'decreasing':
-        recommendations.push('Excellent cost management - maintain current practices');
-        recommendations.push('Consider reinvesting savings in performance improvements');
+        recommendations.push(
+          'Excellent cost management - maintain current practices',
+        );
+        recommendations.push(
+          'Consider reinvesting savings in performance improvements',
+        );
         break;
       case 'stable':
         recommendations.push('Costs are well-controlled');
-        recommendations.push('Look for opportunities to optimize without impacting performance');
+        recommendations.push(
+          'Look for opportunities to optimize without impacting performance',
+        );
         break;
     }
 
@@ -601,8 +726,8 @@ export class CostCalculatorService {
         recommendations: [
           'Expect moderate cost increases as user base grows',
           'Focus on cost-effective solutions during initial phase',
-          'Monitor usage patterns to optimize resource allocation'
-        ]
+          'Monitor usage patterns to optimize resource allocation',
+        ],
       },
       growth: {
         currentTrend: 'increasing' as const,
@@ -610,8 +735,8 @@ export class CostCalculatorService {
         recommendations: [
           'Significant growth expected - plan for scaling costs',
           'Implement cost monitoring and alerting',
-          'Consider reserved instances for predictable workloads'
-        ]
+          'Consider reserved instances for predictable workloads',
+        ],
       },
       scale: {
         currentTrend: 'stable' as const,
@@ -619,24 +744,29 @@ export class CostCalculatorService {
         recommendations: [
           'Costs should stabilize with mature infrastructure',
           'Focus on optimization and efficiency improvements',
-          'Leverage economies of scale for better pricing'
-        ]
-      }
+          'Leverage economies of scale for better pricing',
+        ],
+      },
     };
 
     const seasonalFactors = [
-      { month: '01', factor: 0.9 }, { month: '02', factor: 0.9 },
-      { month: '03', factor: 1.0 }, { month: '04', factor: 1.0 },
-      { month: '05', factor: 1.1 }, { month: '06', factor: 1.1 },
-      { month: '07', factor: 1.2 }, { month: '08', factor: 1.2 },
-      { month: '09', factor: 1.1 }, { month: '10', factor: 1.0 },
-      { month: '11', factor: 1.3 }, { month: '12', factor: 1.2 }
+      { month: '01', factor: 0.9 },
+      { month: '02', factor: 0.9 },
+      { month: '03', factor: 1.0 },
+      { month: '04', factor: 1.0 },
+      { month: '05', factor: 1.1 },
+      { month: '06', factor: 1.1 },
+      { month: '07', factor: 1.2 },
+      { month: '08', factor: 1.2 },
+      { month: '09', factor: 1.1 },
+      { month: '10', factor: 1.0 },
+      { month: '11', factor: 1.3 },
+      { month: '12', factor: 1.2 },
     ];
 
     return {
       ...trends[scalingPhase],
-      seasonalFactors
+      seasonalFactors,
     };
   }
 }
-

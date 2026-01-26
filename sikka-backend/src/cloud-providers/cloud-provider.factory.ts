@@ -24,7 +24,9 @@ export class CloudProviderFactory {
       case 'linode':
         return this.linodeProvider;
       default:
-        throw new BadRequestException(`Unsupported cloud provider: ${providerType}`);
+        throw new BadRequestException(
+          `Unsupported cloud provider: ${providerType}`,
+        );
     }
   }
 
@@ -42,7 +44,9 @@ export class CloudProviderFactory {
    * @returns True if supported, false otherwise
    */
   isProviderSupported(providerType: string): providerType is CloudProviderType {
-    return this.getAvailableProviders().includes(providerType as CloudProviderType);
+    return this.getAvailableProviders().includes(
+      providerType as CloudProviderType,
+    );
   }
 
   /**
@@ -51,11 +55,11 @@ export class CloudProviderFactory {
    */
   getAllProviders(): Map<CloudProviderType, CloudProviderInterface> {
     const providers = new Map<CloudProviderType, CloudProviderInterface>();
-    
+
     for (const providerType of this.getAvailableProviders()) {
       providers.set(providerType, this.createProvider(providerType));
     }
-    
+
     return providers;
   }
 
@@ -64,8 +68,10 @@ export class CloudProviderFactory {
    * @param providerTypes Array of provider types to create
    * @returns Array of provider instances
    */
-  createMultipleProviders(providerTypes: CloudProviderType[]): CloudProviderInterface[] {
-    return providerTypes.map(type => this.createProvider(type));
+  createMultipleProviders(
+    providerTypes: CloudProviderType[],
+  ): CloudProviderInterface[] {
+    return providerTypes.map((type) => this.createProvider(type));
   }
 
   /**
@@ -76,11 +82,10 @@ export class CloudProviderFactory {
   getValidatedProvider(providerType: string): CloudProviderInterface {
     if (!this.isProviderSupported(providerType)) {
       throw new BadRequestException(
-        `Unsupported cloud provider: ${providerType}. Supported providers: ${this.getAvailableProviders().join(', ')}`
+        `Unsupported cloud provider: ${providerType}. Supported providers: ${this.getAvailableProviders().join(', ')}`,
       );
     }
-    
+
     return this.createProvider(providerType);
   }
 }
-

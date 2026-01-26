@@ -17,10 +17,14 @@ export class ScalingController {
   }
 
   @Post('transition/:phase')
-  async executePhaseTransition(@Param('phase') phase: 'launch' | 'growth' | 'scale') {
+  async executePhaseTransition(
+    @Param('phase') phase: 'launch' | 'growth' | 'scale',
+  ) {
     const result = await this.scalingService.executePhaseTransition(phase);
     return {
-      message: result.success ? 'Phase transition initiated successfully' : 'Phase transition failed',
+      message: result.success
+        ? 'Phase transition initiated successfully'
+        : 'Phase transition failed',
       result,
     };
   }
@@ -50,4 +54,3 @@ export class ScalingController {
     };
   }
 }
-
