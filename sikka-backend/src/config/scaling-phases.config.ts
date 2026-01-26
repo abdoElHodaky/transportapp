@@ -42,6 +42,42 @@ export interface ScalingPhaseConfig {
     enableCDN: boolean;
     enableAutoScaling: boolean;
   };
+  // Multi-cloud configuration
+  cloudProvider?: {
+    preferred: 'aws' | 'linode' | 'auto';
+    fallback?: 'aws' | 'linode';
+    costOptimization: boolean;
+    regionPreferences: string[];
+    deploymentStrategy: 'single-cloud' | 'multi-cloud' | 'hybrid';
+    providerSpecific?: {
+      aws?: AwsProviderConfig;
+      linode?: LinodeProviderConfig;
+    };
+  };
+}
+
+export interface AwsProviderConfig {
+  region: string;
+  instanceTypes: {
+    compute: string;
+    database: string;
+    cache: string;
+  };
+  useSpotInstances: boolean;
+  useReservedInstances: boolean;
+  enableCloudWatch: boolean;
+  enableCloudTrail: boolean;
+}
+
+export interface LinodeProviderConfig {
+  region: string;
+  instanceTypes: {
+    compute: string;
+    database: string;
+  };
+  useDedicatedCpu: boolean;
+  enableLongview: boolean;
+  enableCloudFirewall: boolean;
 }
 
 @Injectable()
