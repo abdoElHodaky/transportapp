@@ -895,14 +895,14 @@ export interface CloudRegion {
  */
 export interface InfrastructureTemplate {
   templateType: 'terraform' | 'cloudformation' | 'pulumi' | 'ansible';
-  version: string;
-  provider: string;
-  region: string;
+  version?: string; // Made optional for compatibility
+  provider?: string; // Made optional for compatibility
+  region?: string; // Made optional for compatibility
   template: string;
   variables: Record<string, any>;
-  outputs: Record<string, any>;
+  outputs: Record<string, any> | Record<string, string>; // Allow both types for compatibility
   dependencies: string[];
-  estimatedCost: number;
+  estimatedCost?: number; // Made optional for compatibility
   estimatedDeploymentTime: number; // minutes
 }
 
