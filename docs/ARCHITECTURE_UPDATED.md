@@ -543,93 +543,86 @@ graph TB
 %%{init: {
   'theme': 'base',
   'themeVariables': {
-    'primaryColor': '#0066cc',
+    'primaryColor': '#1a237e',
     'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#004499',
-    'lineColor': '#0066cc',
-    'secondaryColor': '#00ccaa',
-    'tertiaryColor': '#e6f3ff',
-    'background': '#ffffff',
-    'mainBkg': '#0066cc',
-    'secondBkg': '#00ccaa',
-    'tertiaryBkg': '#e6f3ff'
+    'primaryBorderColor': '#0d47a1',
+    'lineColor': '#5c6bc0',
+    'secondaryColor': '#00bfa5',
+    'tertiaryColor': '#f5f7fa',
+    'mainBkg': '#1a237e',
+    'nodeBorder': '#303f9f',
+    'clusterBkg': '#f8f9fa',
+    'clusterBorder': '#dee2e6'
   }
 }}%%
 
 graph TB
-    subgraph "🌐 Global CDN & Edge"
-        CDN[📡 CloudFlare CDN<br/>⚡ Static Assets & Caching<br/>🌍 Global Distribution]
-    end
-    
-    subgraph "⚖️ Load Balancing & Security"
-        LB[🔄 Load Balancer<br/>🌐 Nginx/HAProxy<br/>⚖️ Traffic Distribution]
-        SSL[🔒 SSL Termination<br/>🛡️ HTTPS/TLS<br/>🔐 Certificate Management]
-    end
-    
-    subgraph "🏗️ Application Tier"
-        APP1[🚀 App Instance 1<br/>📦 NestJS Container<br/>🔄 Auto-scaling]
-        APP2[🚀 App Instance 2<br/>📦 NestJS Container<br/>🔄 Auto-scaling]
-        APP3[🚀 App Instance 3<br/>📦 NestJS Container<br/>🔄 Auto-scaling]
-    end
-    
-    subgraph "🗄️ Data Tier"
-        PG_PRIMARY[🐘 PostgreSQL Primary<br/>✍️ Write Operations<br/>🔄 Master Database]
-        PG_REPLICA[🐘 PostgreSQL Replica<br/>📖 Read Operations<br/>📊 Query Optimization]
-        REDIS_CLUSTER[⚡ Redis Cluster<br/>💾 Cache & Sessions<br/>📡 Pub/Sub Messaging]
-    end
-    
-    subgraph "📊 Monitoring & Observability"
-        PROMETHEUS[📈 Prometheus<br/>📊 Metrics Collection<br/>⚠️ Alert Management]
-        GRAFANA[📊 Grafana<br/>📈 Dashboards<br/>📊 Visualization]
-        LOGS[📝 ELK Stack<br/>📋 Log Aggregation<br/>🔍 Search & Analysis]
+    %% Global Edge Section
+    subgraph EDGE ["🌐 EDGE DELIVERY"]
+        CDN(["📡 <b>CloudFlare Edge</b><br/><i>Anycast Network • WAF • Cache</i>"])
     end
 
-    %% Traffic Flow
-    CDN --> LB
+    %% Security & Routing Section
+    subgraph GATEWAY ["⚖️ TRAFFIC MANAGEMENT"]
+        LB{{"🔄 <b>High Availability LB</b><br/>Nginx Plus"}}
+        SSL["🔒 <b>SSL/TLS Termination</b><br/>Cert-Manager / Let's Encrypt"]
+    end
+    
+    %% Application Cluster
+    subgraph APP_TIER ["🏗️ APPLICATION CLUSTER (K8s/Docker)"]
+        direction LR
+        APP1["🚀 <b>Node Instance A</b><br/>NestJS v10"]
+        APP2["🚀 <b>Node Instance B</b><br/>NestJS v10"]
+        APP3["🚀 <b>Node Instance C</b><br/>NestJS v10"]
+    end
+    
+    %% Storage Tier
+    subgraph DATA_TIER ["🗄️ PERSISTENCE & CACHE"]
+        direction TB
+        subgraph DB_POOL ["🐘 Database Cluster"]
+            PG_PRIMARY[("写入 <b>PostgreSQL Primary</b><br/>Master Node")]
+            PG_REPLICA[("读取 <b>PostgreSQL Replica</b><br/>Read-Only Slave")]
+        end
+        REDIS_CLUSTER[["⚡ <b>Redis Cluster</b><br/>Shared Sessions / Distributed Cache"]]
+    end
+    
+    %% Observability
+    subgraph OBS_TIER ["📊 OBSERVABILITY STACK"]
+        PROMETHEUS["📈 <b>Prometheus</b><br/>TSDB Metrics"]
+        GRAFANA["🖼️ <b>Grafana</b><br/>Visual Dashboards"]
+        LOGS["🔍 <b>ELK / Loki</b><br/>Centralized Logging"]
+    end
+
+    %% Traffic Connections
+    CDN ==>|HTTPS/2| LB
     LB --> SSL
-    SSL --> APP1
-    SSL --> APP2
-    SSL --> APP3
+    SSL ==> APP1 & APP2 & APP3
     
-    %% Database Connections
-    APP1 --> PG_PRIMARY
-    APP1 --> PG_REPLICA
-    APP2 --> PG_PRIMARY
-    APP2 --> PG_REPLICA
-    APP3 --> PG_PRIMARY
-    APP3 --> PG_REPLICA
+    %% Data Flow
+    APP1 & APP2 & APP3 --- REDIS_CLUSTER
+    APP1 & APP2 & APP3 --> PG_PRIMARY
+    APP1 & APP2 & APP3 -.-> PG_REPLICA
     
-    %% Cache Connections
-    APP1 --> REDIS_CLUSTER
-    APP2 --> REDIS_CLUSTER
-    APP3 --> REDIS_CLUSTER
+    %% Replication Link
+    PG_PRIMARY -.->|Binary Replication| PG_REPLICA
     
-    %% Database Replication
-    PG_PRIMARY -.->|🔄 Replication| PG_REPLICA
-    
-    %% Monitoring
-    APP1 -.->|📊 Metrics| PROMETHEUS
-    APP2 -.->|📊 Metrics| PROMETHEUS
-    APP3 -.->|📊 Metrics| PROMETHEUS
-    
+    %% Telemetry Flow
+    APP1 & APP2 & APP3 -.->|Scrape| PROMETHEUS
+    APP1 & APP2 & APP3 -.->|Stream| LOGS
     PROMETHEUS --> GRAFANA
-    
-    APP1 -.->|📝 Logs| LOGS
-    APP2 -.->|📝 Logs| LOGS
-    APP3 -.->|📝 Logs| LOGS
 
-    %% Eye-catching Architecture Deployment Styling
-    classDef cdnEdge fill:#0066cc,stroke:#004499,stroke-width:4px,color:#ffffff,font-weight:bold
-    classDef loadBalancing fill:#00ccaa,stroke:#008899,stroke-width:4px,color:#ffffff,font-weight:bold
-    classDef applicationTier fill:#0088ff,stroke:#0066cc,stroke-width:4px,color:#ffffff,font-weight:bold
-    classDef dataTier fill:#4d79a4,stroke:#2e5984,stroke-width:4px,color:#ffffff,font-weight:bold
-    classDef monitoringTier fill:#7fb3d3,stroke:#5f9fc3,stroke-width:4px,color:#ffffff,font-weight:bold
+    %% Advanced Styling Classes
+    classDef edgeClass fill:#1a237e,stroke:#0d47a1,stroke-width:2px,color:#fff
+    classDef gatewayClass fill:#00bfa5,stroke:#00897b,stroke-width:2px,color:#fff
+    classDef appClass fill:#2979ff,stroke:#1565c0,stroke-width:2px,color:#fff
+    classDef dbClass fill:#37474f,stroke:#263238,stroke-width:2px,color:#fff
+    classDef obsClass fill:#eceff1,stroke:#b0bec5,stroke-width:2px,color:#37474f
 
-    class CDN cdnEdge
-    class LB,SSL loadBalancing
-    class APP1,APP2,APP3 applicationTier
-    class PG_PRIMARY,PG_REPLICA,REDIS_CLUSTER dataTier
-    class PROMETHEUS,GRAFANA,LOGS monitoringTier
+    class CDN edgeClass
+    class LB,SSL gatewayClass
+    class APP1,APP2,APP3 appClass
+    class PG_PRIMARY,PG_REPLICA,REDIS_CLUSTER dbClass
+    class PROMETHEUS,GRAFANA,LOGS obsClass
 ```
 
 ---
