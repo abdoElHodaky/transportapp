@@ -11,7 +11,7 @@ import { NotificationGateway } from './notification.gateway';
 @Module({
   imports: [
     BullModule.registerQueue({
-      name: 'notification',
+      name: 'notifications',
       redis: {
         host: process.env.QUEUE_REDIS_HOST || 'localhost',
         port: parseInt(process.env.QUEUE_REDIS_PORT) || 6379,
@@ -29,7 +29,11 @@ import { NotificationGateway } from './notification.gateway';
     NotificationProcessor,
     NotificationGateway,
   ],
-  exports: [NotificationService],
+  exports: [
+    NotificationService,
+    SmsService,
+    PushNotificationService,
+    NotificationGateway,
+  ],
 })
 export class NotificationModule {}
-
