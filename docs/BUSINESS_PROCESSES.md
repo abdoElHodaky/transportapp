@@ -1122,160 +1122,90 @@ sequenceDiagram
 ### **Rating Impact System**
 
 ```mermaid
-%%{init: {
+  %%{init: {
   "theme": "dark",
   "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
+    "darkMode": true,
     "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#cffafe",
+    "primaryBorderColor": "#30363d",
+    "lineColor": "#444c56",
+    "tertiaryColor": "#161b22"
   },
   "flowchart": {
+    "curve": "basis",
     "useMaxWidth": true,
     "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
   }
-}%%
+}}%%
 flowchart TD
-    A["Rating Submitted"] --> B["Update User Average"]
-    B --> C {"Rating Below 3.0?"}
+    %% Nodes
+    A(["fa:fa-star Rating Submitted"]) --> B["Update User Average"]
+    B --> C{"Rating < 3.0?"}
     
-    C --> |Yes| D["Flag for Review"]
-    C --> |No| E["Normal Processing"]
+    %% Path: Low Rating
+    C --- |Yes| D_Path{ }
+    D_Path ==>|Critical| D["Flag for Review"]
+    linkStyle 2 stroke:#f85149,stroke-width:2px,color:#f85149
     
-    D --> F {"Multiple Low Ratings?"}
-    F --> |Yes| G["Automatic Suspension"]
-    F --> |No| H["Warning Notice"]
+    D --> F{"Multiple Low Ratings?"}
+    F ==>|Yes| G["Automatic Suspension"]
+    linkStyle 5 stroke:#f85149,stroke-width:4px,color:#f85149
+    
+    F -->|No| H["Warning Notice"]
+    linkStyle 6 stroke:#e3b341,stroke-width:2px,color:#e3b341
     
     G --> I["Admin Review Required"]
     H --> J["Performance Monitoring"]
     
+    %% Path: Normal Rating
+    C --- |No| E_Path{ }
+    E_Path ==>|Safe| E["Normal Processing"]
+    linkStyle 3 stroke:#3fb950,stroke-width:2px,color:#3fb950
+    
     E --> K["Update Profile"]
-    K --> L {"Driver Rating > 4.8?"}
-    L --> |Yes| M["Premium Driver Status"]
-    L --> |No| N["Standard Status"]
+    K --> L{"Rating > 4.8?"}
+    L ==>|VIP| M["Premium Driver Status"]
+    linkStyle 11 stroke:#3fb950,stroke-width:4px,color:#3fb950
+    
+    L -->|No| N["Standard Status"]
     
     I --> O["Manual Investigation"]
-    O --> P {"Reinstate?"}
-    P --> |Yes| Q["Account Reactivated"]
-    P --> |No| R["Permanent Suspension"]
+    O --> P{"Reinstate?"}
+    P ==>|Approve| Q["Account Reactivated"]
+    linkStyle 16 stroke:#3fb950,stroke-width:2px,color:#3fb950
+    
+    P ==>|Deny| R["Permanent Suspension"]
+    linkStyle 17 stroke:#f85149,stroke-width:2px,color:#f85149
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    %% --- STYLING CLASSES ---
+    classDef startNode fill:#161b22,stroke:#58a6ff,stroke-width:3px,color:#58a6ff,font-weight:bold;
+    classDef logic fill:#0d1117,stroke:#d29922,color:#d29922,stroke-dasharray: 5 5;
+    classDef positive fill:#04190b,stroke:#3fb950,color:#aff5b4,stroke-width:2px;
+    classDef negative fill:#1a0b0b,stroke:#f85149,color:#ffa198,stroke-width:2px;
+    classDef neutral fill:#21262d,stroke:#8b949e,color:#c9d1d9;
+    classDef alert fill:#211d07,stroke:#e3b341,color:#f0e05a,stroke-width:2px;
 
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class O revNode;
-    class P commNode;
-    class Q refNode;
-    class R earnNode;
-    class Y main;
+    class A startNode;
+    class B,E,K,J,N neutral;
+    class C,F,L,P logic;
+    class D,H,O alert;
+    class G,I,R negative;
+    class M,Q positive;
+
+    %% --- LEGEND ---
+    subgraph Legend ["fa:fa-info-circle System Key"]
+        direction LR
+        L1["Success/VIP"] --- L2["Decision"] --- L3["Critical/Alert"] --- L4["Standard"]
+    end
+    class L1 positive;
+    class L2 logic;
+    class L3 negative;
+    class L4 neutral;
+    style Legend fill:#0d1117,stroke:#30363d,color:#8b949e
 
 
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-    class A accent;
-    class B accent;
-    class D accent;
-    class E process;
-    class G accent;
-    class H warning;
-    class I accent;
-    class J accent;
-    class K accent;
-    class M accent;
-    class N accent;
-    class O accent;
-    class Q accent;
-    class R accent;
 ```
 
 ---
