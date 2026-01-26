@@ -204,9 +204,9 @@ export interface MaintenanceConfig {
  * Cache Configuration
  */
 export interface CacheConfig {
-  engine: 'redis' | 'memcached';
-  version: string;
-  nodeType: string;
+  engine?: 'redis' | 'memcached' | string; // Allow string for flexibility
+  version?: string;
+  nodeType?: string;
   numCacheNodes?: number;
   numNodes?: number;
   port?: number;
@@ -379,6 +379,8 @@ export interface StorageConfig {
   size?: number;
   encrypted?: boolean;
   defaultSize?: number;
+  versioning?: boolean;
+  encryption?: boolean;
 }
 
 /**
@@ -524,6 +526,8 @@ export interface NetworkingConfig {
   networkAcls?: NetworkAclConfig[];
   // Additional simplified properties for basic configuration
   vpcCidr?: string;
+  publicSubnets?: string[];
+  privateSubnets?: string[];
 }
 
 /**
@@ -651,6 +655,7 @@ export interface MonitoringConfig {
   // Additional simplified properties for basic configuration
   enabled?: boolean;
   retentionDays?: number;
+  detailedMonitoring?: boolean;
 }
 
 /**
