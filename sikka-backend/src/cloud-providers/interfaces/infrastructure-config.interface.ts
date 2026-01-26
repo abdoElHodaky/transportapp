@@ -69,10 +69,10 @@ export interface AutoScalingConfig {
   minInstances: number;
   maxInstances: number;
   targetCpuUtilization: number;
-  targetMemoryUtilization: number;
-  scaleUpCooldown: number; // seconds
-  scaleDownCooldown: number; // seconds
-  metrics: ScalingMetric[];
+  targetMemoryUtilization?: number;
+  scaleUpCooldown?: number; // seconds
+  scaleDownCooldown?: number; // seconds
+  metrics?: ScalingMetric[];
 }
 
 /**
@@ -137,10 +137,17 @@ export interface ServicePort {
  * Database Configuration
  */
 export interface DatabaseConfig {
-  primary: DatabaseInstance;
-  readReplicas: DatabaseInstance[];
-  backup: BackupConfig;
-  maintenance: MaintenanceConfig;
+  primary?: DatabaseInstance;
+  readReplicas?: DatabaseInstance[] | number;
+  backup?: BackupConfig;
+  maintenance?: MaintenanceConfig;
+  // Additional simplified properties for basic configuration
+  engine?: string;
+  version?: string;
+  instanceClass?: string;
+  allocatedStorage?: number;
+  backupRetention?: number;
+  multiAz?: boolean;
 }
 
 /**
@@ -196,13 +203,15 @@ export interface CacheConfig {
   engine: 'redis' | 'memcached';
   version: string;
   nodeType: string;
-  numCacheNodes: number;
-  port: number;
+  numCacheNodes?: number;
+  numNodes?: number;
+  port?: number;
   parameterGroup?: string;
-  subnetGroup: string;
-  securityGroups: string[];
+  subnetGroup?: string;
+  securityGroups?: string[];
   replicationGroup?: ReplicationGroupConfig;
   cluster?: ClusterConfig;
+  replicationEnabled?: boolean;
 }
 
 /**

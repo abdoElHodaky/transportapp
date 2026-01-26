@@ -109,11 +109,24 @@ export interface InfrastructureOptions {
 export interface CostEstimate {
   totalMonthlyCost: number;
   currency: string;
-  breakdown: CostBreakdown[];
+  breakdown: CostBreakdownSummary;
   confidence: number; // 0-1, how accurate the estimate is
   lastUpdated: Date;
   assumptions: string[];
   recommendations: CostOptimizationRecommendation[];
+}
+
+/**
+ * Cost Breakdown Summary by Category
+ */
+export interface CostBreakdownSummary {
+  compute: number;
+  database: number;
+  storage: number;
+  networking: number;
+  monitoring: number;
+  cache: number;
+  other: number;
 }
 
 /**

@@ -12,6 +12,8 @@ import {
 } from './interfaces/infrastructure-config.interface';
 import {
   CostEstimate,
+  CostCalculationOptions,
+  ServiceRequirements,
 } from './interfaces/cloud-provider.interface';
 import { CloudProvidersConfig } from '../config/cloud-providers.config';
 import { ScalingPhasesConfig, ScalingPhaseConfig } from '../config/scaling-phases.config';
@@ -50,6 +52,35 @@ export class CloudProviderManagerService {
    */
   private getPhaseConfig(phase: 'launch' | 'growth' | 'scale'): ScalingPhaseConfig {
     return this.scalingPhasesConfig.getPhaseConfig(phase);
+  }
+
+  /**
+   * Convert InfrastructureConfig to CostCalculationOptions
+   */
+  private toCostCalculationOptions(config: InfrastructureConfig): CostCalculationOptions {
+    return {
+      includeDataTransfer: true,
+      includeBackups: config.database?.backup?.enabled ?? true,
+      includeMonitoring: config.monitoring ? true : false,
+      usagePattern: config.metadata?.scalingPhase === 'launch' ? 'light' : 
+                   config.metadata?.scalingPhase === 'growth' ? 'moderate' : 'heavy',
+      reservedInstanceDiscount: config.metadata?.scalingPhase === 'scale',
+    };
+  }
+
+  /**
+   * Convert InfrastructureConfig to ServiceRequirements
+   */
+  private toServiceRequirements(config: InfrastructureConfig): ServiceRequirements {
+    return {
+      performanceLevel: config.metadata?.scalingPhase === 'launch' ? 'basic' : 
+                       config.metadata?.scalingPhase === 'growth' ? 'standard' : 'high',
+      availabilityRequirement: config.metadata?.scalingPhase === 'launch' ? 99.9 : 
+                              config.metadata?.scalingPhase === 'growth' ? 99.95 : 99.99,
+      dataResidency: config.metadata?.region,
+      complianceRequirements: [],
+      budgetConstraint: undefined,
+    };
   }
 
   /**
@@ -346,8 +377,8 @@ export class CloudProviderManagerService {
     // Get provider data
     const phaseConfig = this.getPhaseConfig(scalingPhase);
     const [costEstimate, recommendations, regions] = await Promise.all([
-      provider.calculateCost(phaseConfig, 'us-east-1', config),
-      provider.getServiceRecommendations(phaseConfig, config),
+      provider.calculateCost(phaseConfig, 'us-east-1', this.toCostCalculationOptions(config)),
+      provider.getServiceRecommendations(phaseConfig, this.toServiceRequirements(config)),
       provider.getAvailableRegions(),
     ]);
 

@@ -8,6 +8,7 @@ import {
 } from './interfaces/infrastructure-config.interface';
 import {
   CostEstimate,
+  CostCalculationOptions,
 } from './interfaces/cloud-provider.interface';
 import { ScalingPhasesConfig, ScalingPhaseConfig } from '../config/scaling-phases.config';
 
@@ -79,6 +80,20 @@ export class CostCalculatorService {
   }
 
   /**
+   * Convert InfrastructureConfig to CostCalculationOptions
+   */
+  private toCostCalculationOptions(config: InfrastructureConfig): CostCalculationOptions {
+    return {
+      includeDataTransfer: true,
+      includeBackups: config.database?.backup?.enabled ?? true,
+      includeMonitoring: config.monitoring ? true : false,
+      usagePattern: config.metadata?.scalingPhase === 'launch' ? 'light' : 
+                   config.metadata?.scalingPhase === 'growth' ? 'moderate' : 'heavy',
+      reservedInstanceDiscount: config.metadata?.scalingPhase === 'scale',
+    };
+  }
+
+  /**
    * Compare costs between all providers for a specific configuration
    * @param scalingPhase The scaling phase
    * @param region The deployment region
@@ -98,8 +113,8 @@ export class CostCalculatorService {
     // Get cost estimates from both providers
     const phaseConfig = this.getPhaseConfig(scalingPhase);
     const [awsCost, linodeCost] = await Promise.all([
-      awsProvider.calculateCost(phaseConfig, region, config),
-      linodeProvider.calculateCost(phaseConfig, region, config),
+      awsProvider.calculateCost(phaseConfig, region, this.toCostCalculationOptions(config)),
+      linodeProvider.calculateCost(phaseConfig, region, this.toCostCalculationOptions(config)),
     ]);
 
     // Calculate savings
@@ -281,8 +296,8 @@ export class CostCalculatorService {
 
     const phaseConfig = this.getPhaseConfig(scalingPhase);
     const [fromCost, toCost] = await Promise.all([
-      fromProviderInstance.calculateCost(phaseConfig, region, config),
-      toProviderInstance.calculateCost(phaseConfig, region, config),
+      fromProviderInstance.calculateCost(phaseConfig, region, this.toCostCalculationOptions(config)),
+      toProviderInstance.calculateCost(phaseConfig, region, this.toCostCalculationOptions(config)),
     ]);
 
     const monthlySavings = fromCost.totalMonthlyCost - toCost.totalMonthlyCost;
