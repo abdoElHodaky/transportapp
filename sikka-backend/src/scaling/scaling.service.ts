@@ -4,6 +4,10 @@ import { ScalingPhasesConfig } from '../config/scaling-phases.config';
 import { DatabaseScalingConfig } from '../config/database-scaling.config';
 import { RedisScalingConfig } from '../config/redis-scaling.config';
 import { ConcurrencyAnalysisService } from '../performance/concurrency-analysis.service';
+import { CloudProviderManagerService } from '../cloud-providers/cloud-provider-manager.service';
+import { CostComparisonService } from '../cloud-providers/cost-comparison.service';
+import { CloudProviderType } from '../cloud-providers/cloud-provider.factory';
+import { InfrastructureConfig } from '../cloud-providers/interfaces/infrastructure-config.interface';
 
 export interface ScalingStatus {
   currentPhase: string;
@@ -39,6 +43,21 @@ export interface ScalingStatus {
       status: 'completed' | 'in-progress' | 'pending';
     }>;
   };
+  multiCloud?: {
+    currentProvider: CloudProviderType;
+    recommendedProvider: CloudProviderType;
+    costComparison: {
+      currentCost: number;
+      recommendedCost: number;
+      potentialSavings: number;
+      savingsPercentage: number;
+    };
+    migrationPlan?: {
+      steps: string[];
+      estimatedDowntime: string;
+      estimatedCost: number;
+    };
+  };
 }
 
 @Injectable()
@@ -51,6 +70,8 @@ export class ScalingService {
     private databaseConfig: DatabaseScalingConfig,
     private redisConfig: RedisScalingConfig,
     private concurrencyAnalysis: ConcurrencyAnalysisService,
+    private cloudProviderManager: CloudProviderManagerService,
+    private costComparison: CostComparisonService,
   ) {}
 
   /**
@@ -75,6 +96,9 @@ export class ScalingService {
     
     // Create timeline
     const timeline = this.createScalingTimeline(phaseConfig.phase);
+    
+    // Get multi-cloud analysis
+    const multiCloud = await this.getMultiCloudAnalysis(phaseConfig.phase);
 
     return {
       currentPhase: nextPhaseRecommendations.currentPhase,
@@ -88,6 +112,7 @@ export class ScalingService {
       recommendations,
       infrastructure,
       timeline,
+      multiCloud,
     };
   }
 
@@ -654,5 +679,176 @@ spec:
     targetPort: 3000
   type: LoadBalancer`;
   }
-}
 
+  /**
+   * Get multi-cloud analysis for current scaling phase
+   */
+  private async getMultiCloudAnalysis(currentPhase: string): Promise<ScalingStatus['multiCloud']> {
+    try {
+      // Get current cloud provider from configuration
+      const currentProvider = this.getCurrentCloudProvider();
+      
+      // Create infrastructure configuration for current phase
+      const infrastructureConfig = this.createInfrastructureConfig(currentPhase);
+      
+      // Get cost comparison report
+      const costReport = await this.costComparison.generateCostComparisonReport({
+        scalingPhase: currentPhase as 'launch' | 'growth' | 'scale',
+        region: 'us-east-1',
+        config: infrastructureConfig,
+        currentProvider,
+        includeProjections: false,
+        includeMigrationAnalysis: true
+      });
+
+      // Generate migration plan if different provider is recommended
+      let migrationPlan;
+      if (costReport.summary.recommendedProvider !== currentProvider) {
+        const migrationAnalysis = await this.cloudProviderManager.switchProvider(
+          currentProvider,
+          costReport.summary.recommendedProvider,
+          currentPhase as 'launch' | 'growth' | 'scale',
+          infrastructureConfig
+        );
+
+        migrationPlan = {
+          steps: migrationAnalysis.migrationSteps,
+          estimatedDowntime: migrationAnalysis.estimatedDowntime,
+          estimatedCost: migrationAnalysis.costImpact.from.totalMonthlyCost
+        };
+      }
+
+      return {
+        currentProvider,
+        recommendedProvider: costReport.summary.recommendedProvider,
+        costComparison: {
+          currentCost: costReport.detailedComparison.providers[currentProvider].totalMonthlyCost,
+          recommendedCost: costReport.detailedComparison.providers[costReport.summary.recommendedProvider].totalMonthlyCost,
+          potentialSavings: costReport.summary.potentialMonthlySavings,
+          savingsPercentage: Math.abs(costReport.detailedComparison.totalSavingsPercentage)
+        },
+        migrationPlan
+      };
+    } catch (error) {
+      this.logger.error('Failed to get multi-cloud analysis:', error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Get current cloud provider from configuration
+   */
+  private getCurrentCloudProvider(): CloudProviderType {
+    const cloudConfig = this.scalingConfig.getCurrentPhaseConfig().cloudProvider;
+    return cloudConfig?.preferred || 'aws'; // Default to AWS if not specified
+  }
+
+  /**
+   * Create infrastructure configuration for scaling phase
+   */
+  private createInfrastructureConfig(phase: string): InfrastructureConfig {
+    const phaseConfig = this.scalingConfig.getCurrentPhaseConfig();
+    
+    return {
+      compute: {
+        instanceType: this.getInstanceTypeForPhase(phase),
+        instanceCount: this.getInstanceCountForPhase(phase),
+        autoScaling: {
+          enabled: phase !== 'launch',
+          minInstances: phase === 'launch' ? 1 : phase === 'growth' ? 2 : 3,
+          maxInstances: phase === 'launch' ? 3 : phase === 'growth' ? 6 : 20,
+          targetCpuUtilization: 70
+        }
+      },
+      database: {
+        engine: 'postgresql',
+        version: '15.4',
+        instanceClass: this.getDatabaseInstanceForPhase(phase),
+        storage: this.getDatabaseStorageForPhase(phase),
+        backupRetention: phase === 'launch' ? 7 : phase === 'growth' ? 14 : 30,
+        multiAz: phase !== 'launch',
+        readReplicas: phase === 'launch' ? 0 : phase === 'growth' ? 1 : 2
+      },
+      cache: {
+        engine: 'redis',
+        version: '7.0',
+        nodeType: this.getCacheNodeTypeForPhase(phase),
+        numNodes: phase === 'launch' ? 1 : phase === 'growth' ? 2 : 3,
+        replicationEnabled: phase !== 'launch'
+      },
+      loadBalancer: {
+        type: 'application',
+        scheme: 'internet-facing',
+        healthCheck: {
+          path: '/health',
+          interval: 30,
+          timeout: 5,
+          healthyThreshold: 2,
+          unhealthyThreshold: 3
+        }
+      },
+      storage: {
+        type: 'object',
+        defaultSize: phase === 'launch' ? 100 : phase === 'growth' ? 500 : 2000, // GB
+        versioning: true,
+        encryption: true
+      },
+      networking: {
+        vpcCidr: '10.0.0.0/16',
+        publicSubnets: ['10.0.1.0/24', '10.0.2.0/24', '10.0.3.0/24'],
+        privateSubnets: ['10.0.10.0/24', '10.0.11.0/24', '10.0.12.0/24'],
+        natGateways: phase === 'launch' ? 1 : phase === 'growth' ? 2 : 3
+      },
+      monitoring: {
+        enabled: true,
+        retentionDays: phase === 'launch' ? 7 : phase === 'growth' ? 14 : 30,
+        detailedMonitoring: phase !== 'launch'
+      }
+    };
+  }
+
+  private getInstanceTypeForPhase(phase: string): string {
+    switch (phase) {
+      case 'launch': return 't3.micro';
+      case 'growth': return 'c5.large';
+      case 'scale': return 'c5.xlarge';
+      default: return 't3.micro';
+    }
+  }
+
+  private getInstanceCountForPhase(phase: string): number {
+    switch (phase) {
+      case 'launch': return 1;
+      case 'growth': return 2;
+      case 'scale': return 6;
+      default: return 1;
+    }
+  }
+
+  private getDatabaseInstanceForPhase(phase: string): string {
+    switch (phase) {
+      case 'launch': return 'db.t3.micro';
+      case 'growth': return 'db.t3.medium';
+      case 'scale': return 'db.r5.2xlarge';
+      default: return 'db.t3.micro';
+    }
+  }
+
+  private getDatabaseStorageForPhase(phase: string): number {
+    switch (phase) {
+      case 'launch': return 20;
+      case 'growth': return 50;
+      case 'scale': return 200;
+      default: return 20;
+    }
+  }
+
+  private getCacheNodeTypeForPhase(phase: string): string {
+    switch (phase) {
+      case 'launch': return 'cache.t3.micro';
+      case 'growth': return 'cache.m5.large';
+      case 'scale': return 'cache.r6g.4xlarge';
+      default: return 'cache.t3.micro';
+    }
+  }
+}

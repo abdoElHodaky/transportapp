@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 export interface ScalingPhaseConfig {
   phase: 'launch' | 'growth' | 'scale';
+  expectedUsers: number;
   maxConcurrentUsers: number;
   maxConcurrentTrips: number;
   databaseConfig: {
@@ -42,6 +43,42 @@ export interface ScalingPhaseConfig {
     enableCDN: boolean;
     enableAutoScaling: boolean;
   };
+  // Multi-cloud configuration
+  cloudProvider?: {
+    preferred: 'aws' | 'linode' | 'auto';
+    fallback?: 'aws' | 'linode';
+    costOptimization: boolean;
+    regionPreferences: string[];
+    deploymentStrategy: 'single-cloud' | 'multi-cloud' | 'hybrid';
+    providerSpecific?: {
+      aws?: AwsProviderConfig;
+      linode?: LinodeProviderConfig;
+    };
+  };
+}
+
+export interface AwsProviderConfig {
+  region: string;
+  instanceTypes: {
+    compute: string;
+    database: string;
+    cache: string;
+  };
+  useSpotInstances: boolean;
+  useReservedInstances: boolean;
+  enableCloudWatch: boolean;
+  enableCloudTrail: boolean;
+}
+
+export interface LinodeProviderConfig {
+  region: string;
+  instanceTypes: {
+    compute: string;
+    database: string;
+  };
+  useDedicatedCpu: boolean;
+  enableLongview: boolean;
+  enableCloudFirewall: boolean;
 }
 
 @Injectable()
@@ -76,6 +113,7 @@ export class ScalingPhasesConfig {
   private getLaunchPhaseConfig(): ScalingPhaseConfig {
     return {
       phase: 'launch',
+      expectedUsers: 2000,
       maxConcurrentUsers: 2000,
       maxConcurrentTrips: 600,
       databaseConfig: {
@@ -125,6 +163,7 @@ export class ScalingPhasesConfig {
   private getGrowthPhaseConfig(): ScalingPhaseConfig {
     return {
       phase: 'growth',
+      expectedUsers: 5000,
       maxConcurrentUsers: 5000,
       maxConcurrentTrips: 1500,
       databaseConfig: {
@@ -174,6 +213,7 @@ export class ScalingPhasesConfig {
   private getScalePhaseConfig(): ScalingPhaseConfig {
     return {
       phase: 'scale',
+      expectedUsers: 15000,
       maxConcurrentUsers: 15000,
       maxConcurrentTrips: 4500,
       databaseConfig: {
