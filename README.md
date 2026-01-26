@@ -110,40 +110,75 @@ graph TB
 Sikka supports multiple payment methods with automatic commission handling:
 
 ```mermaid
-%%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#c9d1d9",
-    "primaryBorderColor": "#3fb950",
-    "lineColor": "#3fb950"
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  }
-}}%%
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: "#050505"
+    primaryTextColor: "#ffffff"
+    primaryBorderColor: "#00ff88"
+    lineColor: "#00ff88"
+    secondaryColor: "#00ff88"
+    tertiaryColor: "#111111"
+    mainBkg: "#050505"
+    nodeBorder: "#00ff88"
+    actorBkg: "#111111"
+    actorBorder: "#00ff88"
+    actorTextColor: "#ffffff"
+    actorFontSize: "22px"
+    noteBkgColor: "#111111"
+    noteBorderColor: "#00ff88"
+    noteFontSize: "20px"
+    messageFontSize: "19px"
+    sequenceNumberColor: "#050505"
+    labelBoxBkgColor: "#050505"
+    labelBoxBorderColor: "#00ff88"
+---
 sequenceDiagram
+    autonumber
+    
     participant P as 📱 Passenger
     participant S as 🌐 Sikka API
-    participant G as 💳 Payment Gateway
+    participant G as 💳 Gateway@{"type": "database"}
     participant D as 🚗 Driver
     participant A as 👨‍💼 Admin
 
-    P->>S: Complete Trip Request
-    S->>S: Calculate Fare (Base + Distance + Time)
-    S->>G: Process Payment (100% of fare)
-    G->>S: Payment Confirmed ✅
-    
-    Note over S: Commission Split
-    S->>S: Platform Fee (15%)
-    S->>S: Driver Earnings (85%)
-    
-    S->>D: Transfer Earnings 💰
-    S->>A: Update Revenue Dashboard 📊
-    S->>P: Trip Receipt & Rating 📧
+    %% PHASE 1
+    rect rgb(10, 15, 12)
+        Note over P, S: 🟢 STEP 1: CALCULATION
+        P->>S: Signal "End Trip"
+        S->>S: Core Logic: Fare Generation
+    end
 
-    classDef participant fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#c9d1d9;
+    %% PHASE 2
+    rect rgb(5, 5, 5)
+        Note over S, G: 💳 STEP 2: PAYMENT CAPTURE
+        S->>G: Request Charge ($Total)
+        G-->>P: 3D Secure Verification
+        G->>S: Payment Confirmed ✅
+    end
+
+    %% PHASE 3
+    rect rgb(0, 40, 25)
+        Note over S, A: 💰 STEP 3: REVENUE SPLIT
+        critical Secure Settlement
+            S->>S: Platform Fee (15%)
+            S->>A: Update Revenue Dashboard
+            S->>D: Driver Payout (85%)
+        end
+    end
+
+    %% PHASE 4
+    rect rgb(10, 15, 12)
+        Note over S, P: 📧 STEP 4: CLOSURE
+        par System Updates
+            S->>P: Dispatch Receipt
+        and
+            S->>D: Push Earnings Alert
+        and
+            S->>P: Request Performance Rating
+        end
+    end
 ```
 
 ### 💰 Revenue Model
