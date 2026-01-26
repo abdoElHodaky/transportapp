@@ -53,20 +53,19 @@ export const databaseConfig: TypeOrmModuleOptions = {
 ### **Complete Database Schema**
 
 ```mermaid
-
 %%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#e9d5ff",
-    "primaryBorderColor": "#8b5cf6",
-    "lineColor": "#8b5cf6",
-    "secondaryColor": "#1e1b4b",
-    "tertiaryColor": "#c4b5fd",
-    "mainBkg": "#0d1117",
-    "nodeBorder": "#8b5cf6",
-    "clusterBkg": "#1e1b4b",
-    "titleColor": "#a78bfa"
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#4834d4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#3742fa',
+    'lineColor': '#ff6b6b',
+    'secondaryColor': '#00d2d3',
+    'tertiaryColor': '#ffa502',
+    'background': '#1e1e1e',
+    'mainBkg': '#2f3542',
+    'secondBkg': '#57606f',
+    'tertiaryBkg': '#747d8c'
   }
 }}%%
 erDiagram
@@ -889,4 +888,3 @@ ORDER BY date DESC;
 ---
 
 This comprehensive database schema documentation provides the foundation for understanding, maintaining, and optimizing the Sikka Transportation Platform's data layer.
-

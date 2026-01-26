@@ -16,6 +16,8 @@ export enum LocationType {
   USER_LOCATION = 'user_location',
   TRIP_PICKUP = 'trip_pickup',
   TRIP_DROPOFF = 'trip_dropoff',
+  TRIP_START = 'trip_start',
+  TRIP_END = 'trip_end',
   TRIP_ROUTE = 'trip_route',
   USER_FAVORITE = 'user_favorite',
 }

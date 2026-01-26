@@ -165,39 +165,63 @@ GET    /admin/export/:type       # Data export
 
 ## 📅 **Implementation Timeline**
 
-### **Phase 1: Foundation (Week 1-2)**
+### **Implementation Timeline**
+
 ```mermaid
 %%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#ccffcc",
-    "primaryBorderColor": "#00ff41",
-    "lineColor": "#00ff41",
-    "secondaryColor": "#39ff14",
-    "tertiaryColor": "#7fff00",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#003300",
-    "tertiaryBkg": "#7fff00"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#26de81',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#20bf6b',
+    'lineColor': '#3742fa',
+    'secondaryColor': '#ff6b6b',
+    'tertiaryColor': '#ffa502',
+    'background': '#1e1e1e',
+    'mainBkg': '#2f3542',
+    'secondBkg': '#57606f',
+    'tertiaryBkg': '#747d8c'
+  }
+}}%%
+
+gantt
+    title 🚀 Sikka Backend Development Timeline
+    dateFormat  YYYY-MM-DD
+    section 📍 Location Service
+    GPS Tracking Implementation    :active, loc1, 2024-02-01, 5d
+    Geospatial Queries & Matching  :loc2, after loc1, 3d
+    Route Calculation & Optimization :loc3, after loc2, 4d
+    Real-time Location Updates     :loc4, after loc3, 3d
+    
+    section ⚡ WebSocket Gateway
+    Connection Management Setup    :ws1, 2024-02-05, 3d
+    Room-based Communication      :ws2, after ws1, 2d
+    Event Broadcasting System     :ws3, after ws2, 3d
+    Redis Pub/Sub Integration     :ws4, after ws3, 2d
+    
+    section 🔔 Notification Service
+    SMS Service Integration       :not1, 2024-02-08, 3d
+    Push Notification Setup       :not2, after not1, 2d
+    Email Service Configuration   :not3, after not2, 2d
+    Template Management System    :not4, after not3, 2d
+    
+    section 📊 Admin Analytics
+    Dashboard API Development     :admin1, 2024-02-12, 4d
+    Report Generation System      :admin2, after admin1, 3d
+    User Management Interface     :admin3, after admin2, 3d
+    Financial Tracking Module     :admin4, after admin3, 2d
+    
+    section 🧪 Testing & QA
+    Unit Test Implementation      :test1, 2024-02-15, 5d
+    Integration Testing          :test2, after test1, 3d
+    End-to-End Testing           :test3, after test2, 4d
+    Performance Testing          :test4, after test3, 2d
+    
+    section 🚀 Deployment
+    Production Environment Setup  :deploy1, 2024-02-20, 3d
+    CI/CD Pipeline Configuration  :deploy2, after deploy1, 2d
+    Monitoring & Logging Setup    :deploy3, after deploy2, 2d
+    Go-Live Preparation          :deploy4, after deploy3, 1d
   "gantt": {
     "useMaxWidth": true
   }
@@ -344,4 +368,3 @@ gantt
 ---
 
 **🎉 Upon completion of these components, the Sikka Transportation Platform will be 100% feature-complete and production-ready for the Sudanese market!**
-

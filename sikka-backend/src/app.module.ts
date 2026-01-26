@@ -18,8 +18,8 @@ import { PaymentsModule } from './modules/payments/payments.module';
 import { LocationModule } from './modules/location/location.module';
 import { WebSocketModule } from './modules/websocket/websocket.module';
 
-// Operational Modules (conditionally imported for CI compatibility)
-// import { NotificationModule } from './notification/notification.module';
+// Operational Modules
+import { NotificationModule } from './notification/notification.module';
 // import { AnalyticsModule } from './analytics/analytics.module';
 // import { JobsModule } from './jobs/jobs.module';
 // import { I18nModule } from './i18n/i18n.module';
@@ -72,8 +72,8 @@ import { AppService } from './app.service';
     LocationModule,
     WebSocketModule,
 
-    // Operational Modules (temporarily disabled for CI compatibility)
-    // NotificationModule,
+    // Operational Modules
+    NotificationModule,
     // AnalyticsModule,
     // JobsModule,
     // I18nModule,

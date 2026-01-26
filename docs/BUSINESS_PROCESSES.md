@@ -19,82 +19,89 @@ This document outlines the key business processes and user journeys in the Sikka
 
 ```mermaid
 %%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "primaryColor": "#0d1117",
-    "fontSize": "16px",
-    "fontFamily": "arial"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true,
-    "curve": "stepBefore"
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#FF6F00',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#E65100',
+    'lineColor': '#FF8F00',
+    'secondaryColor': '#FFA726',
+    'tertiaryColor': '#FFE0B2',
+    'background': '#ffffff',
+    'mainBkg': '#FF6F00',
+    'secondBkg': '#FFA726',
+    'tertiaryBkg': '#FFE0B2'
   }
 }}%%
+
 flowchart TD
-    %% Phase 1: Setup (Blue)
-    subgraph Setup
-    A["Passenger Opens App"]
-    B["Enter Destination"]
-    C["Select Trip Type"]
+    %% Phase 1: Setup
+    subgraph "📱 Trip Setup"
+        A[📱 Passenger Opens App<br/>🔐 Location Permission]
+        B[📍 Enter Destination<br/>🗺️ Address/Map Selection]
+        C[🚗 Select Trip Type<br/>⭐ Standard/Premium/Shared]
     end
 
-    %% Phase 2: Booking (Yellow/Gold)
-    subgraph Booking
-    D["View Fare Estimate"]
-    E["Confirm Booking"]
-    F["Find Available Drivers"]
-    G{"Driver Available?"}
+    %% Phase 2: Booking
+    subgraph "💰 Booking & Pricing"
+        D[💵 View Fare Estimate<br/>📏 Distance + Time Calculation]
+        E[✅ Confirm Booking<br/>💳 Payment Method Selection]
+        F[🔍 Find Available Drivers<br/>📡 Radius-based Search]
+        G{🚗 Driver Available?<br/>📍 Within 5km Radius}
     end
 
-    %% Phase 3: Matching (Purple)
-    subgraph Matching
-    I["Send Trip Request"]
-    J{"Driver Accepts?"}
-    K["Try Next Driver"]
-    L["Trip Assigned"]
+    %% Phase 3: Matching
+    subgraph "🎯 Driver Matching"
+        I[📤 Send Trip Request<br/>🔔 Push Notification to Driver]
+        J{✋ Driver Accepts?<br/>⏰ 30 Second Timeout}
+        K[⏭️ Try Next Driver<br/>🔄 Closest Available]
+        L[🎉 Trip Assigned<br/>👤 Driver Details Shared]
     end
 
-    %% Phase 4: Transit (Green)
-    subgraph Transit
-    M["Driver Navigates to Pickup"]
-    N["Driver Arrives"]
-    O["Passenger Enters Vehicle"]
-    P["Trip Starts"]
-    Q["Navigate to Destination"]
+    %% Phase 4: Transit
+    subgraph "🚗 Trip Execution"
+        M[🧭 Driver Navigates to Pickup<br/>🛣️ GPS Navigation Active]
+        N[📍 Driver Arrives<br/>📱 Passenger Notification]
+        O[🚪 Passenger Enters Vehicle<br/>✅ Trip Verification]
+        P[🚀 Trip Starts<br/>📊 Real-time Tracking]
+        Q[🗺️ Navigate to Destination<br/>⚡ Optimal Route]
     end
 
-    %% Phase 5: Conclusion (Red/Pink)
-    subgraph Conclusion
-    R["Trip Completed"]
-    S["Process Payment"]
-    T["Rate & Review"]
-    U["Trip Finished"]
+    %% Phase 5: Conclusion
+    subgraph "✅ Trip Completion"
+        R[🏁 Trip Completed<br/>📍 Arrival Confirmation]
+        S[💳 Process Payment<br/>🔄 Automatic Deduction]
+        T[⭐ Rate & Review<br/>📝 5-Star Rating System]
+        U[🎊 Trip Finished<br/>📧 Receipt Generated]
     end
+
+    %% Error Handling
+    H[❌ Notify: No Drivers<br/>💡 Suggest Alternative Times]
 
     %% Connections
     A --> B --> C --> D --> E --> F --> G
-    G -->|Yes| I
-    G -->|No| H["Notify: No Drivers"]
+    G -->|✅ Yes| I
+    G -->|❌ No| H
     I --> J
-    J -->|No| K --> J
-    J -->|Yes| L --> M --> N --> O --> P --> Q --> R --> S --> T --> U
+    J -->|❌ No| K --> J
+    J -->|✅ Yes| L --> M --> N --> O --> P --> Q --> R --> S --> T --> U
 
-    %% Color-Coded Class Definitions
-    classDef setup fill:#1f6feb,stroke:#58a6ff,stroke-width:6px,color:#ffffff
-    classDef booking fill:#9e6a03,stroke:#d29922,stroke-width:6px,color:#ffffff
-    classDef matching fill:#8957e5,stroke:#bc8cff,stroke-width:6px,color:#ffffff
-    classDef transit fill:#238636,stroke:#3fb950,stroke-width:6px,color:#ffffff
-    classDef finish fill:#da3633,stroke:#f85149,stroke-width:6px,color:#ffffff
-    classDef decision fill:#0d1117,stroke:#ffffff,stroke-width:4px,color:#ffffff,stroke-dasharray: 5 5
+    %% Eye-catching Business Process Styling
+    classDef setupPhase fill:#FF6F00,stroke:#E65100,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef bookingPhase fill:#FFA726,stroke:#FF8F00,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef matchingPhase fill:#FFB74D,stroke:#FF9800,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef transitPhase fill:#FFCC02,stroke:#FFC107,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef completionPhase fill:#4CAF50,stroke:#388E3C,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef decisionNode fill:#2196F3,stroke:#1976D2,stroke-width:5px,color:#ffffff,font-weight:bold,stroke-dasharray: 8 4
+    classDef errorNode fill:#F44336,stroke:#D32F2F,stroke-width:3px,color:#ffffff,font-weight:bold
 
-    %% Applying Classes
-    class A,B,C setup
-    class D,E,F booking
-    class I,K,L matching
-    class M,N,O,P,Q transit
-    class R,S,T,U finish
-    class G,J decision
+    class A,B,C setupPhase
+    class D,E,F bookingPhase
+    class I,K,L matchingPhase
+    class M,N,O,P,Q transitPhase
+    class R,S,T,U completionPhase
+    class G,J decisionNode
+    class H errorNode
 ```
 
 ### **Detailed Trip States**
@@ -102,95 +109,43 @@ flowchart TD
 #### **1. Trip Request Phase**
 ```mermaid
 %%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#FF6F00',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#E65100',
+    'lineColor': '#FF8F00',
+    'secondaryColor': '#FFA726',
+    'tertiaryColor': '#FFE0B2',
+    'background': '#ffffff',
+    'mainBkg': '#FF6F00',
+    'secondBkg': '#FFA726',
+    'tertiaryBkg': '#FFE0B2'
   }
-}%%
+}}%%
+
 stateDiagram-v2
-    [*] --> Requested
-    Requested --> Searching : Find drivers
-    Searching --> Expired : No response (5 min)
-    Searching --> Accepted : Driver accepts
-    Expired --> [*]
-    Accepted --> DriverEnRoute
+    [*] --> Requested : 📱 Trip Request Submitted
+    Requested --> Searching : 🔍 Finding Available Drivers
+    Searching --> Expired : ⏰ No Response (5 min timeout)
+    Searching --> Accepted : ✅ Driver Accepts Request
+    Expired --> [*] : ❌ Request Cancelled
+    Accepted --> DriverEnRoute : 🚗 Driver Heading to Pickup
+    DriverEnRoute --> DriverArrived : 📍 Driver at Pickup Location
+    DriverArrived --> TripStarted : 🚀 Passenger Enters Vehicle
+    TripStarted --> TripCompleted : 🏁 Arrived at Destination
+    TripCompleted --> [*] : ✅ Trip Successfully Completed
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    %% Eye-catching Business Process State Styling
+    classDef activeState fill:#FF6F00,stroke:#E65100,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef waitingState fill:#FFA726,stroke:#FF8F00,stroke-width:3px,color:#ffffff,font-weight:bold
+    classDef errorState fill:#F44336,stroke:#D32F2F,stroke-width:3px,color:#ffffff,font-weight:bold
+    classDef finalState fill:#4CAF50,stroke:#388E3C,stroke-width:4px,color:#ffffff,font-weight:bold
 
-    class A main;
-    class D decision;
-    class E revNode;
-    class R commNode;
-    class S refNode;
-
-
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
+    class Requested,Accepted,TripStarted activeState
+    class Searching,DriverEnRoute,DriverArrived waitingState
+    class Expired errorState
+    class TripCompleted finalState
     classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
     
     %% Warning nodes (attention needed)
@@ -412,6 +367,164 @@ flowchart TD
 ---
 
 ## 👤 User Registration & Verification
+
+### **Complete User Registration Flow**
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#FF6F00',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#E65100',
+    'lineColor': '#FF8F00',
+    'secondaryColor': '#FFA726',
+    'tertiaryColor': '#FFE0B2',
+    'background': '#ffffff',
+    'mainBkg': '#FF6F00',
+    'secondBkg': '#FFA726',
+    'tertiaryBkg': '#FFE0B2'
+  }
+}}%%
+
+sequenceDiagram
+    participant User as 👤 New User
+    participant App as 📱 Mobile App
+    participant API as 🚪 API Gateway
+    participant Auth as 🔐 Auth Service
+    participant SMS as 📱 SMS Service
+    participant DB as 🗄️ Database
+    participant Wallet as 💰 Wallet Service
+
+    User->>App: 📝 Enter Registration Details
+    App->>API: POST /auth/register
+    API->>Auth: Validate Registration Data
+    
+    alt Valid Registration Data
+        Auth->>DB: Check Phone/Email Uniqueness
+        DB-->>Auth: ✅ Unique Credentials
+        
+        Auth->>DB: Create User Record (Pending)
+        DB-->>Auth: 👤 User Created (ID: 123)
+        
+        Auth->>SMS: 📤 Send OTP Code
+        SMS-->>Auth: ✅ OTP Sent Successfully
+        
+        Auth-->>API: 🎉 Registration Initiated
+        API-->>App: 201 Created {userId, otpRequired}
+        App-->>User: 📱 Enter OTP Code
+        
+        User->>App: 🔢 Input OTP Code
+        App->>API: POST /auth/verify-otp
+        API->>Auth: Verify OTP Code
+        
+        alt Valid OTP
+            Auth->>DB: Activate User Account
+            Auth->>Wallet: Create User Wallet
+            Wallet->>DB: Initialize Wallet (0 SDG)
+            
+            Auth->>DB: Generate JWT Tokens
+            DB-->>Auth: 🔑 Tokens Generated
+            
+            Auth-->>API: ✅ Verification Complete
+            API-->>App: 200 OK {accessToken, refreshToken}
+            App-->>User: 🎊 Welcome to Sikka!
+            
+        else Invalid OTP
+            Auth-->>API: ❌ Invalid OTP
+            API-->>App: 400 Bad Request
+            App-->>User: ⚠️ Invalid Code, Try Again
+        end
+        
+    else Invalid Registration Data
+        Auth-->>API: ❌ Validation Failed
+        API-->>App: 400 Bad Request
+        App-->>User: ⚠️ Please Check Your Details
+    end
+
+    Note over User,Wallet: 🎯 User Successfully Registered & Verified
+```
+
+### **Driver Verification Process**
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#FF6F00',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#E65100',
+    'lineColor': '#FF8F00',
+    'secondaryColor': '#FFA726',
+    'tertiaryColor': '#FFE0B2',
+    'background': '#ffffff',
+    'mainBkg': '#FF6F00',
+    'secondBkg': '#FFA726',
+    'tertiaryBkg': '#FFE0B2'
+  }
+}}%%
+
+flowchart TD
+    subgraph "📋 Document Submission"
+        A[📄 Upload Driving License<br/>📷 Clear Photo Required]
+        B[🚗 Upload Vehicle Registration<br/>📋 Valid Registration Certificate]
+        C[🛡️ Upload Insurance Certificate<br/>📜 Valid Insurance Policy]
+        D[📸 Upload Profile Photo<br/>👤 Clear Face Visible]
+    end
+    
+    subgraph "🔍 Verification Process"
+        E[🤖 Automated Document Check<br/>🔍 OCR & AI Validation]
+        F{📋 Documents Valid?<br/>⚡ Automated Verification}
+        G[👨‍💼 Manual Review<br/>🔎 Admin Verification]
+        H{✅ Admin Approval?<br/>🎯 Final Decision}
+    end
+    
+    subgraph "🎯 Account Activation"
+        I[🎉 Driver Account Activated<br/>🚗 Ready to Accept Trips]
+        J[📧 Welcome Email Sent<br/>📖 Driver Guidelines]
+        K[📱 Push Notification<br/>✅ Account Approved]
+    end
+    
+    subgraph "❌ Rejection Process"
+        L[❌ Documents Rejected<br/>📝 Reason Provided]
+        M[📧 Rejection Email<br/>🔄 Resubmission Instructions]
+        N[🔄 Resubmission Allowed<br/>🔢 Up to 3 Attempts]
+    end
+
+    %% Flow Connections
+    A --> E
+    B --> E
+    C --> E
+    D --> E
+    
+    E --> F
+    F -->|✅ Pass| I
+    F -->|❌ Fail| G
+    
+    G --> H
+    H -->|✅ Approve| I
+    H -->|❌ Reject| L
+    
+    I --> J
+    I --> K
+    
+    L --> M
+    M --> N
+    N --> A
+
+    %% Eye-catching Business Process Styling
+    classDef docSubmission fill:#FF6F00,stroke:#E65100,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef verificationProcess fill:#FFA726,stroke:#FF8F00,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef accountActivation fill:#4CAF50,stroke:#388E3C,stroke-width:4px,color:#ffffff,font-weight:bold
+    classDef rejectionProcess fill:#F44336,stroke:#D32F2F,stroke-width:3px,color:#ffffff,font-weight:bold
+    classDef decisionNode fill:#2196F3,stroke:#1976D2,stroke-width:5px,color:#ffffff,font-weight:bold,stroke-dasharray: 8 4
+
+    class A,B,C,D docSubmission
+    class E,G verificationProcess
+    class I,J,K accountActivation
+    class L,M,N rejectionProcess
+    class F,H decisionNode
+```
 
 ### **Passenger Registration Flow**
 
@@ -1656,4 +1769,3 @@ sequenceDiagram
 ---
 
 This comprehensive business process documentation ensures all stakeholders understand the complete user journeys and system workflows within the Sikka Transportation Platform.
-
