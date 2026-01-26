@@ -563,7 +563,7 @@ data "aws_availability_zones" "available" {
     const specs = this.getInstanceSpecsForPhase(phaseConfig.phase);
     const regionMultiplier = await this.getRegionCostMultiplier(region);
 
-    const breakdown = [
+    const breakdown: CostBreakdown[] = [
       {
         service: 'EC2 Instances',
         category: 'compute' as const,

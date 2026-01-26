@@ -429,7 +429,7 @@ resource "linode_database_postgresql" "main" {
     const specs = this.getInstanceSpecsForPhase(phaseConfig.phase);
     const regionMultiplier = await this.getRegionCostMultiplier(region);
 
-    const breakdown = [
+    const breakdown: CostBreakdown[] = [
       {
         service: 'Linode Instances',
         category: 'compute' as const,
