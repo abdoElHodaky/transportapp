@@ -878,12 +878,16 @@ export interface StorageSpec {
  * Cloud Region Configuration
  */
 export interface CloudRegion {
+  id?: string; // Added for compatibility with cloud-provider.interface
   name: string;
-  displayName: string;
-  country: string;
-  continent: string;
+  displayName?: string; // Made optional for compatibility
+  country?: string; // Made optional for compatibility
+  continent?: string; // Made optional for compatibility
+  location?: string; // Added for compatibility with cloud-provider.interface
   available: boolean;
-  services: string[];
+  services?: string[]; // Made optional for compatibility
+  latency?: number; // Added for compatibility with cloud-provider.interface
+  costMultiplier?: number; // Added for compatibility with cloud-provider.interface
 }
 
 /**
@@ -945,20 +949,31 @@ export interface CostDetail {
 }
 
 /**
+ * Service Alternative (for compatibility with cloud-provider.interface)
+ */
+export interface ServiceAlternative {
+  instanceType: string;
+  monthlyCost: number;
+  tradeoffs: string;
+}
+
+/**
  * Service Recommendation
  */
 export interface ServiceRecommendation {
   service: string;
-  provider: string;
-  region: string;
+  provider?: string; // Made optional for compatibility
+  region?: string; // Made optional for compatibility
   instanceType: string;
   configuration: Record<string, any>;
-  estimatedCost: number;
-  performance: PerformanceMetrics;
-  pros: string[];
-  cons: string[];
-  confidence: number; // 0-1
-  alternatives: AlternativeRecommendation[];
+  estimatedCost?: number; // Made optional for compatibility
+  monthlyCost?: number; // Added for compatibility with cloud-provider.interface
+  performance: PerformanceMetrics | { cpu: number; memory: number; storage: number; network: number; }; // Allow both types
+  pros?: string[]; // Made optional for compatibility
+  cons?: string[]; // Made optional for compatibility
+  confidence?: number; // Made optional for compatibility (0-1)
+  rationale?: string; // Added for compatibility with cloud-provider.interface
+  alternatives: AlternativeRecommendation[] | ServiceAlternative[]; // Allow both types
 }
 
 /**
