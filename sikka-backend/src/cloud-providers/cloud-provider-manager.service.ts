@@ -193,7 +193,7 @@ export class CloudProviderManagerService {
         const estimate = await provider.calculateCost(
           phaseConfig,
           region,
-          config,
+          this.toCostCalculationOptions(config),
         );
         costEstimates.set(providerType, estimate);
       } catch (error) {
