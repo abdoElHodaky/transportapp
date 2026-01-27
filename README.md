@@ -75,145 +75,177 @@ Sikka is a **comprehensive transportation platform** designed specifically for t
 %%{init: {
   'theme': 'base',
   'themeVariables': {
-    'primaryColor': '#ff6b6b',
-    'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#ff4757',
-    'lineColor': '#3742fa',
-    'secondaryColor': '#2ed573',
-    'tertiaryColor': '#ffa502',
-    'background': '#1e1e1e',
-    'mainBkg': '#2f3542',
-    'secondBkg': '#57606f',
-    'tertiaryBkg': '#747d8c'
+    'primaryColor': '#00b894',
+    'primaryTextColor': '#fff',
+    'primaryBorderColor': '#55efc4',
+    'lineColor': '#a4b0be',
+    'secondaryColor': '#a29bfe',
+    'tertiaryColor': '#fab1a0',
+    'background': '#0c1015',
+    'mainBkg': '#161b22',
+    'secondBkg': '#1c2128',
+    'clusterBkg': 'rgba(22, 27, 34, 0.9)',
+    'clusterBorder': '#444c56'
   }
 }}%%
 
 graph TB
-    %% Client Layer
-    subgraph "📱 Client Applications"
-        MOBILE[📱 Mobile Apps<br/>React Native<br/>iOS & Android]
-        WEB[🌐 Admin Dashboard<br/>React/Next.js<br/>Management Interface]
-        API_CLIENTS[🔌 Third-party APIs<br/>External Integrations]
-    end
-    
-    %% Gateway Layer
-    subgraph "🚪 API Gateway & Load Balancing"
-        LB[⚖️ Load Balancer<br/>Nginx/HAProxy<br/>SSL Termination]
-        GATEWAY[🚪 API Gateway<br/>Rate Limiting<br/>Authentication]
-        CDN[📡 CDN<br/>CloudFlare<br/>Static Assets]
-    end
-    
-    %% Core Services
-    subgraph "🏗️ Backend Services (NestJS)"
-        AUTH[🔐 Authentication<br/>JWT + OTP<br/>Phone Verification]
-        USER[👤 User Management<br/>Profiles & Verification<br/>Driver Documents]
-        TRIP[🚗 Trip Service<br/>Booking & Matching<br/>Real-time Tracking]
-        PAYMENT[💰 Payment Service<br/>EBS/CyberPay<br/>Wallet Management]
-        LOCATION[📍 Location Service<br/>GPS Tracking<br/>Route Optimization]
-        NOTIFY[🔔 Notification Service<br/>SMS/Push/Email<br/>Multi-channel Delivery]
-        WEBSOCKET[⚡ WebSocket Gateway<br/>Real-time Updates<br/>Live Communication]
-    end
-    
-    %% Data Layer
-    subgraph "🗄️ Data & Storage"
-        POSTGRES[🐘 PostgreSQL<br/>Primary Database<br/>PostGIS Extension]
-        REDIS[⚡ Redis<br/>Cache & Sessions<br/>Pub/Sub Messaging]
-        QUEUE[📬 Bull Queue<br/>Background Jobs<br/>Async Processing]
-        FILES[📁 File Storage<br/>AWS S3/Local<br/>Documents & Media]
-    end
-    
-    %% External Services
-    subgraph "🌐 External Integrations"
-        SMS_GATEWAY[📱 SMS Providers<br/>Twilio/AWS SNS<br/>Local Providers]
-        PAYMENT_GW[💳 Payment Gateways<br/>EBS Bank<br/>CyberPay Sudan]
-        MAPS[🗺️ Mapping Services<br/>Google Maps<br/>OpenStreetMap]
-        PUSH[🔔 Push Services<br/>Firebase FCM<br/>Apple APNs]
-    end
-    
-    %% Monitoring
-    subgraph "📊 Monitoring & Analytics"
-        METRICS[📈 Prometheus<br/>Metrics Collection<br/>Performance Monitoring]
-        GRAFANA[📊 Grafana<br/>Dashboards<br/>Visualization]
-        LOGS[📝 ELK Stack<br/>Centralized Logging<br/>Error Tracking]
+    %% --- CLASS DEFINITIONS ---
+    classDef linodeStyle fill:#020617,stroke:#00b894,stroke-width:3px,color:#00b894
+    classDef nodeStyle fill:#1c2128,stroke:#a29bfe,stroke-width:2px,color:#fff
+    classDef storageStyle fill:#161b22,stroke:#f1c40f,stroke-width:2px,color:#fff
+    classDef gatewayStyle fill:#1c2128,stroke:#00d2ff,stroke-width:2px,color:#fff
+    classDef externalStyle fill:#0c1015,stroke:#ff7675,stroke-width:2px,color:#ff7675
+
+    subgraph NETWORK_EDGE ["🛡️ LINODE EDGE & NETWORKING"]
+        DNS_MGR["<b>Linode DNS Manager</b><br/>High-Availability Resolvers"]:::linodeStyle
+        NODE_BALANCER["<b>Linode NodeBalancer</b><br/>TCP/HTTP Passthrough"]:::linodeStyle
     end
 
-    %% Client Connections
-    MOBILE --> LB
-    WEB --> LB
-    API_CLIENTS --> LB
-    
-    %% Gateway Flow
-    LB --> GATEWAY
-    LB --> CDN
-    GATEWAY --> AUTH
-    GATEWAY --> USER
-    GATEWAY --> TRIP
-    GATEWAY --> PAYMENT
-    GATEWAY --> LOCATION
-    GATEWAY --> NOTIFY
-    GATEWAY --> WEBSOCKET
+    subgraph COMPUTE_CLUSTER ["☸️ LINODE KUBERNETES ENGINE (LKE)"]
+        direction TB
+        subgraph NESTJS_PODS ["NestJS Microservices"]
+            AUTH_SVC[["Identity & Access"]]:::nodeStyle
+            TRIP_SVC[["Trip Orchestration"]]:::nodeStyle
+            GEO_SVC[["Geo-Spatial Engine"]]:::nodeStyle
+            PAY_SVC[["Financial Gateway"]]:::nodeStyle
+        end
+        
+        TRAEFIK{{"<b>Traefik Ingress</b><br/>L7 Routing / mTLS"}}:::gatewayStyle
+        
+        subgraph REALTIME_PODS ["High-Throughput"]
+            WS_HUB[["Websocket Cluster"]]:::nodeStyle
+            MATCH_ENG[["Dispatcher Engine"]]:::nodeStyle
+        end
+    end
 
-    %% Service Interconnections
-    AUTH -.->|Validates| USER
-    AUTH -.->|Validates| TRIP
-    AUTH -.->|Validates| PAYMENT
-    
-    TRIP -.->|Updates| LOCATION
-    TRIP -.->|Triggers| NOTIFY
-    TRIP -.->|Processes| PAYMENT
-    
-    USER -.->|Manages| FILES
-    NOTIFY -.->|Queues| QUEUE
-    LOCATION -.->|Broadcasts| WEBSOCKET
+    subgraph STATE_LAYER ["🗄️ MANAGED DATA & STORAGE"]
+        direction LR
+        L_DB[("<b>Linode Managed DB</b><br/>PostgreSQL HA")]:::storageStyle
+        REDIS_IO[("<b>Cloud Redis</b><br/>PubSub & Cache")]:::storageStyle
+        OBJ_STORAGE[("<b>Object Storage</b><br/>S3-Assets")]:::storageStyle
+    end
 
-    %% Database Connections
-    AUTH --> POSTGRES
-    USER --> POSTGRES
-    TRIP --> POSTGRES
-    PAYMENT --> POSTGRES
-    LOCATION --> POSTGRES
+    subgraph EXT_INTEGRATIONS ["🔌 EXTERNAL ECOSYSTEM"]
+        S_PAY[["<b>Sudan Local Pay</b><br/>EBS / CyberPay"]]:::externalStyle
+        MAPS[["<b>Map Tiles</b><br/>Mapbox / Google"]]:::externalStyle
+        PUSH[["<b>Notifications</b><br/>FCM / Twilio"]]:::externalStyle
+    end
+
+    %% --- FLOWS ---
+    DNS_MGR ==> NODE_BALANCER
+    NODE_BALANCER ==> TRAEFIK
+    TRAEFIK --> AUTH_SVC
+    TRAEFIK --> WS_HUB
     
-    AUTH -.->|Cache| REDIS
-    USER -.->|Cache| REDIS
-    WEBSOCKET -.->|Pub/Sub| REDIS
-
-    %% External Connections
-    NOTIFY -.->|SMS| SMS_GATEWAY
-    PAYMENT -.->|Process| PAYMENT_GW
-    LOCATION -.->|Geocoding| MAPS
-    NOTIFY -.->|Push| PUSH
-
-    %% Monitoring Connections
-    AUTH -.->|Metrics| METRICS
-    USER -.->|Metrics| METRICS
-    TRIP -.->|Metrics| METRICS
-    PAYMENT -.->|Metrics| METRICS
-    LOCATION -.->|Metrics| METRICS
-    NOTIFY -.->|Metrics| METRICS
+    TRIP_SVC -- "Spatial Query" --> GEO_SVC
+    GEO_SVC <==> REDIS_IO
     
-    METRICS --> GRAFANA
+    NESTJS_PODS --> L_DB
+    NESTJS_PODS --> OBJ_STORAGE
     
-    AUTH -.->|Logs| LOGS
-    USER -.->|Logs| LOGS
-    TRIP -.->|Logs| LOGS
-    PAYMENT -.->|Logs| LOGS
-    LOCATION -.->|Logs| LOGS
-    NOTIFY -.->|Logs| LOGS
+    PAY_SVC -.-> S_PAY
+    GEO_SVC -.-> MAPS
+    TRIP_SVC -- "Event" --> WS_HUB
+    WS_HUB -.-> PUSH
 
-    %% Styling
-    classDef clientStyle fill:#ff6b6b,stroke:#ff4757,stroke-width:3px,color:#fff
-    classDef gatewayStyle fill:#3742fa,stroke:#2f3542,stroke-width:2px,color:#fff
-    classDef serviceStyle fill:#2ed573,stroke:#20bf6b,stroke-width:2px,color:#fff
-    classDef dataStyle fill:#ffa502,stroke:#ff6348,stroke-width:2px,color:#fff
-    classDef externalStyle fill:#a55eea,stroke:#8854d0,stroke-width:2px,color:#fff
-    classDef monitorStyle fill:#26de81,stroke:#20bf6b,stroke-width:2px,color:#fff
+    %% --- STYLING ---
+    style NETWORK_EDGE fill:none,stroke:#00b894,stroke-dasharray: 5 5
+    style COMPUTE_CLUSTER fill:#0c1015,stroke:#a29bfe,stroke-width:1px
+```
+```mermaid
+  %%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#00b894',
+    'primaryTextColor': '#fff',
+    'primaryBorderColor': '#55efc4',
+    'lineColor': '#81ecec',
+    'secondaryColor': '#6c5ce7',
+    'tertiaryColor': '#fab1a0',
+    'background': '#0b0e14',
+    'mainBkg': '#11171e',
+    'nodeBorder': '#55efc4',
+    'clusterBkg': 'rgba(17, 23, 30, 0.8)',
+    'clusterBorder': '#2d3436'
+  }
+}}%%
 
-    class MOBILE,WEB,API_CLIENTS clientStyle
-    class LB,GATEWAY,CDN gatewayStyle
-    class AUTH,USER,TRIP,PAYMENT,LOCATION,NOTIFY,WEBSOCKET serviceStyle
-    class POSTGRES,REDIS,QUEUE,FILES dataStyle
-    class SMS_GATEWAY,PAYMENT_GW,MAPS,PUSH externalStyle
-    class METRICS,GRAFANA,LOGS monitorStyle
+graph TB
+    %% --- CLASS DEFINITIONS (Neon Accents) ---
+    classDef edgeStyle fill:#020617,stroke:#00b894,stroke-width:3px,color:#00b894,font-weight:bold
+    classDef computeStyle fill:#161b22,stroke:#a29bfe,stroke-width:2px,color:#fff
+    classDef storageStyle fill:#161b22,stroke:#fdcb6e,stroke-width:2px,color:#fff
+    classDef externalStyle fill:#1a1110,stroke:#ff7675,stroke-width:2px,color:#ff7675,stroke-dasharray: 5 5
+    classDef devopsStyle fill:#1e272e,stroke:#0fbcf9,stroke-width:2px,color:#0fbcf9
+    classDef hotPath stroke:#00b894,stroke-width:4px,color:#00b894
+
+    %% --- CI/CD & OPS (New Section) ---
+    subgraph DEVOPS ["🚀 DELIVERY & OBSERVABILITY"]
+        GH_ACTIONS(["<b>GitHub Actions</b><br/>CI/CD Pipeline"]):::devopsStyle
+        LCR[("<b>Linode Registry</b><br/>Docker Images")]:::devopsStyle
+        PROM[["<b>Prometheus + Grafana</b><br/>Metrics & Alerts"]]:::devopsStyle
+    end
+
+    subgraph INGRESS ["🛡️ TRAFFIC GATEWAY"]
+        DNS["<b>Linode DNS</b><br/>Anycast IP"]:::edgeStyle
+        LB{"<b>NodeBalancer</b><br/>SSL Termination"}:::edgeStyle
+        TRAEFIK{{"<b>Traefik Ingress</b><br/>L7 Routing"}}:::computeStyle
+    end
+
+    subgraph K8S_CLUSTER ["☸️ LINODE KUBERNETES ENGINE"]
+        direction TB
+        
+        subgraph CORE_SERVICES ["Backend APIs"]
+            AUTH[["Identity & Auth"]]:::computeStyle
+            TRIP[["Trip Engine"]]:::computeStyle
+            PAY[["Payment Hub"]]:::computeStyle
+        end
+
+        subgraph REALTIME_LAYER ["⚡ HOT PATH (WebSockets)"]
+            WS_HUB[["WebSocket Cluster"]]:::computeStyle
+            MATCH[["Matching Engine"]]:::computeStyle
+        end
+    end
+
+    subgraph DATA_LAKE ["🗄️ PERSISTENCE LAYER"]
+        direction LR
+        PG[(<b>PostgreSQL</b><br/>Managed HA)]:::storageStyle
+        REDIS[(<b>Redis</b><br/>Cache/PubSub)]:::storageStyle
+        S3[(<b>Object Storage</b><br/>Assets/KYC)]:::storageStyle
+    end
+
+    subgraph THIRD_PARTY ["🔌 SUDAN ECOSYSTEM"]
+        EBS[["<b>Local Pay</b><br/>EBS Gateway"]]:::externalStyle
+        MAPS[["<b>Maps</b><br/>Mapbox API"]]:::externalStyle
+        SMS[["<b>SMS/Push</b><br/>Twilio/FCM"]]:::externalStyle
+    end
+
+    %% --- CONNECTIVITY ---
+    %% DevOps Flow
+    GH_ACTIONS ==> LCR ==> K8S_CLUSTER
+    PROM -. "Scrape" .-> K8S_CLUSTER
+
+    %% Traffic Flow
+    DNS ==> LB ==> TRAEFIK
+    TRAEFIK ==> AUTH
+    TRAEFIK ==> WS_HUB
+
+    %% Logic Flow
+    TRIP --- REDIS
+    TRIP --- PG
+    TRIP ==> MATCH
+    MATCH ==> WS_HUB
+    
+    %% External Integration
+    PAY -. "Secure Link" .-> EBS
+    TRIP -.-> MAPS
+    WS_HUB -.-> SMS
+
+    %% --- STYLING OVERRIDES ---
+    style INGRESS fill:#020617,stroke:#00b894,stroke-width:2px
+    style REALTIME_LAYER fill:#0c211b,stroke:#00b894,stroke-width:2px
+    style DEVOPS fill:#0a192f,stroke:#0fbcf9,stroke-dasharray: 5 5
 ```
 
 ---
@@ -401,182 +433,7 @@ flowchart LR
 
 ## 🏗️ System Architecture - Simplified & Powerful
 
-```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#00b894',
-    'primaryTextColor': '#fff',
-    'primaryBorderColor': '#55efc4',
-    'lineColor': '#a4b0be',
-    'secondaryColor': '#a29bfe',
-    'tertiaryColor': '#fab1a0',
-    'background': '#0c1015',
-    'mainBkg': '#161b22',
-    'secondBkg': '#1c2128',
-    'clusterBkg': 'rgba(22, 27, 34, 0.9)',
-    'clusterBorder': '#444c56'
-  }
-}}%%
 
-graph TB
-    %% --- CLASS DEFINITIONS ---
-    classDef linodeStyle fill:#020617,stroke:#00b894,stroke-width:3px,color:#00b894
-    classDef nodeStyle fill:#1c2128,stroke:#a29bfe,stroke-width:2px,color:#fff
-    classDef storageStyle fill:#161b22,stroke:#f1c40f,stroke-width:2px,color:#fff
-    classDef gatewayStyle fill:#1c2128,stroke:#00d2ff,stroke-width:2px,color:#fff
-    classDef externalStyle fill:#0c1015,stroke:#ff7675,stroke-width:2px,color:#ff7675
-
-    subgraph NETWORK_EDGE ["🛡️ LINODE EDGE & NETWORKING"]
-        DNS_MGR["<b>Linode DNS Manager</b><br/>High-Availability Resolvers"]:::linodeStyle
-        NODE_BALANCER["<b>Linode NodeBalancer</b><br/>TCP/HTTP Passthrough"]:::linodeStyle
-    end
-
-    subgraph COMPUTE_CLUSTER ["☸️ LINODE KUBERNETES ENGINE (LKE)"]
-        direction TB
-        subgraph NESTJS_PODS ["NestJS Microservices"]
-            AUTH_SVC[["Identity & Access"]]:::nodeStyle
-            TRIP_SVC[["Trip Orchestration"]]:::nodeStyle
-            GEO_SVC[["Geo-Spatial Engine"]]:::nodeStyle
-            PAY_SVC[["Financial Gateway"]]:::nodeStyle
-        end
-        
-        TRAEFIK{{"<b>Traefik Ingress</b><br/>L7 Routing / mTLS"}}:::gatewayStyle
-        
-        subgraph REALTIME_PODS ["High-Throughput"]
-            WS_HUB[["Websocket Cluster"]]:::nodeStyle
-            MATCH_ENG[["Dispatcher Engine"]]:::nodeStyle
-        end
-    end
-
-    subgraph STATE_LAYER ["🗄️ MANAGED DATA & STORAGE"]
-        direction LR
-        L_DB[("<b>Linode Managed DB</b><br/>PostgreSQL HA")]:::storageStyle
-        REDIS_IO[("<b>Cloud Redis</b><br/>PubSub & Cache")]:::storageStyle
-        OBJ_STORAGE[("<b>Object Storage</b><br/>S3-Assets")]:::storageStyle
-    end
-
-    subgraph EXT_INTEGRATIONS ["🔌 EXTERNAL ECOSYSTEM"]
-        S_PAY[["<b>Sudan Local Pay</b><br/>EBS / CyberPay"]]:::externalStyle
-        MAPS[["<b>Map Tiles</b><br/>Mapbox / Google"]]:::externalStyle
-        PUSH[["<b>Notifications</b><br/>FCM / Twilio"]]:::externalStyle
-    end
-
-    %% --- FLOWS ---
-    DNS_MGR ==> NODE_BALANCER
-    NODE_BALANCER ==> TRAEFIK
-    TRAEFIK --> AUTH_SVC
-    TRAEFIK --> WS_HUB
-    
-    TRIP_SVC -- "Spatial Query" --> GEO_SVC
-    GEO_SVC <==> REDIS_IO
-    
-    NESTJS_PODS --> L_DB
-    NESTJS_PODS --> OBJ_STORAGE
-    
-    PAY_SVC -.-> S_PAY
-    GEO_SVC -.-> MAPS
-    TRIP_SVC -- "Event" --> WS_HUB
-    WS_HUB -.-> PUSH
-
-    %% --- STYLING ---
-    style NETWORK_EDGE fill:none,stroke:#00b894,stroke-dasharray: 5 5
-    style COMPUTE_CLUSTER fill:#0c1015,stroke:#a29bfe,stroke-width:1px
-```
-```mermaid
-  %%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#00b894',
-    'primaryTextColor': '#fff',
-    'primaryBorderColor': '#55efc4',
-    'lineColor': '#81ecec',
-    'secondaryColor': '#6c5ce7',
-    'tertiaryColor': '#fab1a0',
-    'background': '#0b0e14',
-    'mainBkg': '#11171e',
-    'nodeBorder': '#55efc4',
-    'clusterBkg': 'rgba(17, 23, 30, 0.8)',
-    'clusterBorder': '#2d3436'
-  }
-}}%%
-
-graph TB
-    %% --- CLASS DEFINITIONS (Neon Accents) ---
-    classDef edgeStyle fill:#020617,stroke:#00b894,stroke-width:3px,color:#00b894,font-weight:bold
-    classDef computeStyle fill:#161b22,stroke:#a29bfe,stroke-width:2px,color:#fff
-    classDef storageStyle fill:#161b22,stroke:#fdcb6e,stroke-width:2px,color:#fff
-    classDef externalStyle fill:#1a1110,stroke:#ff7675,stroke-width:2px,color:#ff7675,stroke-dasharray: 5 5
-    classDef devopsStyle fill:#1e272e,stroke:#0fbcf9,stroke-width:2px,color:#0fbcf9
-    classDef hotPath stroke:#00b894,stroke-width:4px,color:#00b894
-
-    %% --- CI/CD & OPS (New Section) ---
-    subgraph DEVOPS ["🚀 DELIVERY & OBSERVABILITY"]
-        GH_ACTIONS(["<b>GitHub Actions</b><br/>CI/CD Pipeline"]):::devopsStyle
-        LCR[("<b>Linode Registry</b><br/>Docker Images")]:::devopsStyle
-        PROM[["<b>Prometheus + Grafana</b><br/>Metrics & Alerts"]]:::devopsStyle
-    end
-
-    subgraph INGRESS ["🛡️ TRAFFIC GATEWAY"]
-        DNS["<b>Linode DNS</b><br/>Anycast IP"]:::edgeStyle
-        LB{"<b>NodeBalancer</b><br/>SSL Termination"}:::edgeStyle
-        TRAEFIK{{"<b>Traefik Ingress</b><br/>L7 Routing"}}:::computeStyle
-    end
-
-    subgraph K8S_CLUSTER ["☸️ LINODE KUBERNETES ENGINE"]
-        direction TB
-        
-        subgraph CORE_SERVICES ["Backend APIs"]
-            AUTH[["Identity & Auth"]]:::computeStyle
-            TRIP[["Trip Engine"]]:::computeStyle
-            PAY[["Payment Hub"]]:::computeStyle
-        end
-
-        subgraph REALTIME_LAYER ["⚡ HOT PATH (WebSockets)"]
-            WS_HUB[["WebSocket Cluster"]]:::computeStyle
-            MATCH[["Matching Engine"]]:::computeStyle
-        end
-    end
-
-    subgraph DATA_LAKE ["🗄️ PERSISTENCE LAYER"]
-        direction LR
-        PG[(<b>PostgreSQL</b><br/>Managed HA)]:::storageStyle
-        REDIS[(<b>Redis</b><br/>Cache/PubSub)]:::storageStyle
-        S3[(<b>Object Storage</b><br/>Assets/KYC)]:::storageStyle
-    end
-
-    subgraph THIRD_PARTY ["🔌 SUDAN ECOSYSTEM"]
-        EBS[["<b>Local Pay</b><br/>EBS Gateway"]]:::externalStyle
-        MAPS[["<b>Maps</b><br/>Mapbox API"]]:::externalStyle
-        SMS[["<b>SMS/Push</b><br/>Twilio/FCM"]]:::externalStyle
-    end
-
-    %% --- CONNECTIVITY ---
-    %% DevOps Flow
-    GH_ACTIONS ==> LCR ==> K8S_CLUSTER
-    PROM -. "Scrape" .-> K8S_CLUSTER
-
-    %% Traffic Flow
-    DNS ==> LB ==> TRAEFIK
-    TRAEFIK ==> AUTH
-    TRAEFIK ==> WS_HUB
-
-    %% Logic Flow
-    TRIP --- REDIS
-    TRIP --- PG
-    TRIP ==> MATCH
-    MATCH ==> WS_HUB
-    
-    %% External Integration
-    PAY -. "Secure Link" .-> EBS
-    TRIP -.-> MAPS
-    WS_HUB -.-> SMS
-
-    %% --- STYLING OVERRIDES ---
-    style INGRESS fill:#020617,stroke:#00b894,stroke-width:2px
-    style REALTIME_LAYER fill:#0c211b,stroke:#00b894,stroke-width:2px
-    style DEVOPS fill:#0a192f,stroke:#0fbcf9,stroke-dasharray: 5 5
-```
 ### 🔍 Architecture Analysis
 
 | Component | Purpose | Technology | Scalability |
