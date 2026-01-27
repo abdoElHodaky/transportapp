@@ -1533,73 +1533,21 @@ stateDiagram-v2
     InRoom --> Disconnected : Connection Lost
     
     Disconnected --> Connecting : Reconnect
-    Disconnected --> [*]: Session End
+    Disconnected --> [*] : Session End
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold
+    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal
+    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold
+    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold
+    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:5 5
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray:10 5
+    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold
+    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal
+    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray:8 4
+    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray:3 3
 
-    class A main;
-    class C decision;
-    class D revNode;
-    class I commNode;
-
-
-
-
-    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
+    class Connecting,Connected,Authenticated,InRoom primary
+    class Disconnected error
 
 
 ```
@@ -1846,42 +1794,40 @@ graph TD
 sequenceDiagram
     autonumber
 
-    %% Participant Definitions with color-coded boxes
     box rgba(188, 140, 255, 0.1) Entry Point
-        participant C as 📱 Client
-        participant AG as 🛡️ API Gateway
+        participant C as Client 📱
+        participant AG as API Gateway 🛡️
     end
 
     box rgba(210, 153, 34, 0.1) Identity Provider
-        participant AS as 🔑 Auth Service
-        participant RS as ⚡ Redis
-        participant DB as 🗄️ Database
+        participant AS as Auth Service 🔑
+        participant RS as Redis ⚡
+        participant DB as Database 🗄️
     end
 
     box rgba(63, 185, 80, 0.1) Resources
-        participant BS as ⚙️ Business Service
+        participant BS as Business Service ⚙️
     end
 
     Note over C, DB: Phase 1: Authentication (Login)
-    C->>AG: Login Request
+    C->>AG: POST /login
     AG->>AS: Validate Credentials
-    AS->>DB: Check User Credentials
-    DB-->>AS: User Data
+    AS->>DB: Query User Credentials
+    DB-->>AS: Return User Data
     AS->>AS: Generate JWT & Refresh Token
-    AS->>RS: Store Refresh Token
+    AS->>RS: Store Refresh Token (key: user_id)
     AS-->>AG: Return Tokens
-    AG-->>C: Authentication Success
-    
+    AG-->>C: 200 OK + Tokens
+
     Note over C, BS: Phase 2: Authorization (Subsequent Calls)
     C->>AG: API Request + JWT
     AG->>AS: Validate JWT
-    AS->>AS: Verify Token Signature
+    AS->>AS: Verify Token Signature & Expiry
     AS->>RS: Check Token Blacklist
     RS-->>AS: Token Valid
-    AS-->>AG: Authentication Success
-    
-    AG->>BS: Authorized Request
-    BS-->>AG: Business Response
+    AS-->>AG: Authentication Success + User Context
+    AG->>BS: Forward Authorized Request
+    BS-->>AG: Business Logic Response
     AG-->>C: API Response
 
 
