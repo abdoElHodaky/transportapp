@@ -1548,10 +1548,49 @@ stateDiagram-v2
 
     class Connecting,Connected,Authenticated,InRoom primary
     class Disconnected error
-
-
 ```
+```mermaid
+  %%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#0d1117",
+    "primaryTextColor": "#c9d1d9",
+    "primaryBorderColor": "#1f6feb",
+    "lineColor": "#1f6feb",
+    "secondaryColor": "#388bfd",
+    "tertiaryColor": "#79c0ff",
+    "background": "#0d1117"
+  }
+}%%
+stateDiagram-v2
+    [*] --> Connecting: Initialize
+    
+    state Connecting {
+        [*] --> Handshake
+        Handshake --> Authenticating: Socket Open
+    }
 
+    Connecting --> Connected: Success
+    Connecting --> Disconnected: Failure
+
+    state Connected {
+        [*] --> Authenticated: JWT Validated
+        Authenticated --> InRoom: Join(RoomID)
+        InRoom --> InRoom: Event Stream
+        InRoom --> Authenticated: Leave()
+    }
+
+    Connected --> Disconnected: Connection Lost / Logout
+    
+    Disconnected --> Connecting: Reconnect Attempt
+    Disconnected --> [*]: Terminate
+
+    %% Styling 
+    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:3px,color:#c9d1d9
+    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633
+    class Connecting,Connected primary
+    class Disconnected error
+```
 ---
 
 ## 🔐 Security Architecture
