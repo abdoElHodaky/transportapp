@@ -433,7 +433,62 @@ flowchart LR
 
 ## 🏗️ System Architecture - Simplified & Powerful
 
+```mermaid
+   %%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'background': 'transparent',
+    'primaryColor': '#FF6B6B',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#E55555',
+    'lineColor': '#4ECDC4',
+    'secondaryColor': '#45B7D1',
+    'tertiaryColor': '#96CEB4'
+  }
+}}%%
+flowchart TB
+    %% Nodes
+    USERS["📱 Users<br/>(Drivers & Passengers)"]
+    API["🌐 API Gateway<br/>(Auth & Rate Limiting)"]
+    
+    subgraph CLUSTER ["🚀 Microservices Engine"]
+        direction TB
+        MATCHING["🎯 Matching Service<br/>(Geo-Spatial Logic)"]
+        TRIPS["🚕 Trip Management"]
+        BILLING["💳 Billing & Ledger"]
+        NOTIFY["🔔 Notification Service"]
+    end
 
+    QUEUE["📨 Message Broker<br/>(Kafka / RabbitMQ)"]
+    
+    DATA[("🗄️ Persistence Layer<br/>PostgreSQL • Redis")]
+    
+    EXTERNAL["🏦 Payment Systems<br/>(Stripe / Braintree)"]
+
+    %% Connections
+    USERS <==> API
+    API ==> MATCHING & TRIPS
+    MATCHING -.-> QUEUE
+    TRIPS ==> DATA
+    BILLING ==> QUEUE
+    QUEUE ==> EXTERNAL
+    QUEUE -.-> NOTIFY
+
+    %% Styling
+    classDef users fill:#96CEB4,stroke:#7FB069,stroke-width:6px,color:#fff,font-weight:bold
+    classDef api fill:#45B7D1,stroke:#3A9BC1,stroke-width:6px,color:#fff,font-weight:bold
+    classDef engine fill:#FF6B6B,stroke:#E55555,stroke-width:4px,color:#fff,font-style:italic
+    classDef data fill:#9B59B6,stroke:#8E44AD,stroke-width:6px,color:#fff,font-weight:bold
+    classDef queue fill:#F1C40F,stroke:#D4AC0D,stroke-width:6px,color:#fff,font-weight:bold
+    classDef external fill:#F39C12,stroke:#E67E22,stroke-width:4px,color:#fff
+
+    class USERS users
+    class API api
+    class MATCHING,TRIPS,BILLING,NOTIFY engine
+    class DATA data
+    class QUEUE queue
+    class EXTERNAL external
+```
 ### 🔍 Architecture Analysis
 
 | Component | Purpose | Technology | Scalability |
