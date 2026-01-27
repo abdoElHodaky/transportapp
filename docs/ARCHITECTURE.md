@@ -832,71 +832,72 @@ sequenceDiagram
     "primaryColor": "#0d1117",
     "primaryTextColor": "#c9d1d9",
     "primaryBorderColor": "#1f6feb",
-    "lineColor": "#1f6feb",
+    "lineColor": "#58a6ff",
     "secondaryColor": "#388bfd",
     "tertiaryColor": "#79c0ff",
-    "background": "#0d1117",
     "mainBkg": "#0d1117",
-    "secondBkg": "#30363d",
-    "tertiaryBkg": "#79c0ff"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
+    "secondBkg": "#161b22"
   },
   "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "useMaxWidth": true,
+    "layoutDirection": "TB"
   }
 }%%
+
 erDiagram
+    %% --- IDENTITY DOMAIN ---
+    USER ||--|| WALLET : "owns"
+    USER ||--o{ TRIP : "as_passenger"
+    USER ||--o{ TRIP : "as_driver"
+    USER ||--o{ RATING : "author"
+    USER ||--o{ RATING : "subject"
+    USER ||--o{ LOCATION : "broadcasts"
+
+    %% --- LOGISTICS DOMAIN ---
+    TRIP ||--|| PAYMENT : "generates"
+    TRIP ||--o{ RATING : "reviewed_in"
+    TRIP ||--o{ LOCATION : "telemetry_trail"
+    TRIP ||--o{ TRANSACTION : "referenced_by"
+
+    %% --- FINTECH & AUDIT DOMAIN ---
+    WALLET ||--o{ TRANSACTION : "ledger_entries"
+    PAYMENT ||--o{ TRANSACTION : "reconciliation"
+
     USER {
         uuid id PK
         string phone UK
         string name
         string email UK
-        enum role
-        enum status
+        enum role "DRIVER|PASSENGER|ADMIN"
+        enum status "ACTIVE|SUSPENDED"
         boolean phoneVerified
-        decimal rating
+        decimal rating "Aggregated"
         integer totalTrips
         boolean isOnline
         boolean isAvailable
         timestamp createdAt
         timestamp updatedAt
     }
-    
+
     WALLET {
         uuid id PK
         uuid userId FK
         decimal balance
         decimal totalEarnings
         decimal totalSpent
-        enum status
+        enum status "ACTIVE|LOCKED"
         decimal dailySpendLimit
         decimal monthlySpendLimit
         timestamp createdAt
         timestamp updatedAt
     }
-    
+
     TRIP {
         uuid id PK
         uuid passengerId FK
         uuid driverId FK
-        enum status
-        enum type
+        enum status "REQUESTED|ACCEPTED|ACTIVE|COMPLETED|CANCELLED"
+        enum type "ECONOMY|LUXURY|XL"
         decimal pickupLatitude
         decimal pickupLongitude
         string pickupAddress
@@ -910,134 +911,58 @@ erDiagram
         timestamp createdAt
         timestamp completedAt
     }
-    
+
     PAYMENT {
         uuid id PK
         uuid tripId FK
         uuid userId FK
-        enum method
-        enum status
+        enum method "CARD|WALLET|CASH"
+        enum status "PENDING|SUCCESS|FAILED"
         decimal amount
         decimal platformCommission
         decimal driverEarnings
-        string gatewayTransactionId
+        string gatewayTransactionId UK
         timestamp createdAt
         timestamp completedAt
     }
-    
+
     TRANSACTION {
         uuid id PK
         uuid walletId FK
         uuid userId FK
         uuid tripId FK
-        enum type
-        enum status
+        enum type "DEBIT|CREDIT|REFUND"
+        enum status "PENDING|SUCCESS|REVERSED"
         decimal amount
         decimal balanceBefore
         decimal balanceAfter
         string description
         timestamp createdAt
     }
-    
+
     RATING {
         uuid id PK
         uuid tripId FK
         uuid ratedById FK
         uuid ratedUserId FK
-        enum type
+        enum type "P_TO_D|D_TO_P"
         decimal rating
         string comment
         timestamp createdAt
     }
-    
+
     LOCATION {
         uuid id PK
         uuid userId FK
         uuid tripId FK
-        enum type
+        enum type "HUNTING|TRIP_ACTIVE"
         decimal latitude
         decimal longitude
-        string address
         decimal heading
         decimal speed
+        string address
         timestamp createdAt
     }
-    
-    USER ||--o { TRIP : "passenger"
-    USER ||--o { TRIP : "driver"
-    USER ||--|| WALLET : "owns"
-    USER ||--o { RATING : "rates"
-    USER ||--o { RATING : "rated"
-    USER ||--o { LOCATION : "tracks"
-    
-    TRIP ||--|| PAYMENT : "has"
-    TRIP ||--o { RATING : "receives"
-    TRIP ||--o { LOCATION : "tracks"
-    
-    WALLET ||--o { TRANSACTION : "contains"
-    
-    PAYMENT ||--o { TRANSACTION : "generates"
-
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
-
-
-
-
-    %% --- ARCHITECTURE (TECH BLUE) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#1f6feb,stroke-width:4px,color:#c9d1d9,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#388bfd,stroke-width:3px,color:#c9d1d9,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#79c0ff,stroke-width:2px,color:#79c0ff,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#79c0ff,stroke-width:4px,color:#79c0ff,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#30363d,stroke:#1f6feb,stroke-width:2px,color:#c9d1d9,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#388bfd,stroke-width:2px,color:#388bfd,font-weight:normal,stroke-dasharray: 3 3;
 
 
 ```
