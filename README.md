@@ -405,47 +405,178 @@ flowchart LR
 %%{init: {
   'theme': 'base',
   'themeVariables': {
-    'background': 'transparent',
-    'primaryColor': '#FF6B6B',
-    'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#E55555',
-    'lineColor': '#4ECDC4',
-    'secondaryColor': '#45B7D1',
-    'tertiaryColor': '#96CEB4'
+    'primaryColor': '#00b894',
+    'primaryTextColor': '#fff',
+    'primaryBorderColor': '#55efc4',
+    'lineColor': '#a4b0be',
+    'secondaryColor': '#a29bfe',
+    'tertiaryColor': '#fab1a0',
+    'background': '#0c1015',
+    'mainBkg': '#161b22',
+    'secondBkg': '#1c2128',
+    'clusterBkg': 'rgba(22, 27, 34, 0.9)',
+    'clusterBorder': '#444c56'
   }
 }}%%
-flowchart TB
-    %% Simplified Architecture Flow
-    USERS["📱 Users<br/>🚗 Drivers & 👥 Passengers"]
-    
-    API["🌐 API Gateway<br/>⚡ Smart Routing"]
-    
-    SERVICES["🔧 Core Services<br/>🔐 Auth • 🚗 Trips • 💳 Payments"]
-    
-    DATA["🗄️ Data Layer<br/>📊 PostgreSQL • ⚡ Redis"]
-    
-    EXTERNAL["🏦 External<br/>💰 Payment Gateways"]
-    
-    %% Eye-catching connections
-    USERS ==> API
-    API ==> SERVICES
-    SERVICES ==> DATA
-    SERVICES -.-> EXTERNAL
-    
-    %% Distinguished Eye-catching Styling
-    classDef users fill:#96CEB4,stroke:#7FB069,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
-    classDef api fill:#45B7D1,stroke:#3A9BC1,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
-    classDef services fill:#FF6B6B,stroke:#E55555,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
-    classDef data fill:#9B59B6,stroke:#8E44AD,stroke-width:8px,color:#ffffff,font-weight:bold,font-size:16px
-    classDef external fill:#F39C12,stroke:#E67E22,stroke-width:6px,color:#ffffff,font-weight:bold,font-size:14px
-    
-    class USERS users
-    class API api
-    class SERVICES services
-    class DATA data
-    class EXTERNAL external
-```
 
+graph TB
+    %% --- CLASS DEFINITIONS ---
+    classDef linodeStyle fill:#020617,stroke:#00b894,stroke-width:3px,color:#00b894
+    classDef nodeStyle fill:#1c2128,stroke:#a29bfe,stroke-width:2px,color:#fff
+    classDef storageStyle fill:#161b22,stroke:#f1c40f,stroke-width:2px,color:#fff
+    classDef gatewayStyle fill:#1c2128,stroke:#00d2ff,stroke-width:2px,color:#fff
+    classDef externalStyle fill:#0c1015,stroke:#ff7675,stroke-width:2px,color:#ff7675
+
+    subgraph NETWORK_EDGE ["🛡️ LINODE EDGE & NETWORKING"]
+        DNS_MGR["<b>Linode DNS Manager</b><br/>High-Availability Resolvers"]:::linodeStyle
+        NODE_BALANCER["<b>Linode NodeBalancer</b><br/>TCP/HTTP Passthrough"]:::linodeStyle
+    end
+
+    subgraph COMPUTE_CLUSTER ["☸️ LINODE KUBERNETES ENGINE (LKE)"]
+        direction TB
+        subgraph NESTJS_PODS ["NestJS Microservices"]
+            AUTH_SVC[["Identity & Access"]]:::nodeStyle
+            TRIP_SVC[["Trip Orchestration"]]:::nodeStyle
+            GEO_SVC[["Geo-Spatial Engine"]]:::nodeStyle
+            PAY_SVC[["Financial Gateway"]]:::nodeStyle
+        end
+        
+        TRAEFIK{{"<b>Traefik Ingress</b><br/>L7 Routing / mTLS"}}:::gatewayStyle
+        
+        subgraph REALTIME_PODS ["High-Throughput"]
+            WS_HUB[["Websocket Cluster"]]:::nodeStyle
+            MATCH_ENG[["Dispatcher Engine"]]:::nodeStyle
+        end
+    end
+
+    subgraph STATE_LAYER ["🗄️ MANAGED DATA & STORAGE"]
+        direction LR
+        L_DB[("<b>Linode Managed DB</b><br/>PostgreSQL HA")]:::storageStyle
+        REDIS_IO[("<b>Cloud Redis</b><br/>PubSub & Cache")]:::storageStyle
+        OBJ_STORAGE[("<b>Object Storage</b><br/>S3-Assets")]:::storageStyle
+    end
+
+    subgraph EXT_INTEGRATIONS ["🔌 EXTERNAL ECOSYSTEM"]
+        S_PAY[["<b>Sudan Local Pay</b><br/>EBS / CyberPay"]]:::externalStyle
+        MAPS[["<b>Map Tiles</b><br/>Mapbox / Google"]]:::externalStyle
+        PUSH[["<b>Notifications</b><br/>FCM / Twilio"]]:::externalStyle
+    end
+
+    %% --- FLOWS ---
+    DNS_MGR ==> NODE_BALANCER
+    NODE_BALANCER ==> TRAEFIK
+    TRAEFIK --> AUTH_SVC
+    TRAEFIK --> WS_HUB
+    
+    TRIP_SVC -- "Spatial Query" --> GEO_SVC
+    GEO_SVC <==> REDIS_IO
+    
+    NESTJS_PODS --> L_DB
+    NESTJS_PODS --> OBJ_STORAGE
+    
+    PAY_SVC -.-> S_PAY
+    GEO_SVC -.-> MAPS
+    TRIP_SVC -- "Event" --> WS_HUB
+    WS_HUB -.-> PUSH
+
+    %% --- STYLING ---
+    style NETWORK_EDGE fill:none,stroke:#00b894,stroke-dasharray: 5 5
+    style COMPUTE_CLUSTER fill:#0c1015,stroke:#a29bfe,stroke-width:1px
+```
+```mermaid
+  %%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#00b894',
+    'primaryTextColor': '#fff',
+    'primaryBorderColor': '#55efc4',
+    'lineColor': '#81ecec',
+    'secondaryColor': '#6c5ce7',
+    'tertiaryColor': '#fab1a0',
+    'background': '#0b0e14',
+    'mainBkg': '#11171e',
+    'nodeBorder': '#55efc4',
+    'clusterBkg': 'rgba(17, 23, 30, 0.8)',
+    'clusterBorder': '#2d3436'
+  }
+}}%%
+
+graph TB
+    %% --- CLASS DEFINITIONS (Neon Accents) ---
+    classDef edgeStyle fill:#020617,stroke:#00b894,stroke-width:3px,color:#00b894,font-weight:bold
+    classDef computeStyle fill:#161b22,stroke:#a29bfe,stroke-width:2px,color:#fff
+    classDef storageStyle fill:#161b22,stroke:#fdcb6e,stroke-width:2px,color:#fff
+    classDef externalStyle fill:#1a1110,stroke:#ff7675,stroke-width:2px,color:#ff7675,stroke-dasharray: 5 5
+    classDef devopsStyle fill:#1e272e,stroke:#0fbcf9,stroke-width:2px,color:#0fbcf9
+    classDef hotPath stroke:#00b894,stroke-width:4px,color:#00b894
+
+    %% --- CI/CD & OPS (New Section) ---
+    subgraph DEVOPS ["🚀 DELIVERY & OBSERVABILITY"]
+        GH_ACTIONS(["<b>GitHub Actions</b><br/>CI/CD Pipeline"]):::devopsStyle
+        LCR[("<b>Linode Registry</b><br/>Docker Images")]:::devopsStyle
+        PROM[["<b>Prometheus + Grafana</b><br/>Metrics & Alerts"]]:::devopsStyle
+    end
+
+    subgraph INGRESS ["🛡️ TRAFFIC GATEWAY"]
+        DNS["<b>Linode DNS</b><br/>Anycast IP"]:::edgeStyle
+        LB{"<b>NodeBalancer</b><br/>SSL Termination"}:::edgeStyle
+        TRAEFIK{{"<b>Traefik Ingress</b><br/>L7 Routing"}}:::computeStyle
+    end
+
+    subgraph K8S_CLUSTER ["☸️ LINODE KUBERNETES ENGINE"]
+        direction TB
+        
+        subgraph CORE_SERVICES ["Backend APIs"]
+            AUTH[["Identity & Auth"]]:::computeStyle
+            TRIP[["Trip Engine"]]:::computeStyle
+            PAY[["Payment Hub"]]:::computeStyle
+        end
+
+        subgraph REALTIME_LAYER ["⚡ HOT PATH (WebSockets)"]
+            WS_HUB[["WebSocket Cluster"]]:::computeStyle
+            MATCH[["Matching Engine"]]:::computeStyle
+        end
+    end
+
+    subgraph DATA_LAKE ["🗄️ PERSISTENCE LAYER"]
+        direction LR
+        PG[(<b>PostgreSQL</b><br/>Managed HA)]:::storageStyle
+        REDIS[(<b>Redis</b><br/>Cache/PubSub)]:::storageStyle
+        S3[(<b>Object Storage</b><br/>Assets/KYC)]:::storageStyle
+    end
+
+    subgraph THIRD_PARTY ["🔌 SUDAN ECOSYSTEM"]
+        EBS[["<b>Local Pay</b><br/>EBS Gateway"]]:::externalStyle
+        MAPS[["<b>Maps</b><br/>Mapbox API"]]:::externalStyle
+        SMS[["<b>SMS/Push</b><br/>Twilio/FCM"]]:::externalStyle
+    end
+
+    %% --- CONNECTIVITY ---
+    %% DevOps Flow
+    GH_ACTIONS ==> LCR ==> K8S_CLUSTER
+    PROM -. "Scrape" .-> K8S_CLUSTER
+
+    %% Traffic Flow
+    DNS ==> LB ==> TRAEFIK
+    TRAEFIK ==> AUTH
+    TRAEFIK ==> WS_HUB
+
+    %% Logic Flow
+    TRIP --- REDIS
+    TRIP --- PG
+    TRIP ==> MATCH
+    MATCH ==> WS_HUB
+    
+    %% External Integration
+    PAY -. "Secure Link" .-> EBS
+    TRIP -.-> MAPS
+    WS_HUB -.-> SMS
+
+    %% --- STYLING OVERRIDES ---
+    style INGRESS fill:#020617,stroke:#00b894,stroke-width:2px
+    style REALTIME_LAYER fill:#0c211b,stroke:#00b894,stroke-width:2px
+    style DEVOPS fill:#0a192f,stroke:#0fbcf9,stroke-dasharray: 5 5
+```
 ### 🔍 Architecture Analysis
 
 | Component | Purpose | Technology | Scalability |
