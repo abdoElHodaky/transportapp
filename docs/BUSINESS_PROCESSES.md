@@ -987,9 +987,6 @@ flowchart TD
 ---
 
 ## ⭐ Rating & Review System
-
-### **Post-Trip Rating Flow**
-
 ```mermaid
 %%{init: {
   "theme": "dark",
@@ -997,287 +994,88 @@ flowchart TD
     "primaryColor": "#0d1117",
     "primaryTextColor": "#aff5b4",
     "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
+    "lineColor": "#58a6ff",
     "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
+    "tertiaryColor": "#161b22"
   }
 }%%
-sequenceDiagram
-    participant P as "Passenger"
-    participant D as "Driver"
-    participant A as "API"
-    participant N as "Notification"
-    
-    Note over P,D: Trip Completed
-    
-    A->>P: Request Rating
-    A->>D: Request Rating
-    
-    P->>A: Submit Rating (1-5 stars + comment)
-    A->>A: Validate Rating
-    A->>A: Update Driver Average
-    A->>N: Notify Driver of Rating
-    
-    D->>A: Submit Rating (1-5 stars + comment)
-    A->>A: Validate Rating
-    A->>A: Update Passenger Average
-    A->>N: Notify Passenger of Rating
-    
-    A->>A: Check for Issues
-    A->>A: Update User Profiles
+flowchart TB
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
+    %% --- HEADER ---
+    Title[<center><b>🚀 MASTER RATING ECOSYSTEM: END-TO-END DATA FLOW</b><br/>Integrated Numerical Validation & Account Lifecycle</center>]
+    Title --- System_Container
 
-    class A main;
-    class D decision;
-    class N revNode;
-    class P commNode;
+    subgraph System_Container [" "]
+        direction TB
 
+        %% --- SECTION 1: INTERACTION LAYER ---
+        subgraph Interaction_Layer ["📱 PHASE 1: REAL-TIME FEEDBACK HANDSHAKE"]
+            direction LR
+            P_App[<b>Passenger App</b><br/>1-5 Star Input]
+            D_App[<b>Driver App</b><br/>1-5 Star Input]
+            API{<b>Edge Gateway</b><br/>Validation}
+            
+            P_App & D_App -- "Numerical Submission" --> API
+            API -- "Sync Notification" --> Push[Push Service]
+            Push -.-> |Update UI| P_App & D_App
+        end
 
+        %% --- SECTION 2: LOGIC LAYER ---
+        subgraph Logic_Layer ["⚙️ PHASE 2: THRESHOLD & IMPACT ENGINE"]
+            direction TB
+            Calc[<b>Weighted Mean</b><br/>Last 100 Trips]
+            Filter{Star Value?}
+            
+            API --> Calc --> Filter
 
+            %% Penalty Path
+            Filter -- "Low (1.0 - 2.5)" --> Freq{Freq Check<br/>> 5%?}
+            Freq -- "Yes" --> Susp_Action[<b>TRIGGER SUSPENSION</b>]
+            Freq -- "No" --> Warn_Action[Warning Notice]
 
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
+            %% Reward Path
+            Filter -- "High (4.8 - 5.0)" --> Elite_Check{Trip Vol<br/>> 500?}
+            Elite_Check -- "Yes" --> VIP_Action[Grant Premium]
+            
+            %% Standard Path
+            Filter -- "2.6 - 4.7" --> Std_Action[Standard Maintenance]
+        end
 
+        %% --- SECTION 3: PERSISTENCE LAYER ---
+        subgraph State_Layer ["📊 PHASE 3: USER PROFILE STATE MACHINE"]
+            direction LR
+            DB[(PostgreSQL Cluster)]
+            
+            State_Active((ACTIVE))
+            State_Premium((PREMIUM))
+            State_Suspended((SUSPENDED))
 
-```
+            VIP_Action --> State_Premium
+            Susp_Action --> State_Suspended
+            Std_Action & Warn_Action --> State_Active
+            
+            State_Premium -- "Avg Drop" --> State_Active
+            State_Suspended -- "Manual Appeal" --> State_Active
+        end
+    end
 
-### **Rating Impact System**
+    %% --- CROSS-LAYER CONNECTIONS ---
+    Logic_Layer --> DB
+    DB -.-> |State Sync| Interaction_Layer
 
-```mermaid
-%%{init: {
-  "theme": "dark",
-  "themeVariables": {
-    "primaryColor": "#0d1117",
-    "primaryTextColor": "#aff5b4",
-    "primaryBorderColor": "#238636",
-    "lineColor": "#238636",
-    "secondaryColor": "#2ea043",
-    "tertiaryColor": "#3fb950",
-    "background": "#0d1117",
-    "mainBkg": "#0d1117",
-    "secondBkg": "#21262d",
-    "tertiaryBkg": "#3fb950"
-  },
-  "flowchart": {
-    "useMaxWidth": true,
-    "htmlLabels": true
-  },
-  "sequence": {
-    "useMaxWidth": true,
-    "wrap": true
-  },
-  "class": {
-    "useMaxWidth": true
-  },
-  "state": {
-    "useMaxWidth": true
-  },
-  "er": {
-    "useMaxWidth": true
-  },
-  "gantt": {
-    "useMaxWidth": true
-  }
-}%%
-flowchart TD
-    A["Rating Submitted"] --> B["Update User Average"]
-    B --> C {"Rating Below 3.0?"}
-    
-    C --> |Yes| D["Flag for Review"]
-    C --> |No| E["Normal Processing"]
-    
-    D --> F {"Multiple Low Ratings?"}
-    F --> |Yes| G["Automatic Suspension"]
-    F --> |No| H["Warning Notice"]
-    
-    G --> I["Admin Review Required"]
-    H --> J["Performance Monitoring"]
-    
-    E --> K["Update Profile"]
-    K --> L {"Driver Rating > 4.8?"}
-    L --> |Yes| M["Premium Driver Status"]
-    L --> |No| N["Standard Status"]
-    
-    I --> O["Manual Investigation"]
-    O --> P {"Reinstate?"}
-    P --> |Yes| Q["Account Reactivated"]
-    P --> |No| R["Permanent Suspension"]
+    %% --- DISTINGUISHED STYLING ---
+    classDef interaction fill:#0d1117,stroke:#58a6ff,stroke-width:3px,color:#58a6ff;
+    classDef logic fill:#161b22,stroke:#d29922,stroke-width:3px,color:#d29922;
+    classDef data fill:#04190b,stroke:#3fb950,stroke-width:3px,color:#aff5b4;
+    classDef critical fill:#1a0b0b,stroke:#f85149,stroke-width:4px,color:#f85149,font-weight:bold;
+    classDef titleNode fill:none,stroke:none,color:#aff5b4,font-size:22px;
 
-    %%  --- DARK GRADIENT & GLOW STYLING ---
-    
-    %%  Main Dashboard (Neon Cyan/Blue)
-    classDef main fill : #0d1117, stroke:#58a6ff, stroke-width: 4px,color:#58a6ff,font-weight: bold;
-    
-    
-    %%  Decision Diamond (Gold Glow)
-    classDef decision fill : #161b22, stroke:#d29922, color:#d29922,stroke-dasharray: 5 5;
-    
-    
-    %%  Revenue (Emerald Gradient Style)
-    classDef revNode fill : #04190b, stroke:#3fb950, color:#aff5b4,stroke-width: 2px;
-    
-    
-    %%  Commission (Purple Gradient Style)
-    classDef commNode fill : #12101e, stroke:#bc8cff, color:#e2c5ff,stroke-width: 2px;
-    
-    
-    %%  Refund (Ruby Gradient Style)
-    classDef refNode fill : #1a0b0b, stroke:#ff7b72, color:#ffa198,stroke-width: 2px;
-    
-    
-    %%  Earnings (Sapphire Gradient Style)
-    classDef earnNode fill : #051221, stroke:#388bfd, color:#a5d6ff,stroke-width: 2px;
-    
-
-    class A main;
-    class B decision;
-    class C revNode;
-    class D commNode;
-    class E refNode;
-    class F earnNode;
-    class G main;
-    class H decision;
-    class I revNode;
-    class J commNode;
-    class K refNode;
-    class L earnNode;
-    class M main;
-    class N decision;
-    class O revNode;
-    class P commNode;
-    class Q refNode;
-    class R earnNode;
-    class Y main;
-
-
-
-
-    %% --- BUSINESS (CORPORATE GREEN) THEME STYLING ---
-    
-    %% Primary nodes (main components)
-    classDef primary fill:#0d1117,stroke:#238636,stroke-width:4px,color:#aff5b4,font-weight:bold;
-    
-    %% Secondary nodes (supporting components)
-    classDef secondary fill:#0d1117,stroke:#2ea043,stroke-width:3px,color:#aff5b4,font-weight:normal;
-    
-    %% Accent nodes (highlights)
-    classDef accent fill:#0d1117,stroke:#3fb950,stroke-width:2px,color:#3fb950,font-weight:bold;
-    
-    %% Success nodes (positive outcomes)
-    classDef success fill:#0d1117,stroke:#238636,stroke-width:3px,color:#238636,font-weight:bold;
-    
-    %% Warning nodes (attention needed)
-    classDef warning fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 5 5;
-    
-    %% Error nodes (problems/failures)
-    classDef error fill:#0d1117,stroke:#da3633,stroke-width:3px,color:#da3633,font-weight:bold,stroke-dasharray: 10 5;
-    
-    %% Database nodes (data storage)
-    classDef database fill:#0d1117,stroke:#3fb950,stroke-width:4px,color:#3fb950,font-weight:bold;
-    
-    %% Process nodes (operations)
-    classDef process fill:#21262d,stroke:#238636,stroke-width:2px,color:#aff5b4,font-weight:normal;
-    
-    %% Decision nodes (branching points)
-    classDef decision fill:#0d1117,stroke:#d29922,stroke-width:3px,color:#d29922,font-weight:bold,stroke-dasharray: 8 4;
-    
-    %% External nodes (third-party services)
-    classDef external fill:#0d1117,stroke:#2ea043,stroke-width:2px,color:#2ea043,font-weight:normal,stroke-dasharray: 3 3;
-
-    class A accent;
-    class B accent;
-    class D accent;
-    class E process;
-    class G accent;
-    class H warning;
-    class I accent;
-    class J accent;
-    class K accent;
-    class M accent;
-    class N accent;
-    class O accent;
-    class Q accent;
-    class R accent;
-```
-
+    class P_App,D_App,API,Push interaction;
+    class Calc,Filter,Freq,Elite_Check logic;
+    class DB,State_Active,State_Premium data;
+    class Susp_Action,State_Suspended critical;
+    class Title titleNode;
+  ```
 ---
 
 ## 🛡️ Admin Management Processes
